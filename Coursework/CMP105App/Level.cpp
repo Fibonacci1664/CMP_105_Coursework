@@ -1,47 +1,103 @@
+/*
+ * This class controls all aspects of the level including:
+ *		- Player
+ *		- Enemies
+ *		- Environment
+ *
+ * Original @author Dr Paul Robertson.
+ * Updated by @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
 #include "Level.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// CONSTRUCTORS & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in)
 {
 	window = hwnd;
 	input = in;
 
 	// initialise game objects
-
+	initTextures();
+	initPlayer();
 }
 
 Level::~Level()
 {
-
+	std::cout << "Level object destroyed!\n";
 }
 
-// handle user input
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// FUNCTIONS.
+
+// Handle user input.
 void Level::handleInput(float dt)
 {
-
+	player.handleInput(dt);
 }
 
-// Update game objects
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Update game objects.
 void Level::update(float dt)
 {
-	
+	player.update(dt);
 }
 
-// Render level
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Render level.
 void Level::render()
 {
 	beginDraw();
-
+	window->draw(player);
 	endDraw();
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Begins rendering to the back buffer. Background colour set to light blue.
 void Level::beginDraw()
 {
-	window->clear(sf::Color(100, 149, 237));
+	window->clear(sf::Color::Black);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Ends rendering to the back buffer, and swaps buffer to the screen.
 void Level::endDraw()
 {
 	window->display();
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Initialize any/all textures and/or sprite sheets.
+void Level::initTextures()
+{
+	if (!playerSpriteSheet.loadFromFile("gfx/sprites/knight/full_sprite_sheet/knight_sheet_4.png"))
+	{
+		std::cout << "Error loading player sprite sheet file!\n";
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Create the player.
+void Level::initPlayer()
+{
+	player.setInput(input);
+	player.setWindow(window);
+	player.setSize(sf::Vector2f(58.9f, 68));
+	player.setPosition(sf::Vector2f(20, 50));
+	player.setTexture(&playerSpriteSheet);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////

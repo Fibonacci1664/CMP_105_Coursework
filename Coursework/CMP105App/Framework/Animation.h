@@ -1,31 +1,29 @@
-// Animation Class
-// Controls a single animation
-// Stores a list of frames, animation speed, looping and lipped state.
-// Returns current frame of animation based on time and updating.
-// @author Paul Robertson
-
 #pragma once
+
 #include "SFML\Graphics.hpp"
 #include <vector>
+#include<iostream>
 
 class Animation
 {
 public:
 	Animation();
+	~Animation();
 
-	// Create animation
+	// Create animation.
 	void addFrame(sf::IntRect rect);
 	void setFrameSpeed(float speed);
 	int getSize();
 
-	// update/reset animation
+	// Update/reset animation.
 	void animate(float dt);
 	void reset();
 
-	// get current frame of animation
+	// Get current frame of animation.
 	sf::IntRect getCurrentFrame();
+	int getCurrentFrameNumber();
 
-	// Animation controls
+	// Animation controls.
 	float getFrameSpeed() { return animationSpeed; };
 	void setFlipped(bool flip) { flipped = flip; };
 	bool getFlipped() {	return flipped;	};

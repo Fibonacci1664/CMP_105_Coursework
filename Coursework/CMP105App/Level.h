@@ -6,6 +6,7 @@
 #include "Framework/GameState.h"
 #include <string>
 #include <iostream>
+#include "Player.h"
 
 
 class Level{
@@ -22,9 +23,15 @@ private:
 	void beginDraw();
 	void endDraw();
 
+	void initTextures();
+	void initPlayer();
+
 	// Default variables for level class.
 	sf::RenderWindow* window;
 	Input* input;
 	GameState* gameState;
 	AudioManager* audio;
+
+	sf::Texture playerSpriteSheet;
+	Player player;
 };
