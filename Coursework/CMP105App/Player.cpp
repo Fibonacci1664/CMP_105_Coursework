@@ -21,6 +21,7 @@ Player::Player()
 {
 	initAudio();
 
+	attackDelay = 0;
 	movingLeft = false;
 	movingRight = true;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
 	isJumping = false;
@@ -63,6 +64,7 @@ void Player::update(float dt)
 
 void Player::handleInput(float dt)
 {
+	attackDelay += dt;
 	setAllAnimsFalse();
 
 	// If were WALKING RIGHT.
@@ -121,9 +123,16 @@ void Player::handleInput(float dt)
 	}
 
 	// If were RUNNING.
-	if (input->isMouseRDown())
+	/*
+	 * First 'if' checks if we're holding down the right mouse AND either of the left or right keys.
+	 * The second 'if' checks that were only holding down either A or D, but not both.
+	 */
+	if (input->isMouseRDown() && (input->isKeyDown(sf::Keyboard::A) || input->isKeyDown(sf::Keyboard::D)))
 	{
-		checkRunning(dt);
+		if ((input->isKeyDown(sf::Keyboard::A) && !input->isKeyDown(sf::Keyboard::D)) || (!input->isKeyDown(sf::Keyboard::A) && input->isKeyDown(sf::Keyboard::D)))
+		{
+			checkRunning(dt);
+		}
 	}
 
 	// If were ATTACKING.
@@ -133,9 +142,7 @@ void Player::handleInput(float dt)
 	}
 	else
 	{
-		input->setMouseLDown(false);
 		isAttacking = false;
-		attack.setPlaying(false);
 	}
 
 	if (input->isKeyDown(sf::Keyboard::K))
@@ -362,8 +369,6 @@ void Player::checkJumping(float dt)
 
 void Player::checkAttacking(float dt)
 {
-	input->setMouseLDown(false);
-
 	if (movingLeft)
 	{
 		attack.setFlipped(true);
@@ -373,12 +378,16 @@ void Player::checkAttacking(float dt)
 		attack.setFlipped(false);
 	}
 
-	audioMan.playSoundbyName("up");
-
 	isAttacking = true;
 	attack.setPlaying(true);
 	attack.animate(dt);
 	setTextureRect(attack.getCurrentFrame());
+
+	if (attackDelay > 1.0f)
+	{
+		audioMan.playSoundbyName("up");
+		attackDelay = 0;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

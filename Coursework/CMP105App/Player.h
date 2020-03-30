@@ -46,6 +46,8 @@ private:
 	float YDiffPlayerColBox;
 	AudioManager audioMan;
 
+	float attackDelay;
+
 
 	bool movingLeft;
 	bool movingRight;
