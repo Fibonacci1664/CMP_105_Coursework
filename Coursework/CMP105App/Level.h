@@ -6,32 +6,40 @@
 #include "Framework/GameState.h"
 #include <string>
 #include <iostream>
+#include "Screen.h"
 #include "Player.h"
+#include "TileMapManager.h"
 
 
-class Level{
+class Level : public Screen
+{
 public:
-	Level(sf::RenderWindow* hwnd, Input* in);
+	Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud);
 	~Level();
 
-	void handleInput(float dt);
-	void update(float dt);
-	void render();
+	void handleInput(float dt) override;
+	void update(float dt) override;
+	void render() override;
 
 private:
+	void checkTileCollisions();
+	void initPlayer();
+	void initTextures();
+	void initTextBox();
+	void initAudio();
+
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
 
-	void initTextures();
-	void initPlayer();
 
-	// Default variables for level class.
-	sf::RenderWindow* window;
-	Input* input;
-	GameState* gameState;
-	AudioManager* audio;
-
-	sf::Texture playerSpriteSheet;
+	TileMapManager tmm;
+	sf::Texture player_texture;
 	Player player;
+	sf::RectangleShape colBox;
+	sf::RectangleShape OriginBox;
+	sf::RectangleShape playerPosBox;
+	sf::RectangleShape textBox;
+	sf::Text text;
+	sf::Font font;
 };

@@ -9,9 +9,9 @@
  * © D. Green. 2020.
  */
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// INCLUDES.
+ // INCLUDES.
 #include "Player.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,9 +19,12 @@
 // CONSTRUCTORS & DESTRUCTOR.
 Player::Player()
 {
+	initAudio();
+
 	movingLeft = false;
-	movingRight = false;
+	movingRight = true;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
 	isJumping = false;
+	isFalling = true;
 	onGround = false;
 	isAttacking = false;
 	setVelocity(sf::Vector2f(100, -350));
@@ -32,6 +35,7 @@ Player::Player()
 
 	gravityScalar = 100;
 	gravitationalAccel = sf::Vector2f(0, 9.8f) * gravityScalar;
+
 }
 
 Player::~Player()
@@ -45,7 +49,14 @@ Player::~Player()
 
 void Player::update(float dt)
 {
-	gravityFall(dt);
+	// If were falling OR jumping then apply gravity.
+	if (isFalling || isJumping)
+	{
+		gravityFall(dt);
+	}
+
+	//checkGround();
+	updateCollisionBox();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +66,7 @@ void Player::handleInput(float dt)
 	setAllAnimsFalse();
 
 	// If were WALKING RIGHT.
-	if (input->isKeyDown(sf::Keyboard::D))
+	if (input->isKeyDown(sf::Keyboard::D) && !input->isKeyDown(sf::Keyboard::A))
 	{
 		checkMovingRight(dt);
 	}
@@ -82,9 +93,31 @@ void Player::handleInput(float dt)
 	}
 
 	// If were WALKING LEFT.
-	if (input->isKeyDown(sf::Keyboard::A))
+	if (input->isKeyDown(sf::Keyboard::A) && !input->isKeyDown(sf::Keyboard::D))
 	{
 		checkMovingLeft(dt);
+	}
+
+	// If were JUMPING
+	if (input->isKeyDown(sf::Keyboard::Space) && onGround)
+	{
+		checkJumping(dt);
+	}
+
+	if (!onGround && isJumping)
+	{
+		if (movingLeft)
+		{
+			jump.setFlipped(true);
+		}
+		else
+		{
+			jump.setFlipped(false);
+		}
+
+		jump.setPlaying(true);
+		jump.animate(dt);
+		setTextureRect(jump.getCurrentFrame());
 	}
 
 	// If were RUNNING.
@@ -93,22 +126,16 @@ void Player::handleInput(float dt)
 		checkRunning(dt);
 	}
 
-	// If were JUMPING
-	if (input->isKeyDown(sf::Keyboard::Space))
-	{
-		checkJumping(dt);
-	}
-
 	// If were ATTACKING.
 	if (input->isMouseLDown())
 	{
-		checkAttacking(dt);		
+		checkAttacking(dt);
 	}
-
-	// If we STOP ATTACKING.
-	if (!input->isMouseLDown())
+	else
 	{
+		input->setMouseLDown(false);
 		isAttacking = false;
+		attack.setPlaying(false);
 	}
 
 	if (input->isKeyDown(sf::Keyboard::K))
@@ -142,14 +169,19 @@ void Player::gravityFall(float dt)
 
 	setPosition(getPosition() + displacement);
 
-	if ((getPosition().y + getSize().y) > window->getSize().y)
-	{
-		setPosition(getPosition().x, window->getSize().y - getSize().y);
-		stepVelocity = sf::Vector2f(0, 0);
-		onGround = true;
-		isJumping = false;
-	}
+	isFalling = true;
 }
+
+//void Player::checkGround()
+//{
+//	if ((getPosition().y + getSize().y) > window->getSize().y)
+//	{
+//		setPosition(getPosition().x, window->getSize().y - getSize().y);
+//		stepVelocity = sf::Vector2f(0, 0);
+//		onGround = true;
+//		isJumping = false;
+//	}
+//}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -190,7 +222,7 @@ void Player::addFrames()
 	for (int i = 0; i < (walkFrames * FRAME_WIDTH); i += FRAME_WIDTH)
 	{
 		walk.addFrame(sf::IntRect(i, (FRAME_HEIGHT * 5.2), FRAME_WIDTH, FRAME_HEIGHT));
-	}	
+	}
 
 	// Set how fast you want each of your animations to play, divide by a higher number for a faster animation.
 	attack.setFrameSpeed(1.0f / 20.0f);
@@ -225,18 +257,14 @@ void Player::checkMovingRight(float dt)
 			velocity.x = -velocity.x;
 		}
 
-		// Move right walking.
-		if (input->isKeyDown(sf::Keyboard::D))
-		{
-			movingRight = true;
-			movingLeft = false;
-			walk.setPlaying(true);
-			walk.setFlipped(false);
-			walk.animate(dt);
-			setTextureRect(walk.getCurrentFrame());
+		movingRight = true;
+		movingLeft = false;
+		walk.setPlaying(true);
+		walk.setFlipped(false);
+		walk.animate(dt);
+		setTextureRect(walk.getCurrentFrame());
 
-			setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * dt), getPosition().y));
-		}
+		setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * dt), getPosition().y));
 	}
 }
 
@@ -253,19 +281,15 @@ void Player::checkMovingLeft(float dt)
 			velocity.x = -velocity.x;
 		}
 
-		// Move left walking.
-		if (input->isKeyDown(sf::Keyboard::A))
-		{
-			movingRight = false;
-			movingLeft = true;
-			walk.setPlaying(true);
-			walk.setFlipped(true);
-			walk.animate(dt);
-			setTextureRect(walk.getCurrentFrame());
+		movingRight = false;
+		movingLeft = true;
+		walk.setPlaying(true);
+		walk.setFlipped(true);
+		walk.animate(dt);
+		setTextureRect(walk.getCurrentFrame());
 
-			setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * dt), getPosition().y));
-		}
-	}	
+		setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * dt), getPosition().y));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +298,7 @@ void Player::checkRunning(float dt)
 {
 	if (!isAttacking)
 	{
-		if (input->isKeyDown(sf::Keyboard::D))
+		if (input->isKeyDown(sf::Keyboard::D) && !input->isKeyDown(sf::Keyboard::A))
 		{
 			movingRight = true;
 			movingLeft = false;
@@ -282,10 +306,9 @@ void Player::checkRunning(float dt)
 			run.setPlaying(true);
 			run.animate(dt);
 			setTextureRect(run.getCurrentFrame());
-
-			setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * 1.5 * dt), getPosition().y));
 		}
-		else if (input->isKeyDown(sf::Keyboard::A))
+
+		if (input->isKeyDown(sf::Keyboard::A) && !input->isKeyDown(sf::Keyboard::D))
 		{
 			movingRight = false;
 			movingLeft = true;
@@ -293,14 +316,32 @@ void Player::checkRunning(float dt)
 			run.setFlipped(true);
 			run.animate(dt);
 			setTextureRect(run.getCurrentFrame());
-
-			setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * 1.5 * dt), getPosition().y));
 		}
+
+		if (!onGround && isJumping)
+		{
+			if (movingLeft)
+			{
+				jump.setFlipped(true);
+			}
+			else
+			{
+				jump.setFlipped(false);
+			}
+
+			jump.setPlaying(true);
+			jump.animate(dt);
+			setTextureRect(jump.getCurrentFrame());
+		}
+
+		setPosition(sf::Vector2f(getPosition().x + (getVelocity().x * 1.3 * dt), getPosition().y));
 	}
 }
 
 void Player::checkJumping(float dt)
 {
+	input->setKeyUp(sf::Keyboard::Space);
+
 	if (movingLeft)
 	{
 		jump.setFlipped(true);
@@ -310,19 +351,19 @@ void Player::checkJumping(float dt)
 		jump.setFlipped(false);
 	}
 
+	audioMan.playSoundbyName("jump");
+
 	isJumping = true;
 	onGround = false;
-	jump.setPlaying(true);
-	jump.animate(dt);
-	setTextureRect(jump.getCurrentFrame());
-
-	setPosition(getPosition().x + (getVelocity().x * dt), getPosition().y + (getVelocity().y * dt));
+	stepVelocity = sf::Vector2f(0, -400);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Player::checkAttacking(float dt)
 {
+	input->setMouseLDown(false);
+
 	if (movingLeft)
 	{
 		attack.setFlipped(true);
@@ -332,6 +373,8 @@ void Player::checkAttacking(float dt)
 		attack.setFlipped(false);
 	}
 
+	audioMan.playSoundbyName("up");
+
 	isAttacking = true;
 	attack.setPlaying(true);
 	attack.animate(dt);
@@ -339,3 +382,119 @@ void Player::checkAttacking(float dt)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Reponse function, what the sprite does based on collision
+// Colliding object is passed in for information
+// e.g. compare sprite positions to determine new velocity direction.
+// e.g. checking sprite type (world, enemy, bullet etc) so response is based on that.
+void Player::collisionResponse(GameObject* col)
+{
+	checkTileCollisions(col);
+
+	// Check object collisions
+	// Check enemy collisions
+	// Etc etc.
+}
+
+void Player::checkTileCollisions(GameObject* col)
+{
+	std::cout << "Player collided with tile!\n";
+
+	sf::Vector2f tileCentre = sf::Vector2f((col->getPosition().x + (col->getSize().x / 2.0f)), (col->getPosition().y + (col->getSize().y / 2.0f)));
+	float xColBoxCentre = getCollisionBox().left + getCollisionBox().width / 2;
+	float yColBoxCentre = getCollisionBox().top + getCollisionBox().height / 2;
+
+	float xDiff = tileCentre.x - xColBoxCentre;
+	float yDiff = tileCentre.y - yColBoxCentre;			// Top will give me the y value.
+
+	float leftXDiff = getCollisionBox().left - getPosition().x;
+	//float rightXDiff = (getPosition().x + getSize().x) - (getCollisionBox().left + getCollisionBox().width);
+	float topYDiff = getCollisionBox().top - getPosition().y;
+
+	// X-axis collision.
+	if (std::abs(xDiff) > std::abs(yDiff))
+	{
+		std::cout << "X-axis collision!\n";
+
+		// Right hand side of tile collission.
+		if (xDiff < 0)
+		{
+			// THIS IS GOOD!
+			std::cout << "Right\n";
+			stepVelocity.x = 0;
+			//onGround = true;
+			setPosition(sf::Vector2f((col->getPosition().x + col->getSize().x) - leftXDiff, getPosition().y));
+		}
+		else			// Left hand side of tile collision.
+		{
+			// THIS IS PERFECT DO NOT CHANGE!
+			std::cout << "Left\n";
+			stepVelocity.x = 0;
+			//onGround = true;
+			setPosition(sf::Vector2f(col->getPosition().x - (leftXDiff + getCollisionBox().width), getPosition().y));
+		}
+	}
+	else				// Y-axis collision.
+	{
+		std::cout << "Y-axis collision!\n";
+
+		// Bottom of tile collision.
+		if (yDiff < 0)
+		{
+			// THIS IS GOOD DO NOT CHANGE!
+			std::cout << "Bottom\n";
+			stepVelocity.y = 0;
+			setPosition(sf::Vector2f(getPosition().x, (col->getPosition().y + col->getSize().y)));
+		}
+		else			// Top of tile collision.
+		{
+			// THIS IS GOOD DO NOT CHANGE!
+			std::cout << "Top\n";
+			stepVelocity.y = 0;
+			setPosition(sf::Vector2f(getPosition().x, col->getPosition().y - getSize().y));
+			onGround = true;
+			isJumping = false;
+			isFalling = false;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::updateCollisionBox()
+{
+	if (movingLeft)
+	{
+		setCollisionBox(getSize().x / 3, 18, 30, 50);
+	}
+	else
+	{
+		setCollisionBox(getSize().x / 5, 18, 30, 50);
+	}
+}
+
+void Player::initAudio()
+{
+	audioMan.addSound("sfx/smb_jump-super.wav", "jump");
+	audioMan.addSound("sfx/smb_1-up.ogg", "up");
+}
+
+bool Player::getMovingRight()
+{
+	return movingRight;
+}
+
+bool Player::getMovingLeft()
+{
+	return movingLeft;
+}
+
+void Player::setIsFalling(bool l_isFalling)
+{
+	isFalling = l_isFalling;
+}
+
+void Player::setIsOnGround(bool l_isOnGround)
+{
+	onGround = l_isOnGround;
+}
