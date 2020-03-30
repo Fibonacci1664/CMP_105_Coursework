@@ -3,8 +3,6 @@
 
 Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
-	setGameState(State::MENU);
-
 	initMenuBackground();
 }
 
@@ -31,7 +29,7 @@ void Menu::update(float dt)
 void Menu::render()
 {
 	beginDraw();
-	window->draw(m_menuBg);
+	window->draw(menuBg);
 	endDraw();
 }
 
@@ -47,11 +45,11 @@ void Menu::endDraw()
 
 void Menu::initMenuBackground()
 {
-	if (!m_menuBgTexture.loadFromFile("gfx/screens/menu_final.png"))
+	if (!menuBgTexture.loadFromFile("gfx/screens/menu_final.png"))
 	{
 		std::cerr << "Sorry could not load menu background image!\n";
 	}
 
-	m_menuBg.setSize(sf::Vector2f(960, 540));
-	m_menuBg.setTexture(&m_menuBgTexture);
+	menuBg.setSize(sf::Vector2f(960, 540));
+	menuBg.setTexture(&menuBgTexture);
 }

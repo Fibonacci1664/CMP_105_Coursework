@@ -8,21 +8,27 @@
 #include <iostream>
 #include "Screen.h"
 
-class Menu : public Screen
+class Splash : public Screen
 {
 public:
-	Menu(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud);
-	~Menu();
+	Splash(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud);
+	~Splash();
 
 	void handleInput(float dt) override;
 	void update(float dt) override;
 	void render() override;
 
 private:
-	sf::RectangleShape menuBg;
-	sf::Texture menuBgTexture;
+	sf::RectangleShape splashBg;
+	sf::RectangleShape transFade;
+	sf::Texture splashLogoTexture;
 
-	void initMenuBackground();
+	float splashDelay;
+	float waitForLogo;
+	bool fadedIn;
+
+	void initSplashBackground();
+	void initTransFadeRect();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

@@ -19,10 +19,10 @@ public:
 	void render() override;
 
 private:
-	sf::RectangleShape m_pauseTextBox;
-	sf::RectangleShape m_transLayer;
-	sf::Text m_pauseText;
-	sf::Font m_font;
+	sf::RectangleShape pauseTextBox;
+	sf::RectangleShape transLayer;
+	sf::Text pauseText;
+	sf::Font font;
 
 	void initPauseInfo();
 	void initTransLayer();
