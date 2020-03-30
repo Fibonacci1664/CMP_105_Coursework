@@ -1,7 +1,4 @@
 #include "Splash.h"
-#include <Windows.h>
-
-
 
 Splash::Splash(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {

@@ -22,7 +22,19 @@ private:
 	sf::RectangleShape menuBg;
 	sf::Texture menuBgTexture;
 
+	sf::RectangleShape howToPlayButton;
+	sf::Texture howToPlayButtonTexture;
+
+	sf::RectangleShape newGameButton;
+	sf::Texture newGameButtonTexture;
+
+	sf::RectangleShape quitButton;
+	sf::Texture quitButtonTexture;
+
 	void initMenuBackground();
+	void initHowToPlayButton();
+	void initNewGameButton();
+	void initQuitButton();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
