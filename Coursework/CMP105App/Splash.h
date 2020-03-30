@@ -29,6 +29,8 @@ private:
 
 	void initSplashBackground();
 	void initTransFadeRect();
+	void initAudio();
+
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

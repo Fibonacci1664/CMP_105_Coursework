@@ -10,6 +10,7 @@ Splash::Splash(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* a
 
 	initSplashBackground();
 	initTransFadeRect();
+	initAudio();
 }
 
 Splash::~Splash()
@@ -24,6 +25,11 @@ void Splash::handleInput(float dt)
 
 void Splash::update(float dt)
 {
+	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+	{
+		audio->playMusicbyName("splash");
+	}
+
 	splashDelay += dt;
 	waitForLogo += dt;
 
@@ -85,4 +91,9 @@ void Splash::initSplashBackground()
 void Splash::initTransFadeRect()
 {
 	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+}
+
+void Splash::initAudio()
+{
+	audio->addMusic("sfx/splash/splash_intro.ogg", "splash");
 }

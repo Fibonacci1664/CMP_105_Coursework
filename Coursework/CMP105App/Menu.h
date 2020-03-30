@@ -24,17 +24,24 @@ private:
 
 	sf::RectangleShape howToPlayButton;
 	sf::Texture howToPlayButtonTexture;
+	sf::Texture howToPlayButtonHoverTexture;
+	sf::Texture howToPlayButtonClickedTexture;
 
 	sf::RectangleShape newGameButton;
 	sf::Texture newGameButtonTexture;
+	sf::Texture newGameButtonHoverTexture;
+	sf::Texture newGameButtonClickedTexture;
 
 	sf::RectangleShape quitButton;
 	sf::Texture quitButtonTexture;
+	sf::Texture quitButtonHoverTexture;
+	sf::Texture quitButtonClickedTexture;
 
 	void initMenuBackground();
 	void initHowToPlayButton();
 	void initNewGameButton();
 	void initQuitButton();
+	bool checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2);
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
