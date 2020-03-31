@@ -44,7 +44,6 @@ private:
 	void initHowToPlayButton();
 	void initNewGameButton();
 	void initQuitButton();
-	bool checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2);
 	void initTransFadeRect();
 
 	// Default functions for rendering to the screen.

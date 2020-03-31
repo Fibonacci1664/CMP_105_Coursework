@@ -75,3 +75,31 @@ void Screen::setGameState(State s)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Check for bounding box collision with a point/vector2 rather than two boxes.
+bool Screen::checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2)
+{
+	if ((s1->getGlobalBounds().left + s1->getGlobalBounds().width) < s2.x)
+	{
+		return false;
+	}
+
+	if (s1->getGlobalBounds().left > s2.x)
+	{
+		return false;
+	}
+
+	if (s1->getGlobalBounds().top + s1->getGlobalBounds().height < s2.y)
+	{
+		return false;
+	}
+
+	if (s1->getGlobalBounds().top > s2.y)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@
 #include "Framework/GameState.h"
 #include "Framework/AudioManager.h"
 #include <iostream>
+#include <SFML\Graphics\RectangleShape.hpp>
 
 class Screen
 {
@@ -15,7 +16,7 @@ public:
 	virtual void update(float dt);
 	virtual void render();
 	virtual State getGameState();
-	virtual void setGameState(State s);
+	virtual void setGameState(State s);	
 
 protected:
 	// Default variables for level class.
@@ -23,6 +24,8 @@ protected:
 	Input* input;
 	GameState* gameState;
 	AudioManager* audio;
+
+	bool checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2);
 
 private:
 	// Default functions for rendering to the screen.

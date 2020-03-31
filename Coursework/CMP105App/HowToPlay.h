@@ -29,7 +29,6 @@ private:
 
 	void initHowToPlayBg();
 	void initBackButton();
-	bool checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2);
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
