@@ -20,12 +20,7 @@ HowToPlay::~HowToPlay()
 // FUNCTIONS.
 void HowToPlay::handleInput(float dt)
 {
-	if (input->isKeyDown(sf::Keyboard::B))
-	{
-		input->setKeyUp(sf::Keyboard::B);
-
-		setGameState(State::MENU);
-	}
+	checkBackButtonCollisions();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,23 +29,7 @@ void HowToPlay::update(float dt)
 {
 	std::cout << "Menu update being called!\n";
 
-	sf::Vector2f mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
-
-	if (checkMouseCollisions(&backButton, mousePos))
-	{
-		std::cout << "Hover collision detected with the how to play button!\n";
-		backButton.setTexture(&backButtonHoverTexture);
-
-		if (checkMouseCollisions(&backButton, mousePos) && input->isMouseLDown())
-		{
-			std::cout << "Clicked on the how to play button!\n";
-			backButton.setTexture(&backButtonClickedTexture);
-		}
-	}
-	else
-	{
-		backButton.setTexture(&backButtonTexture);
-	}
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,3 +95,23 @@ void HowToPlay::initBackButton()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void HowToPlay::checkBackButtonCollisions()
+{
+	if (checkMouseCollisions(&backButton, mousePos))
+	{
+		std::cout << "Hover collision detected with the how to play button!\n";
+		backButton.setTexture(&backButtonHoverTexture);
+
+		if (checkMouseCollisions(&backButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the how to play button!\n";
+			backButton.setTexture(&backButtonClickedTexture);
+			setGameState(State::MENU);
+		}
+	}
+	else
+	{
+		backButton.setTexture(&backButtonTexture);
+	}
+}

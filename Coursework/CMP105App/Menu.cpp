@@ -24,80 +24,16 @@ Menu::~Menu()
 // FUNCTIONS.
 void Menu::handleInput(float dt)
 {
-	if (input->isKeyDown(sf::Keyboard::N))
-	{
-		input->setKeyUp(sf::Keyboard::N);
-
-		audio->stopAllMusic();
-
-		setGameState(State::LEVEL);
-	}
-
-	if (input->isKeyDown(sf::Keyboard::H))
-	{
-		input->setKeyUp(sf::Keyboard::H);
-
-		setGameState(State::HOW_TO_PLAY);
-	}
+	checkHowToPlayButtonCollisions();
+	checkNewGameButtonCollisions();
+	checkQuitButtonCollisions();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Menu::update(float dt)
 {
-	std::cout << "Menu update being called!\n";
-
-	sf::Vector2f mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
-
-	if (checkMouseCollisions(&howToPlayButton, mousePos))
-	{
-		std::cout << "Hover collision detected with the how to play button!\n";	
-		howToPlayButton.setTexture(&howToPlayButtonHoverTexture);
-
-		if (checkMouseCollisions(&howToPlayButton, mousePos) && input->isMouseLDown())
-		{
-			std::cout << "Clicked on the how to play button!\n";
-			howToPlayButton.setTexture(&howToPlayButtonClickedTexture);
-		}
-	}
-	else
-	{
-		howToPlayButton.setTexture(&howToPlayButtonTexture);
-	}
-
-	if (checkMouseCollisions(&newGameButton, mousePos))
-	{
-		std::cout << "Collision detected with the new game button!\n";
-
-		newGameButton.setTexture(&newGameButtonHoverTexture);
-
-		if (checkMouseCollisions(&newGameButton, mousePos) && input->isMouseLDown())
-		{
-			std::cout << "Clicked on the new game button!\n";
-			newGameButton.setTexture(&newGameButtonClickedTexture);
-		}
-	}
-	else
-	{
-		newGameButton.setTexture(&newGameButtonTexture);
-	}
-
-	if (checkMouseCollisions(&quitButton, mousePos))
-	{
-		std::cout << "Collision detected with the quit button!\n";
-
-		quitButton.setTexture(&quitButtonHoverTexture);
-
-		if (checkMouseCollisions(&quitButton, mousePos) && input->isMouseLDown())
-		{
-			std::cout << "Clicked on the quit button!\n";
-			quitButton.setTexture(&quitButtonClickedTexture);
-		}
-	}
-	else
-	{
-		quitButton.setTexture(&quitButtonTexture);
-	}
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,11 +175,77 @@ void Menu::initQuitButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void Menu::initTransFadeRect()
 {
 	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::checkHowToPlayButtonCollisions()
+{
+	if (checkMouseCollisions(&howToPlayButton, mousePos))
+	{
+		std::cout << "Hover collision detected with the how to play button!\n";
+		howToPlayButton.setTexture(&howToPlayButtonHoverTexture);
+
+		if (checkMouseCollisions(&howToPlayButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the how to play button!\n";
+			howToPlayButton.setTexture(&howToPlayButtonClickedTexture);
+			setGameState(State::HOW_TO_PLAY);
+		}
+	}
+	else
+	{
+		howToPlayButton.setTexture(&howToPlayButtonTexture);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::checkNewGameButtonCollisions()
+{
+	if (checkMouseCollisions(&newGameButton, mousePos))
+	{
+		std::cout << "Collision detected with the new game button!\n";
+
+		newGameButton.setTexture(&newGameButtonHoverTexture);
+
+		if (checkMouseCollisions(&newGameButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the new game button!\n";
+			newGameButton.setTexture(&newGameButtonClickedTexture);
+			audio->stopAllMusic();
+			setGameState(State::LEVEL);
+		}
+	}
+	else
+	{
+		newGameButton.setTexture(&newGameButtonTexture);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::checkQuitButtonCollisions()
+{
+	if (checkMouseCollisions(&quitButton, mousePos))
+	{
+		std::cout << "Collision detected with the quit button!\n";
+
+		quitButton.setTexture(&quitButtonHoverTexture);
+
+		if (checkMouseCollisions(&quitButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the quit button!\n";
+			quitButton.setTexture(&quitButtonClickedTexture);
+			audio->stopAllMusic();
+			setGameState(State::CREDITS);
+		}
+	}
+	else
+	{
+		quitButton.setTexture(&quitButtonTexture);
+	}
 }

@@ -19,6 +19,8 @@ public:
 	void render() override;
 
 private:
+	sf::Vector2f mousePos;
+
 	sf::RectangleShape howToPlayBg;
 	sf::Texture howToPlayBgTexture;
 
@@ -29,6 +31,7 @@ private:
 
 	void initHowToPlayBg();
 	void initBackButton();
+	void checkBackButtonCollisions();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
