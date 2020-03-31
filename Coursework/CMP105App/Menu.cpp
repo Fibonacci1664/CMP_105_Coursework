@@ -9,6 +9,7 @@ Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) 
 	fadedIn = false;
 	initMenuBackground();
 	initHowToPlayButton();
+	initOptionsButton();
 	initNewGameButton();
 	initQuitButton();
 	initTransFadeRect();
@@ -25,6 +26,7 @@ Menu::~Menu()
 void Menu::handleInput(float dt)
 {
 	checkHowToPlayButtonCollisions();
+	checkOptionsButtonCollisions();
 	checkNewGameButtonCollisions();
 	checkQuitButtonCollisions();
 }
@@ -53,6 +55,7 @@ void Menu::render()
 			transFade.setFillColor(sf::Color(0, 0, 0, decr));
 			window->draw(menuBg);
 			window->draw(howToPlayButton);
+			window->draw(optionsButton);
 			window->draw(newGameButton);
 			window->draw(quitButton);
 			window->draw(transFade);
@@ -68,6 +71,7 @@ void Menu::render()
 	// Draw all things one last time to ensure they are on top and NOT the trans layer.
 	window->draw(menuBg);
 	window->draw(howToPlayButton);
+	window->draw(optionsButton);
 	window->draw(newGameButton);
 	window->draw(quitButton);
 
@@ -121,7 +125,7 @@ void Menu::initHowToPlayButton()
 	}
 
 	howToPlayButton.setSize(sf::Vector2f(175.2, 31.8f));
-	howToPlayButton.setPosition(sf::Vector2f(75, 170));
+	howToPlayButton.setPosition(sf::Vector2f(65, 170));
 	howToPlayButton.setTexture(&howToPlayButtonTexture);
 }
 
@@ -145,8 +149,32 @@ void Menu::initNewGameButton()
 	}
 
 	newGameButton.setSize(sf::Vector2f(144, 31.8f));
-	newGameButton.setPosition(sf::Vector2f(95, 210));
+	newGameButton.setPosition(sf::Vector2f(80, 210));
 	newGameButton.setTexture(&newGameButtonTexture);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::initOptionsButton()
+{
+	if (!optinosButtonTexture.loadFromFile("gfx/buttons/normal/options_button.png"))
+	{
+		std::cerr << "Sorry could not load options button image!\n";
+	}
+
+	if (!optionsButtonHoverTexture.loadFromFile("gfx/buttons/hover/o_hover.png"))
+	{
+		std::cerr << "Sorry could not load options button hover image!\n";
+	}
+
+	if (!optionsButtonClickedTexture.loadFromFile("gfx/buttons/clicked/o_clicked.png"))
+	{
+		std::cerr << "Sorry could not load options button clicked image!\n";
+	}
+
+	optionsButton.setSize(sf::Vector2f(112.8f, 31.8f));
+	optionsButton.setPosition(sf::Vector2f(95, 250));
+	optionsButton.setTexture(&optinosButtonTexture);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +197,7 @@ void Menu::initQuitButton()
 	}
 
 	quitButton.setSize(sf::Vector2f(78.6f, 31.8f));
-	quitButton.setPosition(sf::Vector2f(130, 250));
+	quitButton.setPosition(sf::Vector2f(110, 290));
 	quitButton.setTexture(&quitButtonTexture);
 }
 
@@ -199,6 +227,28 @@ void Menu::checkHowToPlayButtonCollisions()
 	else
 	{
 		howToPlayButton.setTexture(&howToPlayButtonTexture);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::checkOptionsButtonCollisions()
+{
+	if (checkMouseCollisions(&optionsButton, mousePos))
+	{
+		std::cout << "Hover collision detected with the how to play button!\n";
+		optionsButton.setTexture(&optionsButtonHoverTexture);
+
+		if (checkMouseCollisions(&optionsButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the how to play button!\n";
+			optionsButton.setTexture(&optionsButtonClickedTexture);
+			setGameState(State::OPTIONS);
+		}
+	}
+	else
+	{
+		optionsButton.setTexture(&optinosButtonTexture);
 	}
 }
 
@@ -249,3 +299,5 @@ void Menu::checkQuitButtonCollisions()
 		quitButton.setTexture(&quitButtonTexture);
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

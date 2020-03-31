@@ -1,16 +1,16 @@
 // INCLUDES.
-#include "HowToPlay.h"
+#include "Options.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // CONSTRUCTOR/S & DESTRUCTOR.
-HowToPlay::HowToPlay(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
+Options::Options(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
-	initHowToPlayBg();
+	initOptionsBg();
 	initBackButton();
 }
 
-HowToPlay::~HowToPlay()
+Options::~Options()
 {
 
 }
@@ -18,60 +18,60 @@ HowToPlay::~HowToPlay()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // FUNCTIONS.
-void HowToPlay::handleInput(float dt)
+void Options::handleInput(float dt)
 {
 	checkBackButtonCollisions();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::update(float dt)
+void Options::update(float dt)
 {
 	std::cout << "Menu update being called!\n";
 
-	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());	
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::render()
+void Options::render()
 {
 	beginDraw();
-	window->draw(howToPlayBg);
+	window->draw(optionsBg);
 	window->draw(backButton);
 	endDraw();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::beginDraw()
+void Options::beginDraw()
 {
 	//window->clear(sf::Color(0, 255, 0));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::endDraw()
+void Options::endDraw()
 {
 	window->display();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::initHowToPlayBg()
+void Options::initOptionsBg()
 {
-	if (!howToPlayBgTexture.loadFromFile("gfx/screens/how_to_play_2.png"))
+	if (!optionsBgTexture.loadFromFile("gfx/screens/options.png"))
 	{
 		std::cerr << "Sorry could not how to play background image!\n";
 	}
 
-	howToPlayBg.setSize(sf::Vector2f(960, 540));
-	howToPlayBg.setTexture(&howToPlayBgTexture);
+	optionsBg.setSize(sf::Vector2f(960, 540));
+	optionsBg.setTexture(&optionsBgTexture);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::initBackButton()
+void Options::initBackButton()
 {
 	if (!backButtonTexture.loadFromFile("gfx/buttons/normal/back_button.png"))
 	{
@@ -96,7 +96,7 @@ void HowToPlay::initBackButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HowToPlay::checkBackButtonCollisions()
+void Options::checkBackButtonCollisions()
 {
 	if (checkMouseCollisions(&backButton, mousePos))
 	{

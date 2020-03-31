@@ -75,6 +75,9 @@
     <ClCompile Include="HowToPlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt">
@@ -137,6 +140,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HowToPlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

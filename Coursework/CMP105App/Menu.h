@@ -36,6 +36,11 @@ private:
 	sf::Texture newGameButtonHoverTexture;
 	sf::Texture newGameButtonClickedTexture;
 
+	sf::RectangleShape optionsButton;
+	sf::Texture optinosButtonTexture;
+	sf::Texture optionsButtonHoverTexture;
+	sf::Texture optionsButtonClickedTexture;
+
 	sf::RectangleShape quitButton;
 	sf::Texture quitButtonTexture;
 	sf::Texture quitButtonHoverTexture;
@@ -44,9 +49,11 @@ private:
 	void initMenuBackground();
 	void initHowToPlayButton();
 	void initNewGameButton();
+	void initOptionsButton();
 	void initQuitButton();
 	void initTransFadeRect();
 	void checkHowToPlayButtonCollisions();
+	void checkOptionsButtonCollisions();
 	void checkNewGameButtonCollisions();
 	void checkQuitButtonCollisions();
 

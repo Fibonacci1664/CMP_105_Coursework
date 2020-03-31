@@ -14,7 +14,6 @@ Screen::Screen(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* a
 	//setGameState(State::LEVEL);				// THIS WORKS FINE FROM SCREEN.
 
 	// initialise game objects
-	//audio->addMusic("sfx/cantina.ogg", "cantina");
 }
 
 Screen::~Screen()
