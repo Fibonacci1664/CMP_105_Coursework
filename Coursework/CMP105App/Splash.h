@@ -26,11 +26,14 @@ private:
 	float splashDelay;
 	float waitForLogo;
 	bool fadedIn;
+	bool fadedOut;
+	bool switchedStates;
 
 	void initSplashBackground();
 	void initTransFadeRect();
 	void initAudio();
-
+	void fadeIn();
+	void fadeOut();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

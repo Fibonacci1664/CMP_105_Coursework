@@ -19,6 +19,9 @@ public:
 	void render() override;
 
 private:
+	sf::RectangleShape transFade;
+	bool fadedIn;
+
 	sf::RectangleShape menuBg;
 	sf::Texture menuBgTexture;
 
@@ -42,6 +45,7 @@ private:
 	void initNewGameButton();
 	void initQuitButton();
 	bool checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2);
+	void initTransFadeRect();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

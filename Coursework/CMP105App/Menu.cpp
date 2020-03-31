@@ -1,12 +1,17 @@
+// INCLUDES.
 #include "Menu.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// CONSTRUCTOR/S & DESTRUCTOR.
 Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	fadedIn = false;
 	initMenuBackground();
 	initHowToPlayButton();
 	initNewGameButton();
 	initQuitButton();
+	initTransFadeRect();
 }
 
 Menu::~Menu()
@@ -14,6 +19,9 @@ Menu::~Menu()
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// FUNCTIONS.
 void Menu::handleInput(float dt)
 {
 	if (input->isKeyDown(sf::Keyboard::N))
@@ -24,7 +32,16 @@ void Menu::handleInput(float dt)
 
 		setGameState(State::LEVEL);
 	}
+
+	if (input->isKeyDown(sf::Keyboard::H))
+	{
+		input->setKeyUp(sf::Keyboard::H);
+
+		setGameState(State::HOW_TO_PLAY);
+	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Menu::update(float dt)
 {
@@ -83,25 +100,63 @@ void Menu::update(float dt)
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Menu::render()
 {
 	beginDraw();
+	/*window->draw(menuBg);
+	window->draw(howToPlayButton);
+	window->draw(newGameButton);
+	window->draw(quitButton);*/
+
+	if (!fadedIn)
+	{
+		float decr = 255;
+
+		while (decr > 0)
+		{
+			decr -= 0.05;
+
+			transFade.setFillColor(sf::Color(0, 0, 0, decr));
+			window->draw(menuBg);
+			window->draw(howToPlayButton);
+			window->draw(newGameButton);
+			window->draw(quitButton);
+			window->draw(transFade);
+			endDraw();
+
+			if (decr < 1)
+			{
+				fadedIn = true;
+			}
+		}
+	}
+
+	// Draw all things one last time to ensure they are on top and NOT the trans layer.
 	window->draw(menuBg);
 	window->draw(howToPlayButton);
 	window->draw(newGameButton);
 	window->draw(quitButton);
+
 	endDraw();
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Menu::beginDraw()
 {
-	window->clear(sf::Color(0, 255, 0));
+	window->clear(sf::Color(0, 0, 0));
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Menu::endDraw()
 {
 	window->display();
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Menu::initMenuBackground()
 {
@@ -113,6 +168,8 @@ void Menu::initMenuBackground()
 	menuBg.setSize(sf::Vector2f(960, 540));
 	menuBg.setTexture(&menuBgTexture);
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void Menu::initHowToPlayButton()
 {
@@ -136,6 +193,8 @@ void Menu::initHowToPlayButton()
 	howToPlayButton.setTexture(&howToPlayButtonTexture);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Menu::initNewGameButton()
 {
 	if (!newGameButtonTexture.loadFromFile("gfx/buttons/normal/new_game_button.png"))
@@ -158,6 +217,8 @@ void Menu::initNewGameButton()
 	newGameButton.setTexture(&newGameButtonTexture);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Menu::initQuitButton()
 {
 	if (!quitButtonTexture.loadFromFile("gfx/buttons/normal/quit_button.png"))
@@ -176,9 +237,11 @@ void Menu::initQuitButton()
 	}
 
 	quitButton.setSize(sf::Vector2f(78.6f, 31.8f));
-	quitButton.setPosition(sf::Vector2f(125, 250));
+	quitButton.setPosition(sf::Vector2f(130, 250));
 	quitButton.setTexture(&quitButtonTexture);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Check for bounding box collision with a point/vector2 rather than two boxes.
 bool Menu::checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2)
@@ -204,4 +267,11 @@ bool Menu::checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2)
 	}
 
 	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::initTransFadeRect()
+{
+	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 }
