@@ -5,6 +5,8 @@
 #include<iostream>
 #include "Framework/AudioManager.h"
 
+static bool sfxMuted = false;
+
 class Player : public GameObject
 {
 public:
@@ -18,6 +20,8 @@ public:
 	bool getMovingLeft();
 	void setIsFalling(bool l_isFalling);
 	void setIsOnGround(bool l_isOnGround);
+	static void setSFXMuteAudio(bool l_muted);
+
 
 protected:
 	Animation attack;

@@ -82,9 +82,12 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
-	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+	if (!musicMuted)
 	{
-		audio->playMusicbyName("cantina");
+		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+		{
+			audio->playMusicbyName("cantina");
+		}
 	}
 
 	player.update(dt);
@@ -171,7 +174,14 @@ void Level::checkTileCollisions()
 
 void Level::initAudio()
 {
-	audio->addMusic("sfx/Cantina.ogg", "cantina");
+	audio->addMusic("sfx/Cantina.ogg", "cantina");	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::setMusicMuteAudio(bool l_muted)
+{
+	musicMuted = l_muted;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

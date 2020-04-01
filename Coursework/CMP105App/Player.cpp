@@ -349,7 +349,10 @@ void Player::checkJumping(float dt)
 		jump.setFlipped(false);
 	}
 
-	audioMan.playSoundbyName("jump");
+	if (!sfxMuted)
+	{
+		audioMan.playSoundbyName("jump");
+	}
 
 	isJumping = true;
 	onGround = false;
@@ -376,7 +379,11 @@ void Player::checkAttacking(float dt)
 
 	if (attackDelay > 1.0f)
 	{
-		audioMan.playSoundbyName("up");
+		if (!sfxMuted)
+		{
+			audioMan.playSoundbyName("up");
+		}
+
 		attackDelay = 0;
 	}
 }
@@ -509,6 +516,13 @@ void Player::setIsFalling(bool l_isFalling)
 void Player::setIsOnGround(bool l_isOnGround)
 {
 	onGround = l_isOnGround;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::setSFXMuteAudio(bool l_muted)
+{
+	sfxMuted = l_muted;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

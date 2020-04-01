@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "TileMapManager.h"
 
+static bool musicMuted = false;
 
 class Level : public Screen
 {
@@ -20,6 +21,7 @@ public:
 	void handleInput(float dt) override;
 	void update(float dt) override;
 	void render() override;
+	static void setMusicMuteAudio(bool l_muted);
 
 private:
 	void checkTileCollisions();

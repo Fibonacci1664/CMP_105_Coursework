@@ -29,9 +29,27 @@ private:
 	sf::Texture backButtonHoverTexture;
 	sf::Texture backButtonClickedTexture;
 
+	sf::RectangleShape muteMusicCheckBox;
+	sf::RectangleShape muteSFXCheckBox;
+	sf::RectangleShape godModeCheckBox;
+
+	sf::Texture blankCheckBoxTexture;
+	sf::Texture crossedCheckBoxTexture;
+
+	bool musicChecked;
+	bool sfxChecked;
+	bool godModeChecked;
+
 	void initOptionsBg();
 	void initBackButton();
+	void initMuteMusicCheckBox();
+	void initMuteSFXCheckBox();
+	void initGodModeCheckBox();
+	void initCheckBoxTextures();
 	void checkBackButtonCollisions();
+	void checkMuteMusicBoxCollisions();
+	void checkMuteSFXBoxCollisions();
+	void checkGodModeBoxCollisions();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

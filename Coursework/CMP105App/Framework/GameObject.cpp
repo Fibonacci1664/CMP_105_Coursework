@@ -22,7 +22,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	std::cout << "GameObject object destroyed!\n";
+	//std::cout << "GameObject object destroyed!\n";
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
