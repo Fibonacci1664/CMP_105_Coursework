@@ -7,7 +7,7 @@
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
 	fadedOut = false;
-	fadedIn = false;
+	//fadedIn = false;
 
 	initAudio();
 	initTextures();
@@ -118,13 +118,9 @@ void Level::update(float dt)
 // Render level
 void Level::render()
 {
-	//// If not faded in level screen, then DO IT!
-	//if (!fadedIn)
-	//{
-	//	fadeInLevel();
-	//}
-
 	beginDraw();
+
+	window->draw(player);
 	tmm.render(window);
 	window->draw(player);
 	window->draw(colBox);
@@ -133,28 +129,38 @@ void Level::render()
 	window->draw(textBox);
 	window->draw(text);
 	endDraw();
-
-	//// After fading in just draw normally.
-	//if (!player.getIsDead() && fadedIn)
+	
+	//// If not faded in level screen, then DO IT!
+	//if (!fadedIn && player.getIsOnGround())
 	//{
-	//	beginDraw();
-	//	tmm.render(window);
-	//	window->draw(player);
-	//	window->draw(colBox);
-	//	//window->draw(OriginBox);
-	//	window->draw(playerPosBox);
-	//	window->draw(textBox);
-	//	window->draw(text);
-	//	endDraw();
+	//	fadeInLevel();
 	//}
 
-	//// If we've died, fade out level screen.
-	//if (player.getIsDead() && !fadedOut)
-	//{
-	//	audio->stopAllMusic();
-	//	fadeOutLevel();
-	//	setGameState(State::YOU_DIED);
-	//}
+	
+
+
+	/* After fading in just draw normally.
+	if (fadedIn)
+	{
+		beginDraw();
+		tmm.render(window);
+		window->draw(player);
+		window->draw(colBox);
+		window->draw(OriginBox);
+		window->draw(playerPosBox);
+		window->draw(textBox);
+		window->draw(text);
+		endDraw();
+	}*/
+
+	// If we've died, fade out level screen.
+	if (player.getIsDead() && !fadedOut)
+	{
+		audio->stopAllMusic();
+		fadeOutLevel();
+		respawnPlayer();
+		setGameState(State::YOU_DIED);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,11 +193,11 @@ void Level::initTextures()
 
 void Level::initPlayer()
 {
-	player.passAndSetCurrentSateFromScreen(gameState);
+	//player.passAndSetCurrentSateFromScreen(gameState);
 	player.setInput(input);
 	player.setWindow(window);
 	player.setSize(sf::Vector2f(58.9f, 68));				// Max size to accomodate ALL sprites.	
-	player.setPosition(100, 100);
+	player.setPosition(80, 80);
 	player.setTexture(&player_texture);
 	player.setCollisionBox(50, 20, 30, 50);
 }
@@ -279,7 +285,7 @@ void Level::fadeOutLevel()
 
 		if (incrAlpha > 20)
 		{
-			fadedOut = true;
+			//fadedOut = true;
 			break;
 		}
 	}
@@ -288,41 +294,41 @@ void Level::fadeOutLevel()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading in'.
-void Level::fadeInLevel()
-{
-	float decrAlpha = 255;
-
-	//beginDraw();
-
-	while (decrAlpha > 0)
-	{
-		// Controls the speed of fade.
-		decrAlpha -= 0.1f;
-
-		transFade.setFillColor(sf::Color(0, 0, 0, decrAlpha));
-		tmm.render(window);
-		window->draw(player);
-		window->draw(colBox);
-		//window->draw(OriginBox);
-		window->draw(playerPosBox);
-		window->draw(textBox);
-		window->draw(text);
-		window->draw(transFade);
-		endDraw();
-
-		if (decrAlpha < 150)
-		{
-			fadedIn = true;
-			break;
-		}
-	}
-}
+/*
+ * CANNOT GET THIS TO WORK DUE TO HOW TO HOW LONG THE FADE TAKES WHICH MESSES UP THE
+ * COLLISSION CHECKS AND THE PLAYER FALL THROUGHT THE ENVIRONMENT.
+ */
+//void Level::fadeInLevel()
+//{
+//	float decrAlpha = 255;
+//
+//	//beginDraw();
+//
+//	while (decrAlpha > 0)
+//	{
+//		// Controls the speed of fade.
+//		decrAlpha -= 0.3f;
+//
+//		transFade.setFillColor(sf::Color(0, 0, 0, decrAlpha));
+//		tmm.render(window);
+//		window->draw(player);
+//		window->draw(colBox);
+//		window->draw(OriginBox);
+//		window->draw(playerPosBox);
+//		window->draw(textBox);
+//		window->draw(text);
+//		window->draw(transFade);
+//		endDraw();
+//	}
+//
+//	fadedIn = true;
+//}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::respawnPlayer()
 {
-	fadedIn = false;
+	fadedOut = false;
 	player.setIsDead(false);
 	player.setPosition(100, 100);
 }

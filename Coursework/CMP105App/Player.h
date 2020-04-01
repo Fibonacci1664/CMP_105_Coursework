@@ -16,16 +16,19 @@ public:
 
 	void update(float dt) override;
 	void handleInput(float dt) override;
+
 	void collisionResponse(GameObject* collider);
 	bool getMovingRight();
 	bool getMovingLeft();
 	void setIsFalling(bool l_isFalling);
 	void setIsOnGround(bool l_isOnGround);
+	bool getIsOnGround();
 	bool getIsDead();
 	void setIsDead(bool l_isDead);
 
-	void passAndSetCurrentSateFromScreen(GameState* currGameState);
-	State getCurrentGameState();
+	// Might not need this but dont delete it yet! it could be handy for the player to be able to access gamestate.
+	/*void passAndSetCurrentSateFromScreen(GameState* currGameState);
+	State getCurrentGameState();*/
 
 	static void setSFXMuteAudio(bool l_muted);
 

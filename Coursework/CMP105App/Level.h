@@ -36,7 +36,7 @@ private:
 	void checkMusicStopped();
 	void initTransFadeRect();
 	void fadeOutLevel();
-	void fadeInLevel();
+	//void fadeInLevel();
 	void respawnPlayer();
 
 	// Default functions for rendering to the screen.
