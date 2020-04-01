@@ -6,9 +6,13 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	fadedOut = false;
+	fadedIn = false;
+
 	initAudio();
 	initTextures();
 	initTextBox();
+	initTransFadeRect();
 
 	// initialise game objects
 	initPlayer();
@@ -82,13 +86,13 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
-	if (!musicMuted)
-	{
-		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
-		{
-			audio->playMusicbyName("cantina");
-		}
-	}
+	checkMusicMuted();
+	checkMusicStopped();
+
+	//if (player.getIsDead() && fadedOut)
+	//{
+	//	respawnPlayer();
+	//}
 
 	player.update(dt);
 	checkTileCollisions();
@@ -114,6 +118,12 @@ void Level::update(float dt)
 // Render level
 void Level::render()
 {
+	//// If not faded in level screen, then DO IT!
+	//if (!fadedIn)
+	//{
+	//	fadeInLevel();
+	//}
+
 	beginDraw();
 	tmm.render(window);
 	window->draw(player);
@@ -123,11 +133,33 @@ void Level::render()
 	window->draw(textBox);
 	window->draw(text);
 	endDraw();
+
+	//// After fading in just draw normally.
+	//if (!player.getIsDead() && fadedIn)
+	//{
+	//	beginDraw();
+	//	tmm.render(window);
+	//	window->draw(player);
+	//	window->draw(colBox);
+	//	//window->draw(OriginBox);
+	//	window->draw(playerPosBox);
+	//	window->draw(textBox);
+	//	window->draw(text);
+	//	endDraw();
+	//}
+
+	//// If we've died, fade out level screen.
+	//if (player.getIsDead() && !fadedOut)
+	//{
+	//	audio->stopAllMusic();
+	//	fadeOutLevel();
+	//	setGameState(State::YOU_DIED);
+	//}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-// Begins rendering to the back buffer. Background colour set to light blue.
+// Begins rendering to the back buffer. Background colour set to light black.
 void Level::beginDraw()
 {
 	window->clear(sf::Color::Black);
@@ -155,10 +187,11 @@ void Level::initTextures()
 
 void Level::initPlayer()
 {
+	player.passAndSetCurrentSateFromScreen(gameState);
 	player.setInput(input);
 	player.setWindow(window);
 	player.setSize(sf::Vector2f(58.9f, 68));				// Max size to accomodate ALL sprites.	
-	player.setPosition(300, 100);
+	player.setPosition(100, 100);
 	player.setTexture(&player_texture);
 	player.setCollisionBox(50, 20, 30, 50);
 }
@@ -182,6 +215,116 @@ void Level::initAudio()
 void Level::setMusicMuteAudio(bool l_muted)
 {
 	musicMuted = l_muted;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::setMusicStopped(bool l_stopped)
+{
+	musicStopped = l_stopped;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::startMusic(sf::Music music, std::string type)
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkMusicMuted()
+{
+	if (!musicMuted)
+	{
+		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+		{
+			audio->playMusicbyName("cantina");
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkMusicStopped()
+{
+	if (musicStopped)
+	{
+		audio->stopAllMusic();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::initTransFadeRect()
+{
+	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Although named fade out, whats actually occurring is the fading in of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading out'.
+void Level::fadeOutLevel()
+{
+	float incrAlpha = 0;
+
+	while (incrAlpha < 255)
+	{
+		// Controls the speed of fade.
+		incrAlpha += 0.01f;
+
+		transFade.setFillColor(sf::Color(0, 0, 0, incrAlpha));
+		window->draw(transFade);
+		endDraw();
+
+		if (incrAlpha > 20)
+		{
+			fadedOut = true;
+			break;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading in'.
+void Level::fadeInLevel()
+{
+	float decrAlpha = 255;
+
+	//beginDraw();
+
+	while (decrAlpha > 0)
+	{
+		// Controls the speed of fade.
+		decrAlpha -= 0.1f;
+
+		transFade.setFillColor(sf::Color(0, 0, 0, decrAlpha));
+		tmm.render(window);
+		window->draw(player);
+		window->draw(colBox);
+		//window->draw(OriginBox);
+		window->draw(playerPosBox);
+		window->draw(textBox);
+		window->draw(text);
+		window->draw(transFade);
+		endDraw();
+
+		if (decrAlpha < 150)
+		{
+			fadedIn = true;
+			break;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::respawnPlayer()
+{
+	fadedIn = false;
+	player.setIsDead(false);
+	player.setPosition(100, 100);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,9 +1,10 @@
 #pragma once
 
+#include <iostream>
 #include "Framework/GameObject.h"
 #include "Framework/Animation.h"
-#include<iostream>
 #include "Framework/AudioManager.h"
+#include "Framework/GameState.h"
 
 static bool sfxMuted = false;
 
@@ -20,6 +21,12 @@ public:
 	bool getMovingLeft();
 	void setIsFalling(bool l_isFalling);
 	void setIsOnGround(bool l_isOnGround);
+	bool getIsDead();
+	void setIsDead(bool l_isDead);
+
+	void passAndSetCurrentSateFromScreen(GameState* currGameState);
+	State getCurrentGameState();
+
 	static void setSFXMuteAudio(bool l_muted);
 
 
@@ -51,7 +58,10 @@ private:
 	AudioManager audioMan;
 
 	float attackDelay;
+	float deathAnimDelay;
 
+	State currentState;
+	GameState* currentGameState;
 
 	bool movingLeft;
 	bool movingRight;
@@ -59,6 +69,7 @@ private:
 	bool isFalling;
 	bool onGround;
 	bool isAttacking;
+	bool isDead;
 
 	void addFrames();
 	void gravityFall(float dt);
@@ -68,10 +79,8 @@ private:
 	void checkRunning(float dt);
 	void checkJumping(float dt);
 	void checkAttacking(float dt);
-	//void checkGround();
 	void updateCollisionBox();
 	void checkTileCollisions(GameObject* col);
 	void initAudio();
-
 };
 

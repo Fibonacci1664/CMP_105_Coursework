@@ -1,0 +1,160 @@
+// INCLUDES.
+#include "YouDied.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// CONSTRUCTOR/S & DESTRUCTOR.
+YouDied::YouDied(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
+{
+	fadedIn = false;
+	fadedOut = false;
+	switchedStates = false;
+
+	initYouDiedRect();
+	initTransFadeRect();
+	initAudio();
+}
+
+YouDied::~YouDied()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// FUNCTIONS.
+void YouDied::handleInput(float dt)
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::update(float dt)
+{
+	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+	{
+		// Play some somber death music.
+
+		//audio->playMusicbyName("splash");
+	}
+
+	if (fadedOut)
+	{
+		setGameState(State::LEVEL);
+		switchedStates = true;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::render()
+{
+	beginDraw();
+
+	fadeIn();
+
+	// If we've faded in, it's time to fade out to black.
+	if (fadedIn && !switchedStates)
+	{
+		fadeOut();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::beginDraw()
+{
+	//window->clear(sf::Color(255, 253, 208));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::endDraw()
+{
+	window->display();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::initYouDiedRect()
+{
+	if (!youDiedTexture.loadFromFile("gfx/text/you_died.png"))
+	{
+		std::cerr << "Sorry could not you died text image!\n";
+	}
+
+	youDiedRect.setSize(sf::Vector2f(323, 78));
+	youDiedRect.setOrigin(youDiedRect.getSize().x / 2.0f, youDiedRect.getSize().y / 2.0f);
+	youDiedRect.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
+	youDiedRect.setTexture(&youDiedTexture);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::initTransFadeRect()
+{
+	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void YouDied::initAudio()
+{
+	audio->addMusic("sfx/splash/splash_intro.ogg", "splash");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the 'you died' text 'fading in'.
+void YouDied::fadeIn()
+{
+	// After 2 secs fade in black 'you died' screen
+	if (!fadedIn)
+	{
+		float decrAlpha = 255;
+
+		while (decrAlpha > 0)
+		{
+			// Controls the speed of fade.
+			decrAlpha -= 0.05f;
+
+			transFade.setFillColor(sf::Color(0, 0, 0, decrAlpha));
+			window->draw(youDiedRect);
+			window->draw(transFade);		
+			endDraw();
+
+			if (decrAlpha < 1)
+			{
+				fadedIn = true;
+			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Although named fade out, whats actually occurring is the fading in of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the 'you died' text 'fading out'.
+void YouDied::fadeOut()
+{
+	float incrAlpha = 0;
+
+	while (incrAlpha < 255)
+	{
+		// Controls the speed of fade.
+		incrAlpha += 0.05f;
+
+		transFade.setFillColor(sf::Color(0, 0, 0, incrAlpha));
+		window->draw(youDiedRect);
+		window->draw(transFade);
+		endDraw();
+
+		if (incrAlpha > 253)
+		{
+			fadedOut = true;
+			break;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

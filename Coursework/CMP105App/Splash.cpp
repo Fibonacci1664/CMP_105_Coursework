@@ -70,7 +70,7 @@ void Splash::render()
 
 void Splash::beginDraw()
 {
-	//window->clear(sf::Color(255, 253, 208));
+	window->clear(sf::Color(255, 253, 208));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,6 +111,7 @@ void Splash::initAudio()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Although named fade in, whats actually occurring is the fading out of an opaque cream coloured rectangle shape, the same size as the window, giving the appearance of the logo 'fading in'.
 void Splash::fadeIn()
 {
 	// After 2 secs fade in logo splash screen
@@ -139,6 +140,7 @@ void Splash::fadeIn()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Although named fade out, whats actually occurring is the fading in of an opaque cream coloured rectangle shape, the same size as the window, giving the appearance of the logo 'fading out'.
 void Splash::fadeOut()
 {
 	float incrAlpha = 0;

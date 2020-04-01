@@ -13,6 +13,7 @@
 
  // INCLUDES.
 #include "Player.h"
+#include "Level.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,12 +23,14 @@ Player::Player()
 	initAudio();
 
 	attackDelay = 0;
+	deathAnimDelay = 0;
 	movingLeft = false;
 	movingRight = true;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
 	isJumping = false;
 	isFalling = true;
 	onGround = false;
 	isAttacking = false;
+	isDead = false;
 	setVelocity(sf::Vector2f(100, -350));
 	addFrames();
 	setTextureRect(idle.getCurrentFrame());
@@ -147,6 +150,8 @@ void Player::handleInput(float dt)
 
 	if (input->isKeyDown(sf::Keyboard::K))
 	{
+		deathAnimDelay += dt;
+
 		if (movingLeft)
 		{
 			death.setFlipped(true);
@@ -159,6 +164,13 @@ void Player::handleInput(float dt)
 		death.setPlaying(true);
 		death.animate(dt);
 		setTextureRect(death.getCurrentFrame());
+
+		if (deathAnimDelay > 3)
+		{
+			//Level::setMusicStopped(true);
+			isDead = true;
+			//currentGameState->setCurrentState(State::YOU_DIED);
+		}
 	}
 }
 
@@ -526,3 +538,32 @@ void Player::setSFXMuteAudio(bool l_muted)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// The state here has been passed by pointer all the way from Screen, through Level and finally to Player.
+void Player::passAndSetCurrentSateFromScreen(GameState* currGameState)
+{
+	// Sets state so player now knows about what state the game is in.
+	currentState = currGameState->getCurrentState();
+	currentGameState = currGameState;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+State Player::getCurrentGameState()
+{
+	return currentState;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Player::getIsDead()
+{
+	return isDead;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::setIsDead(bool l_isDead)
+{
+	isDead = l_isDead;
+}

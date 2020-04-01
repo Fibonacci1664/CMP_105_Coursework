@@ -11,6 +11,7 @@
 #include "TileMapManager.h"
 
 static bool musicMuted = false;
+static bool musicStopped = false;
 
 class Level : public Screen
 {
@@ -22,6 +23,8 @@ public:
 	void update(float dt) override;
 	void render() override;
 	static void setMusicMuteAudio(bool l_muted);
+	static void setMusicStopped(bool l_stopped);
+	static void startMusic(sf::Music music, std::string type);
 
 private:
 	void checkTileCollisions();
@@ -29,11 +32,18 @@ private:
 	void initTextures();
 	void initTextBox();
 	void initAudio();
+	void checkMusicMuted();
+	void checkMusicStopped();
+	void initTransFadeRect();
+	void fadeOutLevel();
+	void fadeInLevel();
+	void respawnPlayer();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
 
+	sf::RectangleShape transFade;
 
 	TileMapManager tmm;
 	sf::Texture player_texture;
@@ -44,4 +54,7 @@ private:
 	sf::RectangleShape textBox;
 	sf::Text text;
 	sf::Font font;
+
+	bool fadedOut;
+	bool fadedIn;
 };
