@@ -7,6 +7,7 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedIn = false;
 	howToPlayClicked = false;
 	optionsClicked = false;
@@ -57,7 +58,7 @@ void Menu::render()
 
 		while (decr > 0)
 		{
-			decr -= 0.05;
+			decr -= 0.05f;
 
 			transFade.setFillColor(sf::Color(0, 0, 0, decr));
 			window->draw(menuBg);

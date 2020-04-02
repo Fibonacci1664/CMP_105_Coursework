@@ -19,6 +19,12 @@ public:
 	void render() override;
 
 private:
+	sf::Vector2f mousePos;
+	bool quitClicked;
+	bool mainMenuClicked;
+	bool continueClicked;
+	bool pressedLetterP;
+
 	sf::RectangleShape pausedTextBox;
 	sf::Texture pausedTexture;
 
@@ -29,6 +35,11 @@ private:
 	sf::Texture mainMenuButtonTexture;
 	sf::Texture mainMenuButtonHoverTexture;
 	sf::Texture mainMenuButtonClickedTexture;
+
+	sf::RectangleShape continueButton;
+	sf::Texture continueButtonTexture;
+	sf::Texture continueButtonHoverTexture;
+	sf::Texture continueButtonClickedTexture;
 
 	sf::RectangleShape quitButton;
 	sf::Texture quitButtonTexture;
@@ -41,8 +52,14 @@ private:
 	void initPauseText();
 	void initScroll();
 	void initMainMenuButton();
+	void initContinueButton();
 	void initQuitButton();
 	void initTransLayer();
+	void checkMainMenuButtonCollisions();
+	void checkContinueCollisions();
+	void checkQuitButtonCollisions();
+
+
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

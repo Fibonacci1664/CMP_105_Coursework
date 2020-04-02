@@ -6,9 +6,16 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Pause::Pause(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+	quitClicked = false;
+	mainMenuClicked = false;
+	continueClicked = false;
+	pressedLetterP = false;
 	initAudio();
 	initPauseText();
 	initScroll();
+	initMainMenuButton();
+	initContinueButton();
 	initQuitButton();
 	initTransLayer();
 }
@@ -31,13 +38,26 @@ void Pause::handleInput(float dt)
 
 		setGameState(State::LEVEL);
 	}
+
+	if (pressedLetterP)
+	{
+		input->setKeyDown(sf::Keyboard::P);
+		pressedLetterP = false;
+	}
+	else
+	{
+		input->setKeyUp(sf::Keyboard::P);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Pause::update(float dt)
 {
-	
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+	checkMainMenuButtonCollisions();
+	checkContinueCollisions();
+	checkQuitButtonCollisions();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +68,8 @@ void Pause::render()
 	window->draw(transLayer);
 	window->draw(pausedTextBox);
 	window->draw(scrollBox);
+	window->draw(mainMenuButton);
+	window->draw(continueButton);
 	window->draw(quitButton);
 	endDraw();
 }
@@ -101,6 +123,54 @@ void Pause::initScroll()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Pause::initMainMenuButton()
+{
+	if (!mainMenuButtonTexture.loadFromFile("gfx/buttons/normal/main_menu_button.png"))
+	{
+		std::cerr << "Sorry could not load main menu button image!\n";
+	}
+
+	if (!mainMenuButtonHoverTexture.loadFromFile("gfx/buttons/hover/mm_hover.png"))
+	{
+		std::cerr << "Sorry could not load main menu button hover image!\n";
+	}
+
+	if (!mainMenuButtonClickedTexture.loadFromFile("gfx/buttons/clicked/mm_clicked.png"))
+	{
+		std::cerr << "Sorry could not load main menu button clicked image!\n";
+	}
+
+	mainMenuButton.setSize(sf::Vector2f(141.0f, 31.8f));
+	mainMenuButton.setOrigin(sf::Vector2f(mainMenuButton.getSize().x / 2.0f, mainMenuButton.getSize().y / 2.0f));
+	mainMenuButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, 275));
+	mainMenuButton.setTexture(&mainMenuButtonTexture);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Pause::initContinueButton()
+{
+	if (!continueButtonTexture.loadFromFile("gfx/buttons/normal/continue_button.png"))
+	{
+		std::cerr << "Sorry could not load continue button image!\n";
+	}
+
+	if (!continueButtonHoverTexture.loadFromFile("gfx/buttons/hover/c_hover.png"))
+	{
+		std::cerr << "Sorry could not load continue button hover image!\n";
+	}
+
+	if (!continueButtonClickedTexture.loadFromFile("gfx/buttons/clicked/c_clicked.png"))
+	{
+		std::cerr << "Sorry could not load continue button clicked image!\n";
+	}
+
+	continueButton.setSize(sf::Vector2f(144, 31.8f));
+	continueButton.setOrigin(sf::Vector2f(continueButton.getSize().x / 2.0f, continueButton.getSize().y / 2.0f));
+	continueButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, 312));
+	continueButton.setTexture(&continueButtonTexture);
+}
+
 void Pause::initQuitButton()
 {
 	if (!quitButtonTexture.loadFromFile("gfx/buttons/normal/quit_button.png"))
@@ -120,7 +190,7 @@ void Pause::initQuitButton()
 
 	quitButton.setSize(sf::Vector2f(78.6f, 31.8f));
 	quitButton.setOrigin(sf::Vector2f(quitButton.getSize().x / 2.0f, quitButton.getSize().y / 2.0f));
-	quitButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, 200));
+	quitButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, 350));
 	quitButton.setTexture(&quitButtonTexture);
 }
 
@@ -130,6 +200,96 @@ void Pause::initTransLayer()
 {
 	transLayer.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 	transLayer.setFillColor(sf::Color(150, 150, 150, 2.5f));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Pause::checkMainMenuButtonCollisions()
+{
+	if (checkMouseCollisions(&mainMenuButton, mousePos))
+	{
+		std::cout << "Collision detected with the main menu button!\n";
+
+		mainMenuButton.setTexture(&mainMenuButtonHoverTexture);
+
+		if (checkMouseCollisions(&mainMenuButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the main menu button!\n";
+			mainMenuButton.setTexture(&mainMenuButtonClickedTexture);
+			mainMenuClicked = true;
+		}
+	}
+	else
+	{
+		mainMenuButton.setTexture(&mainMenuButtonTexture);
+	}
+
+	if (mainMenuClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		mainMenuClicked = false;
+		setGameState(State::MENU);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Pause::checkContinueCollisions()
+{
+	if (checkMouseCollisions(&continueButton, mousePos))
+	{
+		std::cout << "Collision detected with the continue button!\n";
+
+		continueButton.setTexture(&continueButtonHoverTexture);
+
+		if (checkMouseCollisions(&continueButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the continue button!\n";
+			continueButton.setTexture(&continueButtonClickedTexture);
+			continueClicked = true;
+		}
+	}
+	else
+	{
+		continueButton.setTexture(&continueButtonTexture);
+	}
+
+	if (continueClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		continueClicked = false;
+		pressedLetterP = true;	
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Pause::checkQuitButtonCollisions()
+{
+	if (checkMouseCollisions(&quitButton, mousePos))
+	{
+		std::cout << "Collision detected with the quit button!\n";
+
+		quitButton.setTexture(&quitButtonHoverTexture);
+
+		if (checkMouseCollisions(&quitButton, mousePos) && input->isMouseLDown())
+		{
+			std::cout << "Clicked on the quit button!\n";
+			quitButton.setTexture(&quitButtonClickedTexture);
+			quitClicked = true;
+		}
+	}
+	else
+	{
+		quitButton.setTexture(&quitButtonTexture);
+	}
+
+	if (quitClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		quitClicked = false;
+		setGameState(State::CREDITS);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
