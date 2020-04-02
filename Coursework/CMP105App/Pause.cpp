@@ -92,7 +92,7 @@ void Pause::endDraw()
 
 void Pause::initAudio()
 {
-	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
+	//audio->addSound("sfx/pause/unroll_scroll_2.ogg", "scroll");
 }
 
 void Pause::initPauseText()
@@ -226,7 +226,7 @@ void Pause::checkMainMenuButtonCollisions()
 
 	if (mainMenuClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("scroll");
 		mainMenuClicked = false;
 		setGameState(State::MENU);
 	}
@@ -256,7 +256,7 @@ void Pause::checkContinueCollisions()
 
 	if (continueClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("scroll");
 		continueClicked = false;
 		pressedLetterP = true;	
 	}
@@ -286,7 +286,7 @@ void Pause::checkQuitButtonCollisions()
 
 	if (quitClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("scroll");
 		quitClicked = false;
 		setGameState(State::CREDITS);
 	}

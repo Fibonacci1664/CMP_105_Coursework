@@ -25,12 +25,13 @@ Player::Player()
 	attackDelay = 0;
 	deathAnimDelay = 0;
 	movingLeft = false;
-	movingRight = true;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
+	movingRight = false;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
 	isJumping = false;
 	isFalling = true;
 	onGround = false;
 	isAttacking = false;
 	isDead = false;
+	respawned = false;
 	setVelocity(sf::Vector2f(100, -350));
 	addFrames();
 	setTextureRect(idle.getCurrentFrame());
@@ -54,6 +55,12 @@ void Player::handleInput(float dt)
 {
 	attackDelay += dt;
 	setAllAnimsFalse();
+
+	// If we've respawned we need to make sure we respawn facing the correct direction, then reset all values to there starting values.
+	if (respawned)
+	{
+		resetPlayerValues();	
+	}
 
 	// If were WALKING RIGHT.
 	if (input->isKeyDown(sf::Keyboard::D) && !input->isKeyDown(sf::Keyboard::A))
@@ -166,7 +173,7 @@ void Player::update(float dt)
 	if (isFalling || isJumping)
 	{
 		gravityFall(dt);
-	}
+	}	
 
 	//checkGround();
 	updateCollisionBox();
@@ -187,6 +194,20 @@ void Player::gravityFall(float dt)
 	setPosition(getPosition() + displacement);
 
 	isFalling = true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::resetPlayerValues()
+{
+	movingLeft = false;
+	movingRight = false;
+	isJumping = false;
+	isFalling = true;
+	onGround = false;
+	isAttacking = false;
+	isDead = false;
+	respawned = false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -571,4 +592,9 @@ bool Player::getIsDead()
 void Player::setIsDead(bool l_isDead)
 {
 	isDead = l_isDead;
+}
+
+void Player::setRespawned(bool l_respawned)
+{
+	respawned = l_respawned;
 }

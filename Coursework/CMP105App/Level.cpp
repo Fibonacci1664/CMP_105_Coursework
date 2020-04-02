@@ -153,7 +153,7 @@ void Level::render()
 		endDraw();
 	}*/
 
-	// If we've died, fade out level screen.
+	// If we've died, fade out level screen. NOT ideal having this in render.
 	if (player.getIsDead() && !fadedOut)
 	{
 		audio->stopAllMusic();
@@ -297,7 +297,7 @@ void Level::fadeOutLevel()
 // Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading in'.
 /*
  * CANNOT GET THIS TO WORK DUE TO HOW TO HOW LONG THE FADE TAKES WHICH MESSES UP THE
- * COLLISSION CHECKS AND THE PLAYER FALL THROUGHT THE ENVIRONMENT.
+ * COLLISSION CHECKS AND THE PLAYER FALLS THROUGHT THE ENVIRONMENT. NEED A FIXED TIME STEP.
  */
 //void Level::fadeInLevel()
 //{
@@ -330,6 +330,7 @@ void Level::fadeOutLevel()
 void Level::respawnPlayer()
 {
 	fadedOut = false;
+	player.setRespawned(true);
 	player.setIsDead(false);
 	player.setPosition(100, 100);
 }

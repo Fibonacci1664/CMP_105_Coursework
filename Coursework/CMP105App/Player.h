@@ -25,6 +25,7 @@ public:
 	bool getIsOnGround();
 	bool getIsDead();
 	void setIsDead(bool l_isDead);
+	void setRespawned(bool l_respawned);
 
 	// Might not need this but dont delete it yet! it could be handy for the player to be able to access gamestate.
 	/*void passAndSetCurrentSateFromScreen(GameState* currGameState);
@@ -73,7 +74,9 @@ private:
 	bool onGround;
 	bool isAttacking;
 	bool isDead;
+	bool respawned;
 
+	void resetPlayerValues();
 	void addFrames();
 	void gravityFall(float dt);
 	void setAllAnimsFalse();

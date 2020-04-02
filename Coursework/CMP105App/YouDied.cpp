@@ -111,7 +111,8 @@ void YouDied::initYouDiedRect()
 		std::cerr << "Sorry could not you died text image!\n";
 	}
 
-	youDiedRect.setSize(sf::Vector2f(323, 78));
+	// y size was 78 orig.
+	youDiedRect.setSize(sf::Vector2f(323, 60));
 	youDiedRect.setOrigin(youDiedRect.getSize().x / 2.0f, youDiedRect.getSize().y / 2.0f);
 	youDiedRect.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
 	youDiedRect.setTexture(&youDiedTexture);
