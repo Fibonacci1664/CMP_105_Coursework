@@ -25,7 +25,7 @@ Player::Player()
 	attackDelay = 0;
 	deathAnimDelay = 0;
 	movingLeft = false;
-	movingRight = false;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
+	movingRight = true;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
 	isJumping = false;
 	isFalling = true;
 	onGround = false;
@@ -200,14 +200,27 @@ void Player::gravityFall(float dt)
 
 void Player::resetPlayerValues()
 {
-	movingLeft = false;
-	movingRight = false;
-	isJumping = false;
-	isFalling = true;
-	onGround = false;
-	isAttacking = false;
-	isDead = false;
-	respawned = false;
+	if (movingRight)
+	{
+		movingLeft = false;
+		isJumping = false;
+		isFalling = true;
+		onGround = false;
+		isAttacking = false;
+		isDead = false;
+		respawned = false;
+	}
+	else
+	{
+		movingLeft = false;
+		movingRight = false;
+		isJumping = false;
+		isFalling = true;
+		onGround = false;
+		isAttacking = false;
+		isDead = false;
+		respawned = false;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
