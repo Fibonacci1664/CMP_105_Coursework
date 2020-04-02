@@ -76,7 +76,7 @@ void Level::handleInput(float dt)
 	if (input->isKeyDown(sf::Keyboard::P))
 	{
 		input->setKeyUp(sf::Keyboard::P);
-
+		audio->playSoundbyName("scroll");
 		setGameState(State::PAUSE);
 	}
 }
@@ -120,14 +120,14 @@ void Level::render()
 {
 	beginDraw();
 
-	window->draw(player);
+	
 	tmm.render(window);
 	window->draw(player);
-	window->draw(colBox);
-	//window->draw(OriginBox);
+	/*window->draw(colBox);
+	window->draw(OriginBox);
 	window->draw(playerPosBox);
 	window->draw(textBox);
-	window->draw(text);
+	window->draw(text);*/
 	endDraw();
 	
 	//// If not faded in level screen, then DO IT!
@@ -213,7 +213,8 @@ void Level::checkTileCollisions()
 
 void Level::initAudio()
 {
-	audio->addMusic("sfx/Cantina.ogg", "cantina");	
+	audio->addMusic("sfx/Cantina.ogg", "cantina");
+	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

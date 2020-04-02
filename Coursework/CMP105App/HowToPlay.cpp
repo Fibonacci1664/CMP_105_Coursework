@@ -70,7 +70,7 @@ void HowToPlay::initAudio()
 
 void HowToPlay::initHowToPlayBg()
 {
-	if (!howToPlayBgTexture.loadFromFile("gfx/screens/how_to_play_2.png"))
+	if (!howToPlayBgTexture.loadFromFile("gfx/screens/how_to_play.png"))
 	{
 		std::cerr << "Sorry could not how to play background image!\n";
 	}
@@ -100,7 +100,7 @@ void HowToPlay::initBackButton()
 
 	backButton.setSize(sf::Vector2f(78.6f, 31.8f));
 	backButton.setOrigin(sf::Vector2f(backButton.getLocalBounds().width / 2, backButton.getLocalBounds().height / 2));
-	backButton.setPosition(sf::Vector2f(window->getSize().x / 2, window->getSize().y - 25));
+	backButton.setPosition(sf::Vector2f(window->getSize().x / 2, window->getSize().y - 24));
 	backButton.setTexture(&backButtonTexture);
 }
 

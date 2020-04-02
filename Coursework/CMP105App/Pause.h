@@ -19,12 +19,29 @@ public:
 	void render() override;
 
 private:
-	sf::RectangleShape pauseTextBox;
-	sf::RectangleShape transLayer;
-	sf::Text pauseText;
-	sf::Font font;
+	sf::RectangleShape pausedTextBox;
+	sf::Texture pausedTexture;
 
-	void initPauseInfo();
+	sf::RectangleShape scrollBox;
+	sf::Texture scrollTexture;
+
+	sf::RectangleShape mainMenuButton;
+	sf::Texture mainMenuButtonTexture;
+	sf::Texture mainMenuButtonHoverTexture;
+	sf::Texture mainMenuButtonClickedTexture;
+
+	sf::RectangleShape quitButton;
+	sf::Texture quitButtonTexture;
+	sf::Texture quitButtonHoverTexture;
+	sf::Texture quitButtonClickedTexture;
+
+	sf::RectangleShape transLayer;
+
+	void initAudio();
+	void initPauseText();
+	void initScroll();
+	void initMainMenuButton();
+	void initQuitButton();
 	void initTransLayer();
 
 	// Default functions for rendering to the screen.
