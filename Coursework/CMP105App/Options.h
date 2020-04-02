@@ -19,6 +19,8 @@ public:
 	void render() override;
 
 private:
+	bool backButtonClicked;
+
 	sf::Vector2f mousePos;
 
 	sf::RectangleShape optionsBg;
@@ -40,6 +42,7 @@ private:
 	bool sfxChecked;
 	bool godModeChecked;
 
+	void initAudio();
 	void initOptionsBg();
 	void initBackButton();
 	void initMuteMusicCheckBox();

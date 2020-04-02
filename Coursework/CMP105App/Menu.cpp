@@ -1,5 +1,6 @@
 // INCLUDES.
 #include "Menu.h"
+#include <Windows.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -7,6 +8,12 @@
 Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
 	fadedIn = false;
+	howToPlayClicked = false;
+	optionsClicked = false;
+	newGameClicked = false;
+	quitClicked = false;
+
+	initAudio();
 	initMenuBackground();
 	initHowToPlayButton();
 	initOptionsButton();
@@ -76,6 +83,7 @@ void Menu::render()
 	window->draw(quitButton);
 
 	endDraw();
+	//Sleep(500);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,6 +98,14 @@ void Menu::beginDraw()
 void Menu::endDraw()
 {
 	window->display();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::initAudio()
+{
+	audio->addSound("sfx/menu/sword.ogg", "sword");
+	audio->getSound("sword")->setVolume(40);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,21 +228,31 @@ void Menu::initTransFadeRect()
 
 void Menu::checkHowToPlayButtonCollisions()
 {
+	// If the cursor is hovering over the button.
 	if (checkMouseCollisions(&howToPlayButton, mousePos))
 	{
-		std::cout << "Hover collision detected with the how to play button!\n";
+		//std::cout << "Hover collision detected with the how to play button!\n";
 		howToPlayButton.setTexture(&howToPlayButtonHoverTexture);
 
+		// If the cursor is hovering AND we click the left mouse button.
 		if (checkMouseCollisions(&howToPlayButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the how to play button!\n";
+			//std::cout << "Clicked on the how to play button!\n";
 			howToPlayButton.setTexture(&howToPlayButtonClickedTexture);
-			setGameState(State::HOW_TO_PLAY);
+			howToPlayClicked = true;
 		}
 	}
-	else
+	else		// Otherwise just set the normal button texture.
 	{
 		howToPlayButton.setTexture(&howToPlayButtonTexture);
+	}
+
+	// If weve clicked the button and released the left mouse button the switch states.
+	if (howToPlayClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		howToPlayClicked = false;
+		setGameState(State::HOW_TO_PLAY);
 	}
 }
 
@@ -243,12 +269,19 @@ void Menu::checkOptionsButtonCollisions()
 		{
 			std::cout << "Clicked on the how to play button!\n";
 			optionsButton.setTexture(&optionsButtonClickedTexture);
-			setGameState(State::OPTIONS);
+			optionsClicked = true;
 		}
 	}
 	else
 	{
 		optionsButton.setTexture(&optinosButtonTexture);
+	}
+
+	if (optionsClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		optionsClicked = false;
+		setGameState(State::OPTIONS);
 	}
 }
 
@@ -266,13 +299,20 @@ void Menu::checkNewGameButtonCollisions()
 		{
 			std::cout << "Clicked on the new game button!\n";
 			newGameButton.setTexture(&newGameButtonClickedTexture);
-			audio->stopAllMusic();
-			setGameState(State::LEVEL);
+			newGameClicked = true;	
 		}
 	}
 	else
 	{
 		newGameButton.setTexture(&newGameButtonTexture);
+	}
+
+	if (newGameClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		audio->stopAllMusic();
+		newGameClicked = false;
+		setGameState(State::LEVEL);
 	}
 }
 
@@ -290,13 +330,19 @@ void Menu::checkQuitButtonCollisions()
 		{
 			std::cout << "Clicked on the quit button!\n";
 			quitButton.setTexture(&quitButtonClickedTexture);
-			audio->stopAllMusic();
-			setGameState(State::CREDITS);
+			quitClicked = true;
 		}
 	}
 	else
 	{
 		quitButton.setTexture(&quitButtonTexture);
+	}
+
+	if (quitClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		quitClicked = false;
+		setGameState(State::CREDITS);
 	}
 }
 

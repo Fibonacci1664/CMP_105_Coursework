@@ -6,6 +6,9 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 HowToPlay::HowToPlay(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	backButtonClicked = false;
+
+	initAudio();
 	initHowToPlayBg();
 	initBackButton();
 }
@@ -54,6 +57,13 @@ void HowToPlay::beginDraw()
 void HowToPlay::endDraw()
 {
 	window->display();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void HowToPlay::initAudio()
+{
+	audio->addSound("sfx/menu/sword.ogg", "sword");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,12 +117,19 @@ void HowToPlay::checkBackButtonCollisions()
 		{
 			std::cout << "Clicked on the how to play button!\n";
 			backButton.setTexture(&backButtonClickedTexture);
-			setGameState(State::MENU);
+			backButtonClicked = true;
 		}
 	}
 	else
 	{
 		backButton.setTexture(&backButtonTexture);
+	}
+
+	if (backButtonClicked && !input->isMouseLDown())
+	{
+		audio->playSoundbyName("sword");
+		backButtonClicked = false;
+		setGameState(State::MENU);
 	}
 }
 

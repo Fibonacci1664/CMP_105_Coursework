@@ -19,6 +19,8 @@ public:
 	void render() override;
 
 private:
+	bool backButtonClicked;
+
 	sf::Vector2f mousePos;
 
 	sf::RectangleShape howToPlayBg;
@@ -29,6 +31,7 @@ private:
 	sf::Texture backButtonHoverTexture;
 	sf::Texture backButtonClickedTexture;
 
+	void initAudio();
 	void initHowToPlayBg();
 	void initBackButton();
 	void checkBackButtonCollisions();

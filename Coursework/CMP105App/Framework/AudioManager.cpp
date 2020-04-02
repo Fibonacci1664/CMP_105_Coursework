@@ -15,10 +15,8 @@ AudioManager::~AudioManager()
 // Given a filename and key a new SOUND object is added to the list. Loading the object into memory for playback
 void AudioManager::addSound(std::string filename, std::string lname)
 {
-	
 	sounds.push_back(s);
 	sounds.back().loadSound(filename, lname);
-	
 }
 
 // Play back sound based on provided key.

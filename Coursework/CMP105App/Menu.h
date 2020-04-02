@@ -22,6 +22,10 @@ private:
 	sf::Vector2f mousePos;
 	sf::RectangleShape transFade;
 	bool fadedIn;
+	bool howToPlayClicked;
+	bool optionsClicked;
+	bool newGameClicked;
+	bool quitClicked;
 
 	sf::RectangleShape menuBg;
 	sf::Texture menuBgTexture;
@@ -46,6 +50,7 @@ private:
 	sf::Texture quitButtonHoverTexture;
 	sf::Texture quitButtonClickedTexture;
 
+	void initAudio();
 	void initMenuBackground();
 	void initHowToPlayButton();
 	void initNewGameButton();
