@@ -43,7 +43,7 @@ void Menu::handleInput(float dt)
 
 void Menu::update(float dt)
 {
-	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());	
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ void Menu::render()
 
 		while (decr > 0)
 		{
-			decr -= 0.05f;
+			decr -= 0.07f;
 
 			transFade.setFillColor(sf::Color(0, 0, 0, decr));
 			window->draw(menuBg);

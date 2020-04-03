@@ -37,6 +37,7 @@ private:
 	void initTransFadeRect();
 	void fadeOutLevel();
 	//void fadeInLevel();
+	void deathCheck();
 	void respawnPlayer();
 
 	// Default functions for rendering to the screen.

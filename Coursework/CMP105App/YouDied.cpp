@@ -9,6 +9,7 @@ YouDied::YouDied(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager*
 	fadedIn = false;
 	fadedOut = false;
 	switchedStates = false;
+	hasDiedCount = 0;
 
 	initYouDiedRect();
 	initTransFadeRect();
@@ -32,23 +33,30 @@ void YouDied::handleInput(float dt)
 
 void YouDied::update(float dt)
 {
-	// The sweet sounds of death!
-	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
-	{
-		// Play some somber death music.
-
-		//audio->playMusicbyName("splash");
-	}
-
 	/*
 	 * If the lovely 'you died' graphic has faded out then switch state back to level for a respawn.
 	 * CAREFUL YOU STILL HAVE 2 RENDER CALLS FROM HERE THOUGH!
 	 */
 	if (fadedOut)
 	{
-		setGameState(State::LEVEL);
-		switchedStates = true;
-		fadedIn = false;
+		// Keep a count of how many times the you died screen has been shown and by extension how many lives the player has left.
+		++hasDiedCount;
+
+		// If this screen has been shown 3 times and the player only had 3 lives it stands to reason they have 0 lives left.
+		if (hasDiedCount == 3)
+		{
+			// If thats the case switch states to game over.
+			setGameState(State::GAMEOVER);
+			switchedStates = true;
+			fadedIn = false;
+		}
+		else
+		{
+			// Otherwise switch states back to level for a respawn.
+			setGameState(State::LEVEL);
+			switchedStates = true;
+			fadedIn = false;
+		}		
 	}
 }
 
@@ -129,7 +137,7 @@ void YouDied::initTransFadeRect()
 
 void YouDied::initAudio()
 {
-	audio->addMusic("sfx/splash/splash_intro.ogg", "splash");
+	audio->addSound("sfx/you_died/death_bells.ogg", "bells");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,12 +145,14 @@ void YouDied::initAudio()
 // Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the 'you died' text 'fading in'.
 void YouDied::fadeIn()
 {
+	audio->playSoundbyName("bells");
+
 	float decrAlpha = 255;
 
 	while (decrAlpha > 1)
 	{
 		// Controls the speed of fade.
-		decrAlpha -= 0.05f;
+		decrAlpha -= 0.07f;
 
 		transFade.setFillColor(sf::Color(0, 0, 0, decrAlpha));
 		window->draw(youDiedRect);
@@ -163,7 +173,7 @@ void YouDied::fadeOut()
 	while (incrAlpha < 253)
 	{
 		// Controls the speed of fade.
-		incrAlpha += 0.05f;
+		incrAlpha += 0.07f;
 
 		transFade.setFillColor(sf::Color(0, 0, 0, incrAlpha));
 		window->draw(youDiedRect);

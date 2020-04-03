@@ -153,14 +153,7 @@ void Level::render()
 		endDraw();
 	}*/
 
-	// If we've died, fade out level screen. NOT ideal having this in render.
-	if (player.getIsDead() && !fadedOut)
-	{
-		audio->stopAllMusic();
-		fadeOutLevel();
-		respawnPlayer();
-		setGameState(State::YOU_DIED);
-	}
+	deathCheck();		// This is here and not update so that there are no draw calls after we have died.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,6 +208,7 @@ void Level::initAudio()
 {
 	audio->addMusic("sfx/Cantina.ogg", "cantina");
 	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
+	audio->addSound("sfx/level/death.ogg", "death");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,6 +287,27 @@ void Level::fadeOutLevel()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deathCheck()
+{
+	// If we've died, fade out level screen. NOT ideal having this check carried out in render.
+	if (player.getIsDead() && !fadedOut)
+	{
+		audio->stopAllMusic();
+		audio->playSoundbyName("death");
+		fadeOutLevel();						// Fade to black.
+
+		if (player.getLives() == 0)
+		{
+			setGameState(State::YOU_DIED);
+		}
+		else
+		{
+			respawnPlayer();					// Move the player back to starting location while blacked out.
+			setGameState(State::YOU_DIED);
+		}
+	}
+}
 
 // Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading in'.
 /*

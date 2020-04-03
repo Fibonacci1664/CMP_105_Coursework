@@ -26,6 +26,8 @@ public:
 	bool getIsDead();
 	void setIsDead(bool l_isDead);
 	void setRespawned(bool l_respawned);
+	int getLives();
+	void setLives(int l_lives);
 
 	// Might not need this but dont delete it yet! it could be handy for the player to be able to access gamestate.
 	/*void passAndSetCurrentSateFromScreen(GameState* currGameState);
@@ -43,6 +45,7 @@ protected:
 	Animation death;
 
 private:
+	// DATA MEMBERS.
 	const int attackFrames = 10;
 	const int idleFrames = 10;
 	const int jumpFrames = 10;
@@ -53,6 +56,8 @@ private:
 	// Although the sprites are sized 587 x 707, ive reduced the frame size.
 	const int FRAME_WIDTH = 589;
 	const int FRAME_HEIGHT = 680;
+
+	int lives;
 
 	float gravityScalar;
 	sf::Vector2f gravitationalAccel;
@@ -76,6 +81,7 @@ private:
 	bool isDead;
 	bool respawned;
 
+	// MEMBER FUNCTIONS.
 	void resetPlayerValues();
 	void addFrames();
 	void gravityFall(float dt);

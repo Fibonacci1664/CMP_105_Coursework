@@ -81,6 +81,9 @@
     <ClCompile Include="YouDied.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt">
@@ -149,6 +152,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="YouDied.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

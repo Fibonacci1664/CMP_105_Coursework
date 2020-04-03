@@ -123,7 +123,7 @@ void Splash::fadeIn()
 		while (decrAlpha > 0)
 		{
 			// Controls the speed of fade.
-			decrAlpha -= 0.05f;
+			decrAlpha -= 0.07f;
 
 			transFade.setFillColor(sf::Color(255, 253, 208, decrAlpha));
 			window->draw(splashBg);
@@ -149,7 +149,7 @@ void Splash::fadeOut()
 	while (incrAlpha < 255)
 	{
 		// Controls the speed of fade.
-		incrAlpha += 0.05f;
+		incrAlpha += 0.07f;
 
 		transFade.setFillColor(sf::Color(255, 253, 208, incrAlpha));
 		window->draw(splashBg);

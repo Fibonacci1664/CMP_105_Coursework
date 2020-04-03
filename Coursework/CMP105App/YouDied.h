@@ -27,6 +27,8 @@ private:
 	bool fadedOut;
 	bool switchedStates;
 
+	int hasDiedCount;
+
 	void initYouDiedRect();
 	void initTransFadeRect();
 	void initAudio();
