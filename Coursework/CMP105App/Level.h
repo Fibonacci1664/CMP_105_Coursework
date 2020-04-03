@@ -29,11 +29,13 @@ public:
 private:
 	void checkTileCollisions();
 	void initPlayer();
-	void initTextures();
+	void initPlayerSpriteTextures();
+	void initExitDoor();
 	void initTextBox();
 	void initAudio();
 	void checkMusicMuted();
 	void checkMusicStopped();
+	void checkExitDoorCollisions();
 	void initTransFadeRect();
 	void fadeOutLevel();
 	//void fadeInLevel();
@@ -43,6 +45,12 @@ private:
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
+
+	sf::Vector2f mousePos;
+
+	sf::RectangleShape exitDoor;
+	GameObject exitDoorColBox;
+	sf::Texture exitDoorTexture;
 
 	sf::RectangleShape transFade;
 

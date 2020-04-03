@@ -179,6 +179,7 @@
     <ClCompile Include="Splash.cpp" />
     <ClCompile Include="TileMapManager.cpp" />
     <ClCompile Include="YouDied.cpp" />
+    <ClCompile Include="YouEscaped.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="DO_NOT_EDIT.txt" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Splash.h" />
     <ClInclude Include="TileMapManager.h" />
     <ClInclude Include="YouDied.h" />
+    <ClInclude Include="YouEscaped.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,11 +6,14 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+
 	fadedOut = false;
 	//fadedIn = false;
 
 	initAudio();
-	initTextures();
+	initPlayerSpriteTextures();
+	initExitDoor();
 	initTextBox();
 	initTransFadeRect();
 
@@ -86,16 +89,14 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+
 	checkMusicMuted();
 	checkMusicStopped();
 
-	//if (player.getIsDead() && fadedOut)
-	//{
-	//	respawnPlayer();
-	//}
-
 	player.update(dt);
 	checkTileCollisions();
+	checkExitDoorCollisions();
 
 	if (player.getMovingLeft())
 	{
@@ -122,11 +123,13 @@ void Level::render()
 
 	
 	tmm.render(window);
+	window->draw(exitDoor);
+	window->draw(exitDoorColBox);
 	window->draw(player);
-	/*window->draw(colBox);
-	window->draw(OriginBox);
+	window->draw(colBox);
+	//window->draw(OriginBox);
 	window->draw(playerPosBox);
-	window->draw(textBox);
+	/*window->draw(textBox);
 	window->draw(text);*/
 	endDraw();
 	
@@ -174,7 +177,7 @@ void Level::endDraw()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Level::initTextures()
+void Level::initPlayerSpriteTextures()
 {
 	if (!player_texture.loadFromFile("gfx/sprites/knight/full_sprite_sheet/knight_sheet_4.png"))
 	{
@@ -196,6 +199,34 @@ void Level::initPlayer()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::initExitDoor()
+{
+	if (!exitDoorTexture.loadFromFile("gfx/level/exit_door.png"))
+	{
+		std::cerr << "Sorry could not load the exit door image!\n";
+	}
+
+	exitDoor.setSize(sf::Vector2f(102.4f, 102.4f));
+	exitDoor.setOrigin(sf::Vector2f(exitDoor.getSize().x / 2.0f, exitDoor.getSize().y / 2.0f));
+	exitDoor.setPosition(sf::Vector2f(400, window->getSize().y - (32 + exitDoor.getSize().y / 2.0f)));
+	//exitDoor.setPosition(sf::Vector2f(400, 100));
+	exitDoor.setTexture(&exitDoorTexture);
+
+	exitDoorColBox.setSize(sf::Vector2f(25, 25));
+	exitDoorColBox.setOrigin(exitDoorColBox.getSize().x / 2.0f, exitDoorColBox.getSize().y / 2.0f);
+	exitDoorColBox.setPosition(sf::Vector2f(exitDoor.getPosition().x, exitDoor.getPosition().y + 20));
+	exitDoorColBox.setFillColor(sf::Color::Transparent);
+	exitDoorColBox.setOutlineColor(sf::Color::Red);
+	exitDoorColBox.setOutlineThickness(1.0f);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkExitDoorCollisions()
+{
+	player.checkExitDoorCollisions(&exitDoorColBox);
+}
 
 void Level::checkTileCollisions()
 {

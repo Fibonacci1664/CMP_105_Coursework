@@ -18,6 +18,7 @@ public:
 	void handleInput(float dt) override;
 
 	void collisionResponse(GameObject* collider);
+	void checkExitDoorCollisions(GameObject* col);
 	bool getMovingRight();
 	bool getMovingLeft();
 	void setIsFalling(bool l_isFalling);
