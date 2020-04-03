@@ -26,6 +26,9 @@ private:
 	bool fadedIn;
 	bool fadedOut;
 	bool switchedStates;
+	bool playedMusic;
+
+	float showEscapedScreenTime;
 
 	void initYouEscapedRect();
 	void initTransFadeRect();

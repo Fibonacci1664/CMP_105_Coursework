@@ -225,7 +225,11 @@ void Level::initExitDoor()
 
 void Level::checkExitDoorCollisions()
 {
-	player.checkExitDoorCollisions(&exitDoorColBox);
+	if (player.checkExitDoorCollisions(&exitDoorColBox))
+	{
+		audio->stopAllMusic();
+		setGameState(State::YOU_ESCAPED);
+	}
 }
 
 void Level::checkTileCollisions()

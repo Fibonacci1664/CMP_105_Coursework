@@ -9,6 +9,8 @@ YouEscaped::YouEscaped(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioMa
 	fadedIn = false;
 	fadedOut = false;
 	switchedStates = false;
+	playedMusic = false;
+	showEscapedScreenTime = 0;
 
 	initYouEscapedRect();
 	initTransFadeRect();
@@ -32,16 +34,24 @@ void YouEscaped::handleInput(float dt)
 
 void YouEscaped::update(float dt)
 {
-	// The sweet sounds of death!
-	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+	showEscapedScreenTime += dt;
+
+	// If we've already played the winning jingle then dont play it again.
+	if (playedMusic)
 	{
-		// Play some somber death music.
-		audio->playMusicbyName("gameover");
+		audio->stopAllMusic();
+	}	
+	else if(audio->getMusic()->getStatus() == sf::SoundSource::Stopped)	// The sweet sounds of victory!
+	{
+		// Play some cheery winning jingle.
+		audio->getMusic()->setLoop(false);
+		audio->playMusicbyName("escaped");
+		playedMusic = true;
 	}
 
 	/*
 	 * If the lovely 'you died' graphic has faded out then switch state back to level for a respawn.
-	 * CAREFUL YOU STILL HAVE 2 RENDER CALLS FROM HERE THOUGH!
+	 * CAREFUL YOU STILL HAVE 2 RENDER CALLS FROM HERE THOUGH BEFORE YOU'RE BACK TO LEVEL!
 	 */
 	if (fadedOut)
 	{
@@ -52,6 +62,7 @@ void YouEscaped::update(float dt)
 
 		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 		{
+			audio->getMusic()->setLoop(true);
 			audio->playMusicbyName("splash");
 		}
 	}
@@ -111,15 +122,12 @@ void YouEscaped::endDraw()
 
 void YouEscaped::initYouEscapedRect()
 {
-	if (!youEscapedTexture.loadFromFile("gfx/text/game_over.png"))
+	if (!youEscapedTexture.loadFromFile("gfx/screens/daybreak_final.png"))
 	{
-		std::cerr << "Sorry could not game over text image!\n";
+		std::cerr << "Sorry could not daybreak image!\n";
 	}
 
-	// orign x = 372 orig y = 83.
-	youEscapedRect.setSize(sf::Vector2f(334, 56.7f));
-	youEscapedRect.setOrigin(youEscapedRect.getSize().x / 2.0f, youEscapedRect.getSize().y / 2.0f);
-	youEscapedRect.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
+	youEscapedRect.setSize(sf::Vector2f(960, 540));
 	youEscapedRect.setTexture(&youEscapedTexture);
 }
 
@@ -134,7 +142,7 @@ void YouEscaped::initTransFadeRect()
 
 void YouEscaped::initAudio()
 {
-	audio->addMusic("sfx/gameover/game_over.ogg", "gameover");
+	audio->addMusic("sfx/escaped/escaped.ogg", "escaped");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
