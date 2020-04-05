@@ -478,8 +478,11 @@ void Player::checkTileCollisions(GameObject* col)
 	float xDiff = tileCentre.x - xColBoxCentre;
 	float yDiff = tileCentre.y - yColBoxCentre;			// Top will give me the y value.
 
+	// This is the difference between the left side of the collding obejct if and the right side of player collider.
+	float rightXDiff = (getPosition().x + getSize().x) - (getCollisionBox().left + getCollisionBox().width);
+
+	// This is the difference between the right side of the collding obejct if and the left side of player collider.
 	float leftXDiff = getCollisionBox().left - getPosition().x;
-	//float rightXDiff = (getPosition().x + getSize().x) - (getCollisionBox().left + getCollisionBox().width);
 	float topYDiff = getCollisionBox().top - getPosition().y;
 
 	// X-axis collision.
@@ -490,19 +493,17 @@ void Player::checkTileCollisions(GameObject* col)
 		// Right hand side of tile collission.
 		if (xDiff < 0)
 		{
-			// THIS IS GOOD!
+			// THIS IS PERFECT NEVER CHANGE IT!
 			std::cout << "Right\n";
 			stepVelocity.x = 0;
-			//onGround = true;
-			setPosition(sf::Vector2f((col->getPosition().x + col->getSize().x) - leftXDiff, getPosition().y));
+			setPosition(sf::Vector2f((col->getCollisionBox().left + col->getCollisionBox().width) - leftXDiff, getPosition().y));		// new version
 		}
 		else			// Left hand side of tile collision.
 		{
 			// THIS IS PERFECT DO NOT CHANGE!
 			std::cout << "Left\n";
 			stepVelocity.x = 0;
-			//onGround = true;
-			setPosition(sf::Vector2f(col->getPosition().x - (leftXDiff + getCollisionBox().width), getPosition().y));
+			setPosition(sf::Vector2f((col->getCollisionBox().left - getSize().x) + rightXDiff, getPosition().y));		// new version.
 		}
 	}
 	else				// Y-axis collision.
@@ -522,7 +523,7 @@ void Player::checkTileCollisions(GameObject* col)
 			// THIS IS GOOD DO NOT CHANGE!
 			std::cout << "Top\n";
 			stepVelocity.y = 0;
-			setPosition(sf::Vector2f(getPosition().x, col->getPosition().y - getSize().y));
+			setPosition(sf::Vector2f(getPosition().x, col->getCollisionBox().top - getSize().y));
 			onGround = true;
 			isJumping = false;
 			isFalling = false;

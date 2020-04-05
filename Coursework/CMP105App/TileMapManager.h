@@ -21,7 +21,8 @@ private:
 	void createMap();
 
 	TileMap tileMap;
-	GameObject tile;
+	GameObject envTile;
+	GameObject spikesTile;
 	std::vector<GameObject> tiles;
 	std::vector<GameObject>* world;
 };
