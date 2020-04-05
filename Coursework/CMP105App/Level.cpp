@@ -6,11 +6,16 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
+	window->setView(view);
+	scrollSpeed = 400;
+
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 
 	fadedOut = false;
 	//fadedIn = false;
 
+	initBackground();
 	initAudio();
 	initPlayerSpriteTextures();
 	//initExitDoor();
@@ -69,6 +74,18 @@ void Level::initTextBox()
 	text.setFillColor(sf::Color::Red);
 }
 
+// Init background, this will end up in its own class, because i will layer and do paralax ultimately but need it here for now to test the view.
+void Level::initBackground()
+{
+	if (!bgTexture.loadFromFile("gfx/screens/castle_bg.png"))
+	{
+		std::cerr << "Sorry could not load bg image for level!\n";
+	}
+
+	background.setSize(sf::Vector2f(2880, 512));
+	background.setTexture(&bgTexture);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // handle user input
@@ -95,6 +112,37 @@ void Level::update(float dt)
 	checkMusicStopped();
 
 	player.update(dt);
+
+	// If the player gets past half way accross the screen, start scrolling.
+	if (player.getPosition().x > view.getCenter().x)
+	{
+		view.move(scrollSpeed * dt, 0);
+
+
+
+		// If the view gets to the end of the bg image the stop scrolling.
+		if (view.getCenter().x > (background.getSize().x - view.getSize().x / 2))
+		{
+			view.move(-scrollSpeed * dt, 0);
+		}
+	}
+
+	/*
+	* If once we've gone passed the centre, we then move backwards and our x becomes less than the views
+	* centre we then scroll the view backwards.
+	*/
+	if (player.getPosition().x < (view.getCenter().x - view.getSize().x / 4.0f))
+	{
+		// Scroll the view backwards.
+		view.move(-scrollSpeed * dt, 0);
+
+		// If the view gets to zero in the x then stop scrolling.
+		if (view.getCenter().x < (0 + view.getSize().x / 2))
+		{
+			view.move(scrollSpeed * dt, 0);
+		}
+	}
+
 	checkTileCollisions();
 	checkExitDoorCollisions();
 
@@ -121,7 +169,7 @@ void Level::render()
 {
 	beginDraw();
 
-	
+	window->draw(background);
 	tmm.render(window);
 	window->draw(exitDoor);
 	window->draw(exitDoorColBox);
@@ -129,6 +177,7 @@ void Level::render()
 	window->draw(colBox);
 	//window->draw(OriginBox);
 	window->draw(playerPosBox);
+	window->setView(view);
 	/*window->draw(textBox);
 	window->draw(text);*/
 	endDraw();

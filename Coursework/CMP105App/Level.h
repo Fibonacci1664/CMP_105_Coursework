@@ -37,6 +37,7 @@ private:
 	void checkMusicStopped();
 	void checkExitDoorCollisions();
 	void initTransFadeRect();
+	void initBackground();
 	void fadeOutLevel();
 	//void fadeInLevel();
 	void deathCheck();
@@ -61,9 +62,13 @@ private:
 	sf::RectangleShape OriginBox;
 	sf::RectangleShape playerPosBox;
 	sf::RectangleShape textBox;
+	sf::RectangleShape background;
+	sf::Texture bgTexture;
 	sf::Text text;
 	sf::Font font;
+	sf::View view;
 
+	float scrollSpeed;
 	bool fadedOut;
 	bool fadedIn;
 };
