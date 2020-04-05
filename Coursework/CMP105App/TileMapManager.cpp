@@ -23,43 +23,11 @@ void TileMapManager::initTexture()
 
 void TileMapManager::createTileSet()
 {
-	// Element [0] : Transparent tile.
-	transparentTile.setSize(sf::Vector2f(64, 64));
-	transparentTile.setCollider(false);
-	tiles.push_back(transparentTile);
-
-	// Elements [1] - [8] : Large ground tiles.
-	for (int i = 0; i < 9; ++i)
-	{
-		groundTile.setSize(sf::Vector2f(64, 64));
-		groundTile.setCollisionBox(0, 0, 64, 64);
-		groundTile.setCollider(true);
-		tiles.push_back(groundTile);
-	}
-
-	// Elements [9] - [18] : Smaller ground tiles.
-	for (int i = 0; i < 11; ++i)
-	{
-		groundTile.setSize(sf::Vector2f(64, 64));
-		groundTile.setCollisionBox(5, 0, 59, 32);
-		groundTile.setCollider(true);
-		tiles.push_back(groundTile);
-	}
-
-	// Elements [19] - [24] : Column tiles.
-	for (int i = 0; i < 7; ++i)
-	{
-		columnTile.setSize(sf::Vector2f(64, 64));
-		columnTile.setCollisionBox(10, 0, 44, 64);
-		columnTile.setCollider(true);
-		tiles.push_back(groundTile);
-	}
-
-	// Element [25] : Spikes.
-	spikesTile.setSize(sf::Vector2f(64, 64));
-	spikesTile.setCollisionBox(0, 32, 64, 44);
-	spikesTile.setCollider(true);
-	tiles.push_back(spikesTile);
+	createTransparentTiles();
+	createLargeGroundTiles();
+	createSmallGroundTiles();
+	createColumnTiles();
+	createSpikeTiles();
 
 	// Transprent tile.
 	tiles[0].setTextureRect(sf::IntRect(576, 320, 64, 64));		// Num 0 tile, bottom right corner.			DONE
@@ -86,7 +54,7 @@ void TileMapManager::createTileSet()
 	tiles[17].setTextureRect(sf::IntRect(384, 256, 64, 64));	// Num 17 tile, on my env num map = 42		DONE
 	tiles[18].setTextureRect(sf::IntRect(448, 256, 64, 64));	// Num 18 tile, on my env num map = 43		DONE
 
-	// Column tiles, White column
+	//// Column tiles, White column
 	tiles[19].setTextureRect(sf::IntRect(512, 0, 64, 64));		// Num 19 tile, on my env num map = 9		DONE
 	tiles[20].setTextureRect(sf::IntRect(512, 64, 64, 64));		// Num 20 tile, on my env num map = 19		DONE
 	tiles[21].setTextureRect(sf::IntRect(512, 128, 64, 64));	// Num 21 tile, on my env num map = 25		DONE
@@ -102,21 +70,80 @@ void TileMapManager::createTileSet()
 	tileMap.setTileSet(tiles);
 }
 
+void TileMapManager::createTransparentTiles()
+{
+	// Element [0] : Transparent tile.
+	transparentTile.setSize(sf::Vector2f(64, 64));
+	transparentTile.setCollider(false);
+	tiles.push_back(transparentTile);
+}
+
+void TileMapManager::createLargeGroundTiles()
+{
+	// Elements [1] - [8] : Large ground tiles.
+	for (int i = 0; i < 8; ++i)
+	{
+		largeGroundTile.setSize(sf::Vector2f(64, 64));
+		largeGroundTile.setCollisionBox(0, 0, 64, 64);
+		largeGroundTile.setCollider(true);
+		largeGroundTile.setOutlineColor(sf::Color::Magenta);
+		largeGroundTile.setOutlineThickness(1.0f);
+		tiles.push_back(largeGroundTile);
+	}
+}
+
+void TileMapManager::createSmallGroundTiles()
+{
+	// Elements [9] - [18] : Smaller ground tiles.
+	for (int i = 0; i < 10; ++i)
+	{
+		smallGroundTile.setSize(sf::Vector2f(64, 64));
+		smallGroundTile.setCollisionBox(5, 0, 59, 32);
+		smallGroundTile.setCollider(true);
+		tiles.push_back(smallGroundTile);
+	}
+}
+
+void TileMapManager::createColumnTiles()
+{
+	// Elements [19] - [24] : Column tiles.
+	for (int i = 0; i < 6; ++i)
+	{
+		columnTile.setSize(sf::Vector2f(64, 64));
+		columnTile.setCollisionBox(12, 0, 40, 64);
+		columnTile.setCollider(true);
+		columnTile.setOutlineColor(sf::Color::Magenta);
+		columnTile.setOutlineThickness(1.0f);
+		tiles.push_back(columnTile);
+	}
+}
+
+void TileMapManager::createSpikeTiles()
+{
+	// Element [25] : Spikes.
+	spikesTile.setSize(sf::Vector2f(64, 64));
+	spikesTile.setCollisionBox(0, 20, 64, 44);
+	spikesTile.setCollider(true);
+	spikesTile.setOutlineColor(sf::Color::Magenta);
+	spikesTile.setOutlineThickness(1.0f);
+	tiles.push_back(spikesTile);
+}
+
 void TileMapManager::createMap()
 {
 	// Map dimensions.
-	sf::Vector2u mapSize(15, 8);
+	sf::Vector2u mapSize(45, 8);
 
 	// Build map.
 	std::vector<int> map = {
-	22,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
-	23,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
-	24,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
-	14,	15,	16,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
-	22,	0,	0,	0,	0,	0,	0,	0,	19,	0,	0,	0,	0,	0,	0,
-	23,	0,	0,	0,	0,	0,	19,	0,	20,	0,	0,	0,	0,	0,	0,
-	24,	0,	0,	0,	19,	0,	20,	0,	20,	0,	0,	0,	0,	0,	0,
-	1,	2,	3,	25,	21,	25,	21,	25,	21,	25,	25,	25,	25,	25,	25,
+	22,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	23,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	24,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	14,	15,	16,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,
+	22, 0,	0,	0,	0,	0,	0,	0,	19,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	22,
+	23, 0,	0,	0,	0,	0,	19,	0,	20,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	23,
+	24, 0,	0,	0,	19,	0,	20,	0,	20,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	24,
+	1,	2,	3,	25,	21,	25,	21,	25,	21,	25,	25,	25,	25,	25,	25, 25,	25,	25,	25,	25,	25, 25,	25,	25,	25,	25,	25, 25,	25,	25,	25,	25,	25, 25,	25,	25,	25,	25, 25,	25,	25,	25,	3,	2,	1,
 	};
 
 	tileMap.setTileMap(map, mapSize);

@@ -496,14 +496,14 @@ void Player::checkTileCollisions(GameObject* col)
 			// THIS IS PERFECT NEVER CHANGE IT!
 			std::cout << "Right\n";
 			stepVelocity.x = 0;
-			setPosition(sf::Vector2f((col->getCollisionBox().left + col->getCollisionBox().width) - leftXDiff, getPosition().y));		// new version
+			setPosition(sf::Vector2f((col->getCollisionBox().left + col->getCollisionBox().width + 1) - leftXDiff, getPosition().y));		// new version
 		}
 		else			// Left hand side of tile collision.
 		{
 			// THIS IS PERFECT DO NOT CHANGE!
 			std::cout << "Left\n";
 			stepVelocity.x = 0;
-			setPosition(sf::Vector2f((col->getCollisionBox().left - getSize().x) + rightXDiff, getPosition().y));		// new version.
+			setPosition(sf::Vector2f((col->getCollisionBox().left - getSize().x) + (rightXDiff - 1), getPosition().y));		// new version.
 		}
 	}
 	else				// Y-axis collision.

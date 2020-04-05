@@ -16,7 +16,7 @@ Splash::Splash(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* a
 
 	initSplashBackground();
 	initTransFadeRect();
-	initAudio();
+	//initAudio();
 }
 
 Splash::~Splash()

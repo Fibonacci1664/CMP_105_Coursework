@@ -18,10 +18,16 @@ public:
 private:
 	void initTexture();
 	void createTileSet();
+	void createTransparentTiles();
+	void createLargeGroundTiles();
+	void createSmallGroundTiles();
+	void createColumnTiles();
+	void createSpikeTiles();
 	void createMap();
 
 	TileMap tileMap;
-	GameObject groundTile;
+	GameObject largeGroundTile;
+	GameObject smallGroundTile;
 	GameObject transparentTile;
 	GameObject spikesTile;
 	GameObject columnTile;
