@@ -13,7 +13,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 
 	initAudio();
 	initPlayerSpriteTextures();
-	initExitDoor();
+	//initExitDoor();
 	initTextBox();
 	initTransFadeRect();
 
@@ -275,7 +275,7 @@ void Level::checkMusicMuted()
 	{
 		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 		{
-			audio->playMusicbyName("cantina");
+			//audio->playMusicbyName("cantina");
 		}
 	}
 }
