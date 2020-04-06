@@ -70,7 +70,7 @@ void HowToPlay::initAudio()
 
 void HowToPlay::initHowToPlayBg()
 {
-	if (!howToPlayBgTexture.loadFromFile("gfx/screens/how_to_play.png"))
+	if (!howToPlayBgTexture.loadFromFile("gfx/screens/how_to_play_birds.png"))
 	{
 		std::cerr << "Sorry could not how to play background image!\n";
 	}

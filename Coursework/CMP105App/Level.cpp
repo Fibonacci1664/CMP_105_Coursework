@@ -106,6 +106,8 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
+	// Keep updating the transparent panel to the current location of the view for when death occurs.
+	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 
 	checkMusicMuted();
@@ -145,6 +147,8 @@ void Level::update(float dt)
 
 	checkTileCollisions();
 	checkExitDoorCollisions();
+	deathCheck();		// This is here and not update so that there are no draw calls after we have died.
+
 
 	if (player.getMovingLeft())
 	{
@@ -180,32 +184,8 @@ void Level::render()
 	window->setView(view);
 	/*window->draw(textBox);
 	window->draw(text);*/
+
 	endDraw();
-	
-	//// If not faded in level screen, then DO IT!
-	//if (!fadedIn && player.getIsOnGround())
-	//{
-	//	fadeInLevel();
-	//}
-
-	
-
-
-	/* After fading in just draw normally.
-	if (fadedIn)
-	{
-		beginDraw();
-		tmm.render(window);
-		window->draw(player);
-		window->draw(colBox);
-		window->draw(OriginBox);
-		window->draw(playerPosBox);
-		window->draw(textBox);
-		window->draw(text);
-		endDraw();
-	}*/
-
-	deathCheck();		// This is here and not update so that there are no draw calls after we have died.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -290,7 +270,8 @@ void Level::checkTileCollisions()
 
 void Level::initAudio()
 {
-	audio->addMusic("sfx/Cantina.ogg", "cantina");
+	audio->addMusic("sfx/level/castle_music.ogg", "castleMusic");
+	audio->addMusic("sfx/level/castle_ambience.ogg", "castleAmbience");
 	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
 	audio->addSound("sfx/level/death.ogg", "death");
 }
@@ -320,11 +301,21 @@ void Level::startMusic(sf::Music music, std::string type)
 
 void Level::checkMusicMuted()
 {
+	// If the music is not muted then play the level castle music.
 	if (!musicMuted)
 	{
 		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 		{
-			//audio->playMusicbyName("cantina");
+			audio->playMusicbyName("castleMusic");
+			audio->getMusic()->setLoop(true);
+		}
+	}
+	else		// If the music is muted then simple play castle ambience sounds.
+	{
+		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+		{
+			audio->playMusicbyName("castleAmbience");
+			audio->getMusic()->setLoop(true);
 		}
 	}
 }
@@ -343,7 +334,8 @@ void Level::checkMusicStopped()
 
 void Level::initTransFadeRect()
 {
-	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+	transFade.setSize(sf::Vector2f(view.getSize().x, view.getSize().y));
+	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -381,15 +373,13 @@ void Level::deathCheck()
 		audio->playSoundbyName("death");
 		fadeOutLevel();						// Fade to black.
 
-		if (player.getLives() == 0)
+		if (player.getLives() > 0)
 		{
-			setGameState(State::YOU_DIED);
+			respawnPlayer();					// Move the player back to starting location while blacked out.		
 		}
-		else
-		{
-			respawnPlayer();					// Move the player back to starting location while blacked out.
-			setGameState(State::YOU_DIED);
-		}
+
+		view.reset(sf::FloatRect(0.0f, 0.0f, 960, 512));
+		setGameState(State::YOU_DIED);
 	}
 }
 

@@ -16,7 +16,7 @@ Splash::Splash(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* a
 
 	initSplashBackground();
 	initTransFadeRect();
-	//initAudio();
+	initAudio();
 }
 
 Splash::~Splash()
@@ -39,6 +39,7 @@ void Splash::update(float dt)
 	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 	{
 		audio->playMusicbyName("splash");
+		audio->getMusic()->setLoop(false);
 	}
 
 	splashDelay += dt;
@@ -116,7 +117,7 @@ void Splash::initAudio()
 void Splash::fadeIn()
 {
 	// After 2 secs fade in logo splash screen
-	if (splashDelay > 2 && !fadedIn)
+	if (splashDelay > 2.0f && !fadedIn)
 	{
 		float decrAlpha = 255;
 

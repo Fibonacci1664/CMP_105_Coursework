@@ -44,6 +44,19 @@ void Menu::handleInput(float dt)
 void Menu::update(float dt)
 {
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+
+	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
+	{
+		// If we're still in menu then play the menu ambience.
+		if (gameState->getCurrentState() == State::MENU)
+		{
+			audio->playMusicbyName("ambience");
+		}
+		else	// Otherwise we must have switched states to a new game.
+		{
+			audio->stopAllMusic();
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,13 +120,15 @@ void Menu::initAudio()
 {
 	audio->addSound("sfx/menu/sword.ogg", "sword");
 	audio->getSound("sword")->setVolume(40);
+	audio->addMusic("sfx/menu/menu_ambience.ogg", "ambience");
+	audio->getMusic()->setVolume(50);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Menu::initMenuBackground()
 {
-	if (!menuBgTexture.loadFromFile("gfx/screens/menu_final.png"))
+	if (!menuBgTexture.loadFromFile("gfx/screens/crasters_keep_birds_final.png"))
 	{
 		std::cerr << "Sorry could not load menu background image!\n";
 	}

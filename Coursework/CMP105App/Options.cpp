@@ -83,7 +83,7 @@ void Options::initAudio()
 
 void Options::initOptionsBg()
 {
-	if (!optionsBgTexture.loadFromFile("gfx/screens/options.png"))
+	if (!optionsBgTexture.loadFromFile("gfx/screens/options_birds.png"))
 	{
 		std::cerr << "Sorry could not how to play background image!\n";
 	}
@@ -138,7 +138,7 @@ void Options::initMuteMusicCheckBox()
 {
 	muteMusicCheckBox.setSize(sf::Vector2f(25, 26.3));
 	muteMusicCheckBox.setOrigin(sf::Vector2f(muteMusicCheckBox.getSize().x / 2, muteMusicCheckBox.getSize().y / 2));
-	muteMusicCheckBox.setPosition(sf::Vector2f(515, 219));
+	muteMusicCheckBox.setPosition(sf::Vector2f(500, 219));
 	muteMusicCheckBox.setTexture(&blankCheckBoxTexture);
 }
 
@@ -148,7 +148,7 @@ void Options::initMuteSFXCheckBox()
 {
 	muteSFXCheckBox.setSize(sf::Vector2f(25, 26.3));
 	muteSFXCheckBox.setOrigin(sf::Vector2f(muteMusicCheckBox.getSize().x / 2, muteMusicCheckBox.getSize().y / 2));
-	muteSFXCheckBox.setPosition(sf::Vector2f(515, 286));
+	muteSFXCheckBox.setPosition(sf::Vector2f(500, 286));
 	muteSFXCheckBox.setTexture(&blankCheckBoxTexture);
 }
 
@@ -158,7 +158,7 @@ void Options::initGodModeCheckBox()
 {
 	godModeCheckBox.setSize(sf::Vector2f(25, 26.3));
 	godModeCheckBox.setOrigin(sf::Vector2f(muteMusicCheckBox.getSize().x / 2, muteMusicCheckBox.getSize().y / 2));
-	godModeCheckBox.setPosition(sf::Vector2f(515, 353));
+	godModeCheckBox.setPosition(sf::Vector2f(500, 353));
 	godModeCheckBox.setTexture(&blankCheckBoxTexture);
 }
 

@@ -21,6 +21,7 @@ public:
 private:
 	sf::Vector2f mousePos;
 	sf::RectangleShape transFade;
+
 	bool fadedIn;
 	bool howToPlayClicked;
 	bool optionsClicked;
