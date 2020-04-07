@@ -15,6 +15,8 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	fadedOut = false;
 	//fadedIn = false;
 
+	initFireLampTexture();
+	initFireLamps();
 	initBackground();
 	initAudio();
 	initPlayerSpriteTextures();
@@ -106,6 +108,9 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
+	lamp_1.getLamp_1()->animate(dt);
+	lamp_1.setTextureRect(lamp_1.getLamp_1()->getCurrentFrame());
+
 	// Keep updating the transparent panel to the current location of the view for when death occurs.
 	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
@@ -175,6 +180,7 @@ void Level::render()
 
 	window->draw(background);
 	tmm.render(window);
+	window->draw(lamp_1);
 	window->draw(exitDoor);
 	window->draw(exitDoorColBox);
 	window->draw(player);
@@ -184,7 +190,6 @@ void Level::render()
 	window->setView(view);
 	/*window->draw(textBox);
 	window->draw(text);*/
-
 	endDraw();
 }
 
@@ -205,6 +210,60 @@ void Level::endDraw()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::initFireLampTexture()
+{
+	if (!fireLampTexture.loadFromFile("gfx/level/fire_lamps.png"))
+	{
+		std::cerr << "Sorry could not load fire lamps image!\n";
+	}
+}
+
+void Level::initFireLamps()
+{
+	lamp_1.setWindow(window);
+	lamp_1.setSize(sf::Vector2f(64, 64));				// Max size to accomodate ALL sprites.	
+	lamp_1.setPosition(290, 150);
+	lamp_1.setTexture(&fireLampTexture);
+
+	lamp_1.setTextureRect(lamp_1.getLamp_1()->getCurrentFrame());
+	lamp_1.getLamp_1()->setPlaying(true);
+	lamp_1.getLamp_1()->setLooping(true);
+
+	
+
+	//// Create 10 fire lamps of type lamp_1, set them to play on loop.
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	lamps_1[i].setTextureRect(lamps_1[i].getLamp_1().getCurrentFrame());
+	//	lamps_1[i].getLamp_1().setPlaying(true);
+	//	lamps_1[i].getLamp_1().setLooping(true);
+	//}
+
+	//// Create 10 fire lamps of type lamp_2, set them to play on loop.
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	lamps_2[i].setTextureRect(lamps_2[i].getLamp_2().getCurrentFrame());
+	//	lamps_2[i].getLamp_2().setPlaying(true);
+	//	lamps_2[i].getLamp_2().setLooping(true);
+	//}
+
+	//// Create 10 fire lamps of type lamp_3, set them to play on loop.
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	lamps_3[i].setTextureRect(lamps_3[i].getLamp_3().getCurrentFrame());
+	//	lamps_3[i].getLamp_3().setPlaying(true);
+	//	lamps_3[i].getLamp_3().setLooping(true);
+	//}
+
+	//// Create 10 fire lamps of type lamp_4, set them to play on loop.
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	lamps_4[i].setTextureRect(lamps_4[i].getLamp_4().getCurrentFrame());
+	//	lamps_4[i].getLamp_4().setPlaying(true);
+	//	lamps_4[i].getLamp_4().setLooping(true);
+	//}
+}
 
 void Level::initPlayerSpriteTextures()
 {
@@ -382,6 +441,8 @@ void Level::deathCheck()
 		setGameState(State::YOU_DIED);
 	}
 }
+
+
 
 // Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading in'.
 /*

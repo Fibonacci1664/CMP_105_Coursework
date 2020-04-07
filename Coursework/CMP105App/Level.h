@@ -4,11 +4,13 @@
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
+#include "Framework/Animation.h"
 #include <string>
 #include <iostream>
 #include "Screen.h"
 #include "Player.h"
 #include "TileMapManager.h"
+#include "FireLamp.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
@@ -42,10 +44,19 @@ private:
 	//void fadeInLevel();
 	void deathCheck();
 	void respawnPlayer();
+	void initFireLampTexture();
+	void initFireLamps();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
+	
+	FireLamp lamp_1;
+
+	//std::vector<FireLamp> lamps_1;
+	/*std::vector<FireLamp> lamps_2;
+	std::vector<FireLamp> lamps_3;
+	std::vector<FireLamp> lamps_4;*/
 
 	sf::Vector2f mousePos;
 
@@ -56,6 +67,7 @@ private:
 	sf::RectangleShape transFade;
 
 	TileMapManager tmm;
+	sf::Texture fireLampTexture;
 	sf::Texture player_texture;
 	Player player;
 	sf::RectangleShape colBox;

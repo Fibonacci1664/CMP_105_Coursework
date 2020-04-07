@@ -68,7 +68,6 @@ void Animation::animate(float dt)
 				else
 				{
 					currentFrame--;
-					//setPlaying(false);
 				}
 			}
 

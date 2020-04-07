@@ -41,7 +41,6 @@ Player::Player()
 
 	gravityScalar = 100;
 	gravitationalAccel = sf::Vector2f(0, 9.8f) * gravityScalar;
-
 }
 
 Player::~Player()
