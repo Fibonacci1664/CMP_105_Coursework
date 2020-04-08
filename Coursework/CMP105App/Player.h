@@ -23,6 +23,7 @@ public:
 	// Getters / Setters
 	bool getMovingRight();
 	bool getMovingLeft();
+	bool getIdling();
 	void setIsFalling(bool l_isFalling);
 	void setIsOnGround(bool l_isOnGround);
 	bool getIsOnGround();
@@ -77,6 +78,7 @@ private:
 
 	bool movingLeft;
 	bool movingRight;
+	bool idling;
 	bool isJumping;
 	bool isFalling;
 	bool onGround;

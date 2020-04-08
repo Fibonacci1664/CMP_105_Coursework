@@ -25,7 +25,8 @@ Player::Player()
 	attackDelay = 0;
 	deathAnimDelay = 0;
 	movingLeft = false;
-	movingRight = true;						// Even thought the player hasnt moved any direction when they first spawn this needs to be true for the move logic to work.
+	movingRight = false;
+	idling = true;
 	isJumping = false;
 	isFalling = true;
 	onGround = false;
@@ -65,6 +66,7 @@ void Player::handleInput(float dt)
 	// If were WALKING RIGHT.
 	if (input->isKeyDown(sf::Keyboard::D) && !input->isKeyDown(sf::Keyboard::A))
 	{
+		movingRight = true;
 		checkMovingRight(dt);
 	}
 	else
@@ -87,6 +89,7 @@ void Player::handleInput(float dt)
 		}
 
 		setTextureRect(idle.getCurrentFrame());
+		idling = true;
 	}
 
 	// If were WALKING LEFT.
@@ -300,6 +303,7 @@ void Player::checkMovingRight(float dt)
 
 		movingRight = true;
 		movingLeft = false;
+		idling = false;
 		walk.setPlaying(true);
 		walk.setFlipped(false);
 		walk.animate(dt);
@@ -324,6 +328,7 @@ void Player::checkMovingLeft(float dt)
 
 		movingRight = false;
 		movingLeft = true;
+		idling = false;
 		walk.setPlaying(true);
 		walk.setFlipped(true);
 		walk.animate(dt);
@@ -343,6 +348,7 @@ void Player::checkRunning(float dt)
 		{
 			movingRight = true;
 			movingLeft = false;
+			idling = false;
 			run.setFlipped(false);
 			run.setPlaying(true);
 			run.animate(dt);
@@ -353,6 +359,7 @@ void Player::checkRunning(float dt)
 		{
 			movingRight = false;
 			movingLeft = true;
+			idling = false;
 			run.setPlaying(true);
 			run.setFlipped(true);
 			run.animate(dt);
@@ -564,6 +571,13 @@ bool Player::getMovingRight()
 bool Player::getMovingLeft()
 {
 	return movingLeft;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Player::getIdling()
+{
+	return idling;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

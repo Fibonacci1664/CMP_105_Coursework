@@ -26,14 +26,18 @@ public:
 	void render() override;
 	static void setMusicMuteAudio(bool l_muted);
 	static void setMusicStopped(bool l_stopped);
-	static void startMusic(sf::Music music, std::string type);
 
 private:
+	void initDebugMode();
+	void updatePlayerBoxes();
+	void updateTextOutput();
+
 	void checkTileCollisions();
 	void initPlayer();
 	void initPlayerSpriteTextures();
 	void initExitDoor();
 	void initTextBox();
+	
 	void initAudio();
 	void checkMusicMuted();
 	void checkMusicStopped();
@@ -44,19 +48,23 @@ private:
 	//void fadeInLevel();
 	void deathCheck();
 	void respawnPlayer();
+	void updateView(float& dt);
+	void initParallax();
+	void updateParallax(float& dt);
 	void initFireLampTexture();
 	void initFireLamps();
+	void updateLamps(float& dt);
+	void drawLamps();
+	void deleteLamps();
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
 	
-	FireLamp lamp_1;
-
-	//std::vector<FireLamp> lamps_1;
-	/*std::vector<FireLamp> lamps_2;
-	std::vector<FireLamp> lamps_3;
-	std::vector<FireLamp> lamps_4;*/
+	std::vector<FireLamp*> lamps_1;
+	std::vector<FireLamp*> lamps_2;
+	std::vector<FireLamp*> lamps_3;
+	std::vector<FireLamp*> lamps_4;
 
 	sf::Vector2f mousePos;
 
@@ -74,8 +82,23 @@ private:
 	sf::RectangleShape OriginBox;
 	sf::RectangleShape playerPosBox;
 	sf::RectangleShape textBox;
+
+	// Stand alone background composite of all 5 images.
 	sf::RectangleShape background;
 	sf::Texture bgTexture;
+
+	// 5 Images for parallax effect.
+	sf::RectangleShape parallaxSky;
+	sf::Texture parallaxSkyTexture;
+	sf::RectangleShape parallaxTrees;
+	sf::Texture parallaxTreesTexture;
+	sf::RectangleShape parallaxWindows;
+	sf::Texture parallaxWindowsTexture;
+	sf::RectangleShape parallaxDucts;
+	sf::Texture parallaxDuctsTexture;
+	sf::RectangleShape parallaxColumns;
+	sf::Texture parallaxColumnsTexture;
+
 	sf::Text text;
 	sf::Font font;
 	sf::View view;
@@ -83,4 +106,6 @@ private:
 	float scrollSpeed;
 	bool fadedOut;
 	bool fadedIn;
+	bool debugMode;
+	bool viewMoving;
 };

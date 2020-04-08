@@ -37,10 +37,10 @@ void FireLamp::addLampAnimFrames()
 		lamp_4.addFrame(sf::IntRect(768 + i, 0, LAMPS_FRAME_WIDTH, LAMPS_FRAME_HEIGHT));
 	}
 
-	lamp_1.setFrameSpeed(1.0f / 10.f);
-	lamp_2.setFrameSpeed(1.0f / 20.f);
-	lamp_3.setFrameSpeed(1.0f / 20.f);
-	lamp_4.setFrameSpeed(1.0f / 20.f);
+	lamp_1.setFrameSpeed(1.0f / 10.0f);
+	lamp_2.setFrameSpeed(1.0f / 10.0f);
+	lamp_3.setFrameSpeed(1.0f / 10.0f);
+	lamp_4.setFrameSpeed(1.0f / 10.0f);
 }
 
 Animation* FireLamp::getLamp_1()

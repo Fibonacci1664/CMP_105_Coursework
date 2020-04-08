@@ -86,8 +86,8 @@ void TileMapManager::createLargeGroundTiles()
 		largeGroundTile.setSize(sf::Vector2f(64, 64));
 		largeGroundTile.setCollisionBox(0, 0, 64, 64);
 		largeGroundTile.setCollider(true);
-		largeGroundTile.setOutlineColor(sf::Color::Magenta);
-		largeGroundTile.setOutlineThickness(1.0f);
+		/*largeGroundTile.setOutlineColor(sf::Color::Magenta);
+		largeGroundTile.setOutlineThickness(1.0f);*/
 		tiles.push_back(largeGroundTile);
 	}
 }
@@ -112,8 +112,8 @@ void TileMapManager::createColumnTiles()
 		columnTile.setSize(sf::Vector2f(64, 64));
 		columnTile.setCollisionBox(12, 0, 40, 64);
 		columnTile.setCollider(true);
-		columnTile.setOutlineColor(sf::Color::Magenta);
-		columnTile.setOutlineThickness(1.0f);
+		/*columnTile.setOutlineColor(sf::Color::Magenta);
+		columnTile.setOutlineThickness(1.0f);*/
 		tiles.push_back(columnTile);
 	}
 }
@@ -124,8 +124,8 @@ void TileMapManager::createSpikeTiles()
 	spikesTile.setSize(sf::Vector2f(64, 64));
 	spikesTile.setCollisionBox(0, 10, 64, 44);
 	spikesTile.setCollider(true);
-	spikesTile.setOutlineColor(sf::Color::Magenta);
-	spikesTile.setOutlineThickness(1.0f);
+	/*spikesTile.setOutlineColor(sf::Color::Magenta);
+	spikesTile.setOutlineThickness(1.0f);*/
 	tiles.push_back(spikesTile);
 }
 
