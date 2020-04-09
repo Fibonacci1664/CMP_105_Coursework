@@ -95,6 +95,7 @@ void Player::handleInput(float dt)
 	// If were WALKING LEFT.
 	if (input->isKeyDown(sf::Keyboard::A) && !input->isKeyDown(sf::Keyboard::D))
 	{
+		movingLeft = true;
 		checkMovingLeft(dt);
 	}
 
@@ -480,7 +481,6 @@ void Player::checkTileCollisions(GameObject* col)
 	sf::Vector2f tileCentre = sf::Vector2f((col->getPosition().x + (col->getSize().x / 2.0f)), (col->getPosition().y + (col->getSize().y / 2.0f)));
 	float xColBoxCentre = getCollisionBox().left + getCollisionBox().width / 2;
 	float yColBoxCentre = getCollisionBox().top + getCollisionBox().height / 2;
-
 	float xDiff = tileCentre.x - xColBoxCentre;
 	float yDiff = tileCentre.y - yColBoxCentre;			// Top will give me the y value.
 
@@ -534,6 +534,14 @@ void Player::checkTileCollisions(GameObject* col)
 			isJumping = false;
 			isFalling = false;
 		}
+	}
+}
+
+void Player::checkLiftCollisions(GameObject* col)
+{
+	if (Collision::checkBoundingBox(this, col))
+	{
+		checkTileCollisions(col);
 	}
 }
 

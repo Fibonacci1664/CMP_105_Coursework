@@ -23,14 +23,17 @@ private:
 	void createSmallGroundTiles();
 	void createColumnTiles();
 	void createSpikeTiles();
+	void createFlagTiles();
 	void createMap();
 
 	TileMap tileMap;
 	GameObject largeGroundTile;
 	GameObject smallGroundTile;
 	GameObject transparentTile;
-	GameObject spikesTile;
 	GameObject columnTile;
+	GameObject spikesTile;
+	GameObject flagTile;
+
 	std::vector<GameObject> tiles;
 	std::vector<GameObject>* world;
 };

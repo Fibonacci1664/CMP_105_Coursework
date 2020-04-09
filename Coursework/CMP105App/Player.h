@@ -19,6 +19,8 @@ public:
 
 	void collisionResponse(GameObject* collider);
 	bool checkExitDoorCollisions(GameObject* col);
+	void checkLiftCollisions(GameObject* col);
+
 
 	// Getters / Setters
 	bool getMovingRight();

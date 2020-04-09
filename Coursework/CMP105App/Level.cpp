@@ -6,6 +6,7 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	decr = 192;
 	debugMode = false;
 	//initDebugMode();
 
@@ -16,6 +17,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	fadedOut = false;
 	viewMoving = false;
 
+	initLifts();
 	initParallax();
 	initFireLampTexture();
 	initFireLamps();
@@ -41,11 +43,11 @@ void Level::initDebugMode()
 
 	initTextBox();
 
-	colBox.setFillColor(sf::Color(0, 0, 0, 0));
-	colBox.setOutlineColor(sf::Color::Red);
-	colBox.setOutlineThickness(1.0f);
-	colBox.setPosition(sf::Vector2f((player.getPosition().x + (player.getSize().x / 5)), player.getPosition().y + 18));
-	colBox.setSize(sf::Vector2f(30, 50));
+	playerColBox.setFillColor(sf::Color(0, 0, 0, 0));
+	playerColBox.setOutlineColor(sf::Color::Red);
+	playerColBox.setOutlineThickness(1.0f);
+	playerColBox.setPosition(sf::Vector2f((player.getPosition().x + (player.getSize().x / 5)), player.getPosition().y + 18));
+	playerColBox.setSize(sf::Vector2f(30, 50));
 
 	OriginBox.setFillColor(sf::Color(0, 0, 0, 0));
 	OriginBox.setOutlineColor(sf::Color::Green);
@@ -58,6 +60,12 @@ void Level::initDebugMode()
 	playerPosBox.setOutlineThickness(1.0f);
 	playerPosBox.setPosition(sf::Vector2f(player.getPosition().x, player.getPosition().y));
 	playerPosBox.setSize(sf::Vector2f(player.getSize().x, player.getSize().y));
+
+	lift_1ColBox.setSize(sf::Vector2f(lift_1.getCollisionBox().width, lift_1.getCollisionBox().height));
+	lift_1ColBox.setPosition(sf::Vector2f(lift_1.getPosition().x + 10, lift_1.getPosition().y + 15));
+	lift_1ColBox.setFillColor(sf::Color::Transparent);
+	lift_1ColBox.setOutlineColor(sf::Color::Magenta);
+	lift_1ColBox.setOutlineThickness(1.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +130,7 @@ void Level::update(float dt)
 	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 
+	moveLifts(dt);
 	updateLamps(dt);
 	checkMusicMuted();
 	checkMusicStopped();
@@ -129,6 +138,7 @@ void Level::update(float dt)
 	updateView(dt);
 	updateParallax(dt);	
 	checkTileCollisions();
+	checkLiftCollisions();
 	checkExitDoorCollisions();
 	deathCheck();
 
@@ -152,14 +162,20 @@ void Level::render()
 	window->draw(parallaxWindows);
 	window->draw(parallaxDucts);
 	window->draw(parallaxColumns);
-	tmm.render(window);
 	drawLamps();
+	tmm.render(window);
+	
+	window->draw(lift_1);
+	window->draw(lift_2);
+	window->draw(lift_3);
+	window->draw(lift_4);
+	window->draw(lift_1ColBox);
 	window->draw(player);
 	window->setView(view);
 
 	if (debugMode)
 	{
-		window->draw(colBox);
+		window->draw(playerColBox);
 		window->draw(OriginBox);
 		window->draw(playerPosBox);
 		window->draw(textBox);
@@ -190,15 +206,125 @@ void Level::endDraw()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Level::initLifts()
+{
+	if (!liftTexture.loadFromFile("gfx/level/lift.png"))
+	{
+		std::cerr << "Sorry could not load lift image!\n";
+	}
+	
+	lift_1.setSize(sf::Vector2f(64, 64));
+	lift_1.setVelocity(sf::Vector2f(0, 50));
+	lift_1.setTexture(&liftTexture);
+	lift_1.setCollisionBox(10, 15, 44, 34);
+	lift_1.setPosition(sf::Vector2f(200, 179));
+	
+	lift_2.setSize(sf::Vector2f(64, 64));
+	lift_2.setVelocity(sf::Vector2f(0, 50));
+	lift_2.setTexture(&liftTexture);
+	lift_2.setCollisionBox(10, 15, 44, 34);
+	lift_2.setPosition(sf::Vector2f(1150, 240));
+
+	lift_3.setSize(sf::Vector2f(64, 64));
+	lift_3.setVelocity(sf::Vector2f(0, 50));
+	lift_3.setTexture(&liftTexture);
+	lift_3.setCollisionBox(10, 15, 44, 34);
+	lift_3.setPosition(sf::Vector2f(1300, 290));
+
+	lift_4.setSize(sf::Vector2f(64, 64));
+	lift_4.setVelocity(sf::Vector2f(0, 50));
+	lift_4.setTexture(&liftTexture);
+	lift_4.setCollisionBox(10, 15, 44, 34);
+	lift_4.setPosition(sf::Vector2f(2450, 270));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::moveLifts(float& dt)
+{
+	lift_1.setPosition(sf::Vector2f(lift_1.getPosition().x, (lift_1.getPosition().y + (lift_1.getVelocity().y * dt))));
+	lift_2.setPosition(sf::Vector2f(lift_2.getPosition().x, (lift_2.getPosition().y + (lift_2.getVelocity().y * dt))));
+	lift_3.setPosition(sf::Vector2f(lift_3.getPosition().x, (lift_3.getPosition().y + (lift_3.getVelocity().y * dt))));
+	lift_4.setPosition(sf::Vector2f(lift_4.getPosition().x, (lift_4.getPosition().y + (lift_4.getVelocity().y * dt))));
+	//lift_1ColBox.setPosition(sf::Vector2f(lift_1.getPosition().x + 10, lift_1.getPosition().y + 15));
+
+	if (lift_1.getPosition().y > 300)
+	{
+		lift_1.setVelocity(sf::Vector2f(0, -50));
+	}
+
+	if (lift_1.getPosition().y < 180)
+	{
+		lift_1.setVelocity(sf::Vector2f(0, 50));
+	}
+
+	if (lift_2.getPosition().y > 300)
+	{
+		lift_2.setVelocity(sf::Vector2f(0, -50));
+	}
+
+	if (lift_2.getPosition().y < 180)
+	{
+		lift_2.setVelocity(sf::Vector2f(0, 50));
+	}
+
+	if (lift_3.getPosition().y > 300)
+	{
+		lift_3.setVelocity(sf::Vector2f(0, -50));
+	}
+
+	if (lift_3.getPosition().y < 180)
+	{
+		lift_3.setVelocity(sf::Vector2f(0, 50));
+	}
+
+	if (lift_4.getPosition().y > 384)
+	{
+		lift_4.setVelocity(sf::Vector2f(0, -50));
+	}
+
+	if (lift_4.getPosition().y < 120)
+	{
+		lift_4.setVelocity(sf::Vector2f(0, 50));
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkLiftCollisions()
+{
+	if (Collision::checkBoundingBox(&player, &lift_1))
+	{
+		player.collisionResponse(&lift_1);
+	}
+
+	if (Collision::checkBoundingBox(&player, &lift_2))
+	{
+		player.collisionResponse(&lift_2);
+	}
+
+	if (Collision::checkBoundingBox(&player, &lift_3))
+	{
+		player.collisionResponse(&lift_3);
+	}
+
+	if (Collision::checkBoundingBox(&player, &lift_4))
+	{
+		player.collisionResponse(&lift_4);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::updatePlayerBoxes()
 {
 	if (player.getMovingLeft())
 	{
-		colBox.setPosition(sf::Vector2f((player.getPosition().x + (player.getSize().x / 3)), player.getPosition().y + 18));
+		playerColBox.setPosition(sf::Vector2f((player.getPosition().x + (player.getSize().x / 3)), player.getPosition().y + 18));
 	}
 	else
 	{
-		colBox.setPosition(sf::Vector2f((player.getPosition().x + (player.getSize().x / 5)), player.getPosition().y + 18));
+		playerColBox.setPosition(sf::Vector2f((player.getPosition().x + (player.getSize().x / 5)), player.getPosition().y + 18));
 	}
 
 	playerPosBox.setPosition(sf::Vector2f(player.getPosition().x, player.getPosition().y));

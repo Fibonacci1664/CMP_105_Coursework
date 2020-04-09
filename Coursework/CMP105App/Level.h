@@ -38,10 +38,13 @@ private:
 	void initExitDoor();
 	void initTextBox();
 	
+	void initLifts();
+	void moveLifts(float& dt);
 	void initAudio();
 	void checkMusicMuted();
 	void checkMusicStopped();
 	void checkExitDoorCollisions();
+	void checkLiftCollisions();
 	void initTransFadeRect();
 	void initBackground();
 	void fadeOutLevel();
@@ -60,6 +63,13 @@ private:
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
+
+	// Lifts
+	GameObject lift_1;
+	GameObject lift_2;
+	GameObject lift_3;
+	GameObject lift_4;
+	sf::Texture liftTexture;
 	
 	std::vector<FireLamp*> lamps_1;
 	std::vector<FireLamp*> lamps_2;
@@ -72,16 +82,22 @@ private:
 	GameObject exitDoorColBox;
 	sf::Texture exitDoorTexture;
 
+	// For fading screens effects.
 	sf::RectangleShape transFade;
 
 	TileMapManager tmm;
 	sf::Texture fireLampTexture;
 	sf::Texture player_texture;
 	Player player;
-	sf::RectangleShape colBox;
+
+	// Debug stuff.
+	sf::RectangleShape playerColBox;
 	sf::RectangleShape OriginBox;
 	sf::RectangleShape playerPosBox;
+	sf::RectangleShape lift_1ColBox;
 	sf::RectangleShape textBox;
+	sf::Text text;
+	sf::Font font;
 
 	// Stand alone background composite of all 5 images.
 	sf::RectangleShape background;
@@ -98,11 +114,10 @@ private:
 	sf::Texture parallaxDuctsTexture;
 	sf::RectangleShape parallaxColumns;
 	sf::Texture parallaxColumnsTexture;
-
-	sf::Text text;
-	sf::Font font;
+	
 	sf::View view;
 
+	float decr;
 	float scrollSpeed;
 	bool fadedOut;
 	bool fadedIn;
