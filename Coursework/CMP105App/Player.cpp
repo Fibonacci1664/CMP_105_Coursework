@@ -434,7 +434,7 @@ void Player::checkAttacking(float dt)
 	{
 		if (!sfxMuted)
 		{
-			audioMan.playSoundbyName("up");
+			audioMan.playSoundbyName("attack");
 		}
 
 		attackDelay = 0;
@@ -563,8 +563,8 @@ void Player::updateCollisionBox()
 
 void Player::initAudio()
 {
-	audioMan.addSound("sfx/smb_jump-super.wav", "jump");
-	audioMan.addSound("sfx/smb_1-up.ogg", "up");
+	audioMan.addSound("sfx/player/jump.ogg", "jump");
+	audioMan.addSound("sfx/player/sword_attack.ogg", "attack");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

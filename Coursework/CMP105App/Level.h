@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "TileMapManager.h"
 #include "FireLamp.h"
+#include "Key.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
@@ -31,13 +32,11 @@ private:
 	void initDebugMode();
 	void updatePlayerBoxes();
 	void updateTextOutput();
-
 	void checkTileCollisions();
 	void initPlayer();
 	void initPlayerSpriteTextures();
 	void initExitDoor();
-	void initTextBox();
-	
+	void initTextBox();	
 	void initLifts();
 	void moveLifts(float& dt);
 	void initAudio();
@@ -48,14 +47,14 @@ private:
 	void initTransFadeRect();
 	void initBackground();
 	void fadeOutLevel();
-	//void fadeInLevel();
 	void deathCheck();
 	void respawnPlayer();
 	void updateView(float& dt);
 	void initParallax();
 	void updateParallax(float& dt);
-	void initFireLampTexture();
 	void initFireLamps();
+	void initKeys();
+	void updateKeys(float& dt);
 	void updateLamps(float& dt);
 	void drawLamps();
 	void deleteLamps();
@@ -64,18 +63,25 @@ private:
 	void beginDraw();
 	void endDraw();
 
-	// Lifts
+	// Lifts.
 	GameObject lift_1;
 	GameObject lift_2;
 	GameObject lift_3;
 	GameObject lift_4;
 	sf::Texture liftTexture;
+
+	// Keys.
+	Key key;
+	sf::Texture keyTexture;
 	
+	// Firelamps.
 	std::vector<FireLamp*> lamps_1;
 	std::vector<FireLamp*> lamps_2;
 	std::vector<FireLamp*> lamps_3;
 	std::vector<FireLamp*> lamps_4;
+	sf::Texture fireLampTexture;
 
+	// The mouse cursor position.
 	sf::Vector2f mousePos;
 
 	sf::RectangleShape exitDoor;
@@ -85,10 +91,12 @@ private:
 	// For fading screens effects.
 	sf::RectangleShape transFade;
 
+	// Tilmap.
 	TileMapManager tmm;
-	sf::Texture fireLampTexture;
-	sf::Texture player_texture;
+
+	// The player.
 	Player player;
+	sf::Texture player_texture;
 
 	// Debug stuff.
 	sf::RectangleShape playerColBox;
@@ -115,6 +123,7 @@ private:
 	sf::RectangleShape parallaxColumns;
 	sf::Texture parallaxColumnsTexture;
 	
+	// The 'camera' view.
 	sf::View view;
 
 	float decr;
@@ -123,4 +132,5 @@ private:
 	bool fadedIn;
 	bool debugMode;
 	bool viewMoving;
+	bool liftsOn;
 };

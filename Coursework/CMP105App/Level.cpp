@@ -16,10 +16,11 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedOut = false;
 	viewMoving = false;
+	liftsOn = false;
 
 	initLifts();
 	initParallax();
-	initFireLampTexture();
+	initKeys();
 	initFireLamps();
 	//initBackground();
 	initAudio();
@@ -130,13 +131,18 @@ void Level::update(float dt)
 	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 
-	moveLifts(dt);
-	updateLamps(dt);
+	if (liftsOn)
+	{
+		moveLifts(dt);
+	}
+
 	checkMusicMuted();
 	checkMusicStopped();
 	player.update(dt);
 	updateView(dt);
 	updateParallax(dt);	
+	updateLamps(dt);
+	updateKeys(dt);
 	checkTileCollisions();
 	checkLiftCollisions();
 	checkExitDoorCollisions();
@@ -163,13 +169,12 @@ void Level::render()
 	window->draw(parallaxDucts);
 	window->draw(parallaxColumns);
 	drawLamps();
-	tmm.render(window);
-	
+	tmm.render(window);	
 	window->draw(lift_1);
 	window->draw(lift_2);
 	window->draw(lift_3);
 	window->draw(lift_4);
-	window->draw(lift_1ColBox);
+	window->draw(key);
 	window->draw(player);
 	window->setView(view);
 
@@ -178,6 +183,7 @@ void Level::render()
 		window->draw(playerColBox);
 		window->draw(OriginBox);
 		window->draw(playerPosBox);
+		window->draw(lift_1ColBox);
 		window->draw(textBox);
 		window->draw(text);
 	}
@@ -521,18 +527,38 @@ void Level::drawLamps()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Level::initFireLampTexture()
+void Level::initKeys()
 {
-	if (!fireLampTexture.loadFromFile("gfx/level/fire_lamps.png"))
+	if (!keyTexture.loadFromFile("gfx/level/key.png"))
 	{
-		std::cerr << "Sorry could not load fire lamps image!\n";
+		std::cerr << "Sorry could not load key image!\n";
 	}
+
+	key.setWindow(window);
+	key.setSize(sf::Vector2f(64, 64));
+	key.setPosition(sf::Vector2f(64, 140));
+	key.setCollisionBox(32, 32, 20, 10);
+	key.setTexture(&keyTexture);
+	key.setTextureRect(key.getKeyAnimation()->getCurrentFrame());
+	key.getKeyAnimation()->setPlaying(true);
+	key.getKeyAnimation()->setLooping(true);
+}
+
+void Level::updateKeys(float& dt)
+{
+	key.getKeyAnimation()->animate(dt);
+	key.setTextureRect(key.getKeyAnimation()->getCurrentFrame());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::initFireLamps()
 {
+	if (!fireLampTexture.loadFromFile("gfx/level/fire_lamps.png"))
+	{
+		std::cerr << "Sorry could not load fire lamps image!\n";
+	}
+
 	// Create 10 fire lamps of type lamp_1, set them to play on loop.
 	for (int i = 0; i < 18; ++i)
 	{
@@ -645,7 +671,7 @@ void Level::initPlayer()
 	player.setInput(input);
 	player.setWindow(window);
 	player.setSize(sf::Vector2f(58.9f, 68));				// Max size to accomodate ALL sprites.	
-	player.setPosition(80, 80);
+	player.setPosition(70, 400);
 	player.setTexture(&player_texture);
 	player.setCollisionBox(50, 20, 30, 50);
 }
@@ -798,39 +824,6 @@ void Level::deathCheck()
 		setGameState(State::YOU_DIED);
 	}
 }
-
-
-
-// Although named fade in, whats actually occurring is the fading out of an opaque black coloured rectangle shape, the same size as the window, giving the appearance of the level 'fading in'.
-/*
- * CANNOT GET THIS TO WORK DUE TO HOW TO HOW LONG THE FADE TAKES WHICH MESSES UP THE
- * COLLISSION CHECKS AND THE PLAYER FALLS THROUGHT THE ENVIRONMENT. NEED A FIXED TIME STEP.
- */
-//void Level::fadeInLevel()
-//{
-//	float decrAlpha = 255;
-//
-//	//beginDraw();
-//
-//	while (decrAlpha > 0)
-//	{
-//		// Controls the speed of fade.
-//		decrAlpha -= 0.3f;
-//
-//		transFade.setFillColor(sf::Color(0, 0, 0, decrAlpha));
-//		tmm.render(window);
-//		window->draw(player);
-//		window->draw(colBox);
-//		window->draw(OriginBox);
-//		window->draw(playerPosBox);
-//		window->draw(textBox);
-//		window->draw(text);
-//		window->draw(transFade);
-//		endDraw();
-//	}
-//
-//	fadedIn = true;
-//}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
