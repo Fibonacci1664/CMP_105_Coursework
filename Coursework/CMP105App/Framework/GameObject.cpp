@@ -18,6 +18,7 @@
 GameObject::GameObject()
 {
 	input = nullptr;
+	indexPos = 0;
 }
 
 GameObject::~GameObject()
@@ -89,3 +90,14 @@ sf::FloatRect GameObject::getCollisionBox() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int GameObject::getIndex()
+{
+	//std::cout << "World tile index = " << indexPos << '\n';
+	return indexPos;
+}
+
+void GameObject::setIndex(int l_indexPos)
+{
+	indexPos = l_indexPos;
+}

@@ -31,6 +31,9 @@ public:
 	bool isAlive() { return alive; };
 	void setAlive(bool b) { alive = b; };
 
+	int getIndex();
+	void setIndex(int l_indexPos);
+
 	// For sprite collision, set collider box, get collider box, and dedicated virtual function for collision response.
 	bool isCollider() { return collider; };
 	void setCollider(bool b) { collider = b; };
@@ -62,4 +65,6 @@ protected:
 	// Window component.
 	// WHY SHOULD THIS BE DONE IN ENEMY CLASS AND NOT HERE?
 	sf::RenderWindow* window;
+
+	int indexPos;
 };

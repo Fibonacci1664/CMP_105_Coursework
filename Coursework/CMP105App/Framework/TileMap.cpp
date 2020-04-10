@@ -36,6 +36,11 @@ void TileMap::setTileSet(std::vector<GameObject> ts)
 	tileSet = ts;
 }
 
+std::vector<GameObject>* TileMap::getTileSet()
+{
+	return &tileSet;
+}
+
 // Receives and array of integers and map dimensions representing the map (where and what tiles to place).
 void TileMap::setTileMap(std::vector<int> tm, sf::Vector2u mapDimensions)
 {

@@ -16,7 +16,8 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedOut = false;
 	viewMoving = false;
-	liftsOn = false;
+	liftsOn = true;
+	paused = false;
 
 	initLifts();
 	initParallax();
@@ -118,7 +119,7 @@ void Level::handleInput(float dt)
 	{
 		input->setKeyUp(sf::Keyboard::P);
 		audio->playSoundbyName("scroll");
-		setGameState(State::PAUSE);
+		paused = true;
 	}
 }
 
@@ -192,6 +193,11 @@ void Level::render()
 	window->draw(exitDoorColBox);*/
 	
 	endDraw();
+
+	if (paused)
+	{
+		setGameState(State::PAUSE);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -832,6 +838,7 @@ void Level::respawnPlayer()
 	fadedOut = false;
 	player.setRespawned(true);
 	player.setIsDead(false);
+	player.setHitPoints(3);
 	player.setPosition(100, 100);
 }
 

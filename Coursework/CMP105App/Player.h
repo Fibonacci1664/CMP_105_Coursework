@@ -34,6 +34,7 @@ public:
 	void setRespawned(bool l_respawned);
 	int getLives();
 	void setLives(int l_lives);
+	void setHitPoints(int l_hitPoints);
 
 	// Might not need this but dont delete it yet! it could be handy for the player to be able to access gamestate.
 	/*void passAndSetCurrentSateFromScreen(GameState* currGameState);
@@ -64,6 +65,7 @@ private:
 	const int FRAME_HEIGHT = 680;
 
 	int lives;
+	int hitPoints;
 
 	float gravityScalar;
 	sf::Vector2f gravitationalAccel;
@@ -74,6 +76,7 @@ private:
 
 	float attackDelay;
 	float deathAnimDelay;
+	float hitPointReductionDelay;
 
 	State currentState;
 	GameState* currentGameState;

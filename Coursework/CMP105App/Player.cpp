@@ -24,6 +24,7 @@ Player::Player()
 
 	attackDelay = 0;
 	deathAnimDelay = 0;
+	hitPointReductionDelay = 0;
 	movingLeft = false;
 	movingRight = false;
 	idling = true;
@@ -34,6 +35,7 @@ Player::Player()
 	isDead = false;
 	respawned = false;
 	lives = 3;
+	hitPoints = 3;
 	setVelocity(sf::Vector2f(100, -350));
 	addFrames();
 	setTextureRect(idle.getCurrentFrame());
@@ -54,7 +56,9 @@ Player::~Player()
 // FUNCTIONS.
 void Player::handleInput(float dt)
 {
+	deathAnimDelay += dt;
 	attackDelay += dt;
+	hitPointReductionDelay += dt;
 	setAllAnimsFalse();
 
 	// If we've respawned we need to make sure we respawn facing the correct direction, then reset all values to there starting values.
@@ -144,7 +148,30 @@ void Player::handleInput(float dt)
 		isAttacking = false;
 	}
 
-	if (input->isKeyDown(sf::Keyboard::K))
+	if (isDead)
+	{
+		if (movingLeft)
+		{
+			death.setFlipped(true);
+		}
+		else
+		{
+			death.setFlipped(false);
+		}
+
+		death.setPlaying(true);
+		death.animate(dt);
+		setTextureRect(death.getCurrentFrame());
+
+		if (deathAnimDelay > 3)
+		{
+			//isDead = true;
+			deathAnimDelay = 0;
+			--lives;
+		}
+	}
+
+	/*if (input->isKeyDown(sf::Keyboard::K))
 	{
 		deathAnimDelay += dt;
 
@@ -167,7 +194,7 @@ void Player::handleInput(float dt)
 			deathAnimDelay = 0;
 			--lives;
 		}
-	}
+	}*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -464,7 +491,7 @@ bool Player::checkExitDoorCollisions(GameObject* col)
 {
 	if (Collision::checkBoundingBox(col, this))
 	{
-		std::cout << "this works!\n";
+		//std::cout << "this works!\n";
 
 		return true;		
 	}
@@ -476,7 +503,7 @@ bool Player::checkExitDoorCollisions(GameObject* col)
 
 void Player::checkTileCollisions(GameObject* col)
 {
-	std::cout << "Player collided with tile!\n";
+	//std::cout << "Player collided with tile!\n";
 
 	sf::Vector2f tileCentre = sf::Vector2f((col->getPosition().x + (col->getSize().x / 2.0f)), (col->getPosition().y + (col->getSize().y / 2.0f)));
 	float xColBoxCentre = getCollisionBox().left + getCollisionBox().width / 2;
@@ -494,40 +521,54 @@ void Player::checkTileCollisions(GameObject* col)
 	// X-axis collision.
 	if (std::abs(xDiff) > std::abs(yDiff))
 	{
-		std::cout << "X-axis collision!\n";
+		//std::cout << "X-axis collision!\n";
 
 		// Right hand side of tile collission.
 		if (xDiff < 0)
 		{
 			// THIS IS PERFECT NEVER CHANGE IT!
-			std::cout << "Right\n";
+			//std::cout << "Right\n";
 			stepVelocity.x = 0;
 			setPosition(sf::Vector2f((col->getCollisionBox().left + col->getCollisionBox().width + 1) - leftXDiff, getPosition().y));		// new version
 		}
 		else			// Left hand side of tile collision.
 		{
 			// THIS IS PERFECT DO NOT CHANGE!
-			std::cout << "Left\n";
+			//std::cout << "Left\n";
 			stepVelocity.x = 0;
 			setPosition(sf::Vector2f((col->getCollisionBox().left - getSize().x) + (rightXDiff - 1), getPosition().y));		// new version.
 		}
 	}
 	else				// Y-axis collision.
 	{
-		std::cout << "Y-axis collision!\n";
+		//std::cout << "Y-axis collision!\n";
 
 		// Bottom of tile collision.
 		if (yDiff < 0)
 		{
 			// THIS IS GOOD DO NOT CHANGE!
-			std::cout << "Bottom\n";
+			//std::cout << "Bottom\n";
 			stepVelocity.y = 0;
 			setPosition(sf::Vector2f(getPosition().x, (col->getPosition().y + col->getSize().y)));
 		}
 		else			// Top of tile collision.
 		{
+			// Check if we've collided with a spikes tile.
+			if (col->getIndex() == 25 && hitPointReductionDelay > 2)
+			{
+				std::cout << "Collided with spikes!\n";
+				--hitPoints;
+				audioMan.playSoundbyName("umph");
+				hitPointReductionDelay = 0;
+
+				if (hitPoints == 0)
+				{
+					isDead = true;
+				}
+			}
+
 			// THIS IS GOOD DO NOT CHANGE!
-			std::cout << "Top\n";
+			//std::cout << "Top\n";
 			stepVelocity.y = 0;
 			setPosition(sf::Vector2f(getPosition().x, col->getCollisionBox().top - getSize().y));
 			onGround = true;
@@ -565,6 +606,7 @@ void Player::initAudio()
 {
 	audioMan.addSound("sfx/player/jump.ogg", "jump");
 	audioMan.addSound("sfx/player/sword_attack.ogg", "attack");
+	audioMan.addSound("sfx/player/umph.ogg", "umph");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -669,3 +711,8 @@ void Player::setLives(int l_lives)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::setHitPoints(int l_hitPoints)
+{
+	hitPoints = l_hitPoints;
+}

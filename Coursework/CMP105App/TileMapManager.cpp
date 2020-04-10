@@ -2,10 +2,10 @@
 
 TileMapManager::TileMapManager()
 {
-	world = tileMap.getLevel();
 	initTexture();
 	createTileSet();
 	createMap();
+	world = tileMap.getLevel();
 }
 
 TileMapManager::~TileMapManager()
@@ -90,6 +90,7 @@ void TileMapManager::createLargeGroundTiles()
 		largeGroundTile.setSize(sf::Vector2f(64, 64));
 		largeGroundTile.setCollisionBox(0, 0, 64, 64);
 		largeGroundTile.setCollider(true);
+		largeGroundTile.setIndex(i + 1);
 		/*largeGroundTile.setOutlineColor(sf::Color::Magenta);
 		largeGroundTile.setOutlineThickness(1.0f);*/
 		tiles.push_back(largeGroundTile);
@@ -104,6 +105,7 @@ void TileMapManager::createSmallGroundTiles()
 		smallGroundTile.setSize(sf::Vector2f(64, 64));
 		smallGroundTile.setCollisionBox(5, 0, 59, 32);
 		smallGroundTile.setCollider(true);
+		smallGroundTile.setIndex(i + 9);
 		tiles.push_back(smallGroundTile);
 	}
 }
@@ -116,6 +118,7 @@ void TileMapManager::createColumnTiles()
 		columnTile.setSize(sf::Vector2f(64, 64));
 		columnTile.setCollisionBox(12, 0, 40, 64);
 		columnTile.setCollider(true);
+		columnTile.setIndex(i + 19);
 		/*columnTile.setOutlineColor(sf::Color::Magenta);
 		columnTile.setOutlineThickness(1.0f);*/
 		tiles.push_back(columnTile);
@@ -128,6 +131,7 @@ void TileMapManager::createSpikeTiles()
 	spikesTile.setSize(sf::Vector2f(64, 64));
 	spikesTile.setCollisionBox(0, 10, 64, 44);
 	spikesTile.setCollider(true);
+	spikesTile.setIndex(25);							// Set a unique identifier, its index pos. From research i could do this through std algo, but dont know enough yet.
 	/*spikesTile.setOutlineColor(sf::Color::Magenta);
 	spikesTile.setOutlineThickness(1.0f);*/
 	tiles.push_back(spikesTile);

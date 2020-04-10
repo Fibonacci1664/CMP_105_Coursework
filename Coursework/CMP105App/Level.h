@@ -133,4 +133,5 @@ private:
 	bool debugMode;
 	bool viewMoving;
 	bool liftsOn;
+	bool paused;
 };

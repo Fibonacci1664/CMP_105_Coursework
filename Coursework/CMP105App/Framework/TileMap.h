@@ -17,6 +17,9 @@ public:
 	bool loadTexture(const char* filename);
 	// Receives an array of GameObjects representing the tile set (in order)
 	void setTileSet(std::vector<GameObject> ts);
+
+	std::vector<GameObject>* getTileSet();
+
 	// Receives and array of integers and map dimensions representing the map (where and what tiles to place).
 	void setTileMap(std::vector<int> tm, sf::Vector2u mapDimensions);
 	// Once provided with the map and tile set, builds the level, creating an array of tile sprites positioned based on the map. Ready to render.
