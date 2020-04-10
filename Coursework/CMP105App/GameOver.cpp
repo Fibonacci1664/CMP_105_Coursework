@@ -9,6 +9,7 @@ GameOver::GameOver(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManage
 	fadedIn = false;
 	fadedOut = false;
 	switchedStates = false;
+	gameOver = false;
 
 	initGameOverRect();
 	initTransFadeRect();
@@ -45,7 +46,8 @@ void GameOver::update(float dt)
 	 */
 	if (fadedOut)
 	{
-		setGameState(State::MENU);
+		gameOver = true;
+		setGameState(State::MENU);		// This shouldn't even really matter as once game over is true, ALL objects in main are destroyed and new ones created.
 		switchedStates = true;
 		fadedIn = false;
 		audio->stopAllMusic();
@@ -180,3 +182,13 @@ void GameOver::fadeOut()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool GameOver::getGameOver()
+{
+	return gameOver;
+}
+
+void GameOver::setGameOver(bool l_gameOver)
+{
+	gameOver = l_gameOver;
+}

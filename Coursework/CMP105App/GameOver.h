@@ -17,6 +17,8 @@ public:
 	void handleInput(float dt) override;
 	void update(float dt) override;
 	void render() override;
+	bool getGameOver();
+	void setGameOver(bool l_gameOver);
 
 private:
 	sf::RectangleShape gameOverRect;
@@ -26,6 +28,7 @@ private:
 	bool fadedIn;
 	bool fadedOut;
 	bool switchedStates;
+	bool gameOver;
 
 	void initGameOverRect();
 	void initTransFadeRect();

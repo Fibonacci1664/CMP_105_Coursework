@@ -35,6 +35,7 @@ public:
 	int getLives();
 	void setLives(int l_lives);
 	void setHitPoints(int l_hitPoints);
+	void respawn();
 
 	// Might not need this but dont delete it yet! it could be handy for the player to be able to access gamestate.
 	/*void passAndSetCurrentSateFromScreen(GameState* currGameState);
@@ -90,6 +91,8 @@ private:
 	bool isAttacking;
 	bool isDead;
 	bool respawned;
+	bool flashRed;
+	float flashRedDelay;
 
 	// MEMBER FUNCTIONS.
 	void resetPlayerValues();
@@ -104,5 +107,6 @@ private:
 	void updateCollisionBox();
 	void checkTileCollisions(GameObject* col);
 	void initAudio();
+	void spikeCollision();
 };
 

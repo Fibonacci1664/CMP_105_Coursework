@@ -17,11 +17,13 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 // CONSTRUCTORS & DESTRUCTOR.
 Player::Player()
 {
 	initAudio();
-
+	flashRedDelay = 0;
 	attackDelay = 0;
 	deathAnimDelay = 0;
 	hitPointReductionDelay = 0;
@@ -34,9 +36,10 @@ Player::Player()
 	isAttacking = false;
 	isDead = false;
 	respawned = false;
+	flashRed = false;
 	lives = 3;
 	hitPoints = 3;
-	setVelocity(sf::Vector2f(100, -350));
+	setVelocity(sf::Vector2f(100, 0));				// This vel is used for movement.
 	addFrames();
 	setTextureRect(idle.getCurrentFrame());
 	idle.setPlaying(true);
@@ -56,16 +59,10 @@ Player::~Player()
 // FUNCTIONS.
 void Player::handleInput(float dt)
 {
+	hitPointReductionDelay += dt;
 	deathAnimDelay += dt;
 	attackDelay += dt;
-	hitPointReductionDelay += dt;
 	setAllAnimsFalse();
-
-	// If we've respawned we need to make sure we respawn facing the correct direction, then reset all values to there starting values.
-	if (respawned)
-	{
-		resetPlayerValues();	
-	}
 
 	// If were WALKING RIGHT.
 	if (input->isKeyDown(sf::Keyboard::D) && !input->isKeyDown(sf::Keyboard::A))
@@ -165,47 +162,41 @@ void Player::handleInput(float dt)
 
 		if (deathAnimDelay > 3)
 		{
-			//isDead = true;
 			deathAnimDelay = 0;
 			--lives;
 		}
 	}
-
-	/*if (input->isKeyDown(sf::Keyboard::K))
-	{
-		deathAnimDelay += dt;
-
-		if (movingLeft)
-		{
-			death.setFlipped(true);
-		}
-		else
-		{
-			death.setFlipped(false);
-		}
-
-		death.setPlaying(true);
-		death.animate(dt);
-		setTextureRect(death.getCurrentFrame());
-
-		if (deathAnimDelay > 3)
-		{
-			isDead = true;
-			deathAnimDelay = 0;
-			--lives;
-		}
-	}*/
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Player::update(float dt)
 {
+
 	// If were falling OR jumping then apply gravity.
 	if (isFalling || isJumping)
 	{
 		gravityFall(dt);
 	}	
+
+	if (flashRed)
+	{
+		setFillColor(sf::Color::Red);
+		flashRedDelay += dt;
+	}
+
+	if (flashRed && flashRedDelay > 0.1f)
+	{
+		flashRed = false;
+		setFillColor(sf::Color::White);
+		flashRedDelay = 0;
+	}
+
+	// If we've respawned we need to make sure we respawn facing the correct direction, then reset all values to there starting values.
+	if (respawned)
+	{
+		resetPlayerValues();
+	}
 
 	//checkGround();
 	updateCollisionBox();
@@ -479,7 +470,7 @@ void Player::collisionResponse(GameObject* col)
 	checkTileCollisions(col);
 
 
-	// Couldnt do this, what is below, as for every collision repsonse we recall every function, NO USE!
+	// Couldnt do this, what is below, as for every collision repsonse we'd recall every function, NO USE!
 	// Check object collisions
 	// Check enemy collisions
 	// Etc etc.
@@ -553,27 +544,59 @@ void Player::checkTileCollisions(GameObject* col)
 		}
 		else			// Top of tile collision.
 		{
-			// Check if we've collided with a spikes tile.
-			if (col->getIndex() == 25 && hitPointReductionDelay > 2)
+			// Check if we've collided with a spikes tile. Player can only be injured every second.
+			if (col->getIndex() == 25 && hitPointReductionDelay > 1.0f)
 			{
-				std::cout << "Collided with spikes!\n";
-				--hitPoints;
-				audioMan.playSoundbyName("umph");
-				hitPointReductionDelay = 0;
-
-				if (hitPoints == 0)
-				{
-					isDead = true;
-				}
+				spikeCollision();
 			}
+			else	// /If it's not a spike tile then it must be a normal ground tile.
+			{
+				// THIS IS GOOD DO NOT CHANGE!
+				//std::cout << "Top\n";
+				stepVelocity.y = 0;
+				setPosition(sf::Vector2f(getPosition().x, col->getCollisionBox().top - getSize().y));
+				onGround = true;
+				isJumping = false;
+				isFalling = false;
+			}		
+		}
+	}
+}
 
-			// THIS IS GOOD DO NOT CHANGE!
-			//std::cout << "Top\n";
-			stepVelocity.y = 0;
-			setPosition(sf::Vector2f(getPosition().x, col->getCollisionBox().top - getSize().y));
-			onGround = true;
-			isJumping = false;
-			isFalling = false;
+void Player::spikeCollision()
+{
+	std::cout << "Collided with spikes!\n";
+
+	--hitPoints;
+	audioMan.playSoundbyName("umph");
+	hitPointReductionDelay = 0;
+
+	if (movingRight)
+	{
+		/*
+		 * Check if the last spike collision caused our hit points to reach zero, this prevents the stepvelocity
+		 * being applied on the collision that causes death and prevent the player respawning with the applied step velocity.
+		 */
+		if (hitPoints == 0)
+		{
+			isDead = true;
+		}
+		else
+		{
+			flashRed = true;
+			stepVelocity = sf::Vector2f(-100, -300);
+		}
+	}
+	else if (movingLeft)
+	{
+		if (hitPoints == 0)
+		{
+			isDead = true;
+		}
+		else
+		{
+			flashRed = true;
+			stepVelocity = sf::Vector2f(100, -300);
 		}
 	}
 }
@@ -607,6 +630,16 @@ void Player::initAudio()
 	audioMan.addSound("sfx/player/jump.ogg", "jump");
 	audioMan.addSound("sfx/player/sword_attack.ogg", "attack");
 	audioMan.addSound("sfx/player/umph.ogg", "umph");
+}
+
+void Player::respawn()
+{
+	respawned = true;
+	isDead = false;
+	hitPoints = 3;
+	setPosition(sf::Vector2f(100, 100));
+	stepVelocity = sf::Vector2f(0, 0);
+	setFillColor(sf::Color::White);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

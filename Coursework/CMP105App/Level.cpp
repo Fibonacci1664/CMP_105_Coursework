@@ -153,7 +153,19 @@ void Level::update(float dt)
 	{
 		updatePlayerBoxes();
 		updateTextOutput();
-	}	
+	}
+
+
+	// TEST CHECK FOR KEY AND CREATING A NEW GAME.
+	if (Collision::checkBoundingBox(&key, &player))
+	{
+		key.setPosition(sf::Vector2f(300, 400));
+	}
+
+
+
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -836,10 +848,7 @@ void Level::deathCheck()
 void Level::respawnPlayer()
 {
 	fadedOut = false;
-	player.setRespawned(true);
-	player.setIsDead(false);
-	player.setHitPoints(3);
-	player.setPosition(100, 100);
+	player.respawn();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
