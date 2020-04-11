@@ -4,6 +4,7 @@
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
+#include "Framework/GameObject.h"
 #include <string>
 #include <iostream>
 #include "Screen.h"
@@ -19,35 +20,7 @@ public:
 	void render() override;
 
 private:
-	sf::Vector2f mousePos;
-	bool quitClicked;
-	bool mainMenuClicked;
-	bool continueClicked;
-	bool pressedLetterP;
-
-	sf::RectangleShape pausedTextBox;
-	sf::Texture pausedTexture;
-
-	sf::RectangleShape scrollBox;
-	sf::Texture scrollTexture;
-
-	sf::RectangleShape mainMenuButton;
-	sf::Texture mainMenuButtonTexture;
-	sf::Texture mainMenuButtonHoverTexture;
-	sf::Texture mainMenuButtonClickedTexture;
-
-	sf::RectangleShape continueButton;
-	sf::Texture continueButtonTexture;
-	sf::Texture continueButtonHoverTexture;
-	sf::Texture continueButtonClickedTexture;
-
-	sf::RectangleShape quitButton;
-	sf::Texture quitButtonTexture;
-	sf::Texture quitButtonHoverTexture;
-	sf::Texture quitButtonClickedTexture;
-
-	sf::RectangleShape transLayer;
-
+	// Init stuff.
 	void initAudio();
 	void initPauseText();
 	void initScroll();
@@ -55,13 +28,52 @@ private:
 	void initContinueButton();
 	void initQuitButton();
 	void initTransLayer();
+
+	// Check stuff.
 	void checkMainMenuButtonCollisions();
 	void checkContinueCollisions();
 	void checkQuitButtonCollisions();
 
+	// Update stuff.
+	void updatePauseMenuPosition();
+
+	// Misc.
 
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
+
+	sf::Vector2f mousePos;
+	bool quitClicked;
+	bool mainMenuClicked;
+	bool continueClicked;
+	bool pressedLetterP;
+	bool unpaused;
+
+	sf::RectangleShape pausedTextBox;
+	sf::Texture pausedTexture;
+
+	sf::RectangleShape scrollBox;
+	sf::Texture scrollTexture;
+
+	GameObject mainMenuButton;
+	sf::Texture mainMenuButtonTexture;
+	sf::Texture mainMenuButtonHoverTexture;
+	sf::Texture mainMenuButtonClickedTexture;
+
+	GameObject continueButton;
+	sf::Texture continueButtonTexture;
+	sf::Texture continueButtonHoverTexture;
+	sf::Texture continueButtonClickedTexture;
+
+	GameObject quitButton;
+	sf::Texture quitButtonTexture;
+	sf::Texture quitButtonHoverTexture;
+	sf::Texture quitButtonClickedTexture;
+
+	sf::RectangleShape transLayer;
+
+	sf::View originalViewPos;
+	float xTranslation;
 };

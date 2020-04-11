@@ -1,25 +1,4 @@
-﻿  GameOver.cpp
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:             T=unsigned int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:         and
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,71): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:             T=unsigned int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:         and
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(132,50): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(154,45): warning C4244:  'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-  Level.cpp
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\GameOver.cpp(175,45): warning C4244:  'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
+﻿  Level.cpp
 D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(16,62): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
 D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(16,62): warning C4244:         with
 D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(16,62): warning C4244:         [
@@ -30,117 +9,44 @@ D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\
 D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(16,42): warning C4244:         [
 D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(16,42): warning C4244:             T=float
 D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(16,42): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:             T=unsigned int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:         and
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(85,55): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,62): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,62): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,62): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,62): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,62): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,42): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,42): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,42): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,42): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(133,42): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(588,55): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(588,55): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(588,55): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(588,55): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(588,55): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(603,56): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(603,56): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(603,56): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(603,56): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(603,56): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(618,55): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(618,55): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(618,55): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(618,55): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(618,55): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(633,56): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(633,56): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(633,56): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(633,56): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(633,56): warning C4244:         ]
-  Main.cpp
-  Options.cpp
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(813,45): warning C4244:  'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,62): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,62): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,62): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,62): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,62): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,42): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,42): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,42): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,42): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(45,42): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:             T=unsigned int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:         and
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,83): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:             T=unsigned int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:         and
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(116,58): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(139,49): warning C4305:  'argument': truncation from 'double' to 'T'
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(139,49): warning C4305:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(139,49): warning C4305:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(139,49): warning C4305:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(139,49): warning C4305:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(149,47): warning C4305:  'argument': truncation from 'double' to 'T'
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(149,47): warning C4305:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(149,47): warning C4305:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(149,47): warning C4305:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(149,47): warning C4305:         ]
-  Player.cpp
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(159,47): warning C4305:  'argument': truncation from 'double' to 'T'
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(159,47): warning C4305:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(159,47): warning C4305:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(159,47): warning C4305:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Options.cpp(159,47): warning C4305:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(269,46): warning C4244:  'argument': conversion from 'float' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(269,46): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(269,46): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(269,46): warning C4244:             T=int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(269,46): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(275,46): warning C4244:  'argument': conversion from 'double' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(275,46): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(275,46): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(275,46): warning C4244:             T=int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(275,46): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(281,45): warning C4244:  'argument': conversion from 'double' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(281,45): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(281,45): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(281,45): warning C4244:             T=int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(281,45): warning C4244:         ]
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(287,46): warning C4244:  'argument': conversion from 'double' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(287,46): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(287,46): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(287,46): warning C4244:             T=int
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(287,46): warning C4244:         ]
-  TileMapManager.cpp
-  Generating Code...
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(404,44): warning C4244:  'argument': conversion from 'double' to 'T', possible loss of data
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(404,44): warning C4244:         with
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(404,44): warning C4244:         [
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(404,44): warning C4244:             T=float
-D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Player.cpp(404,44): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:  'argument': conversion from 'T' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:             T=unsigned int
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:         and
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(88,55): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,62): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,62): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,62): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,62): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,62): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,42): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,42): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,42): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,42): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(136,42): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(616,55): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(616,55): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(616,55): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(616,55): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(616,55): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(631,56): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(631,56): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(631,56): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(631,56): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(631,56): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(646,55): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(646,55): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(646,55): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(646,55): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(646,55): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(661,56): warning C4244:  'argument': conversion from 'int' to 'T', possible loss of data
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(661,56): warning C4244:         with
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(661,56): warning C4244:         [
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(661,56): warning C4244:             T=float
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(661,56): warning C4244:         ]
+D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\CMP105App\Level.cpp(829,45): warning C4244:  'argument': conversion from 'float' to 'sf::Uint8', possible loss of data
   CMP105App.vcxproj -> D:\Documents\_Abertay_Uni\_Game_Tech_Degree\Year_1\Semester_2\Games_Programming\Assignment\Coursework\x64\Debug\CMP105App.exe

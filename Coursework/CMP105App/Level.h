@@ -12,9 +12,12 @@
 #include "TileMapManager.h"
 #include "FireLamp.h"
 #include "Key.h"
+#include "ExitDoor.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
+// The 'camera' view.
+static sf::View view;
 
 class Level : public Screen
 {
@@ -25,37 +28,50 @@ public:
 	void handleInput(float dt) override;
 	void update(float dt) override;
 	void render() override;
+
+	bool getGameOver();
+	void setGameOver(bool l_gameOver);
+
+	static sf::View getView();
 	static void setMusicMuteAudio(bool l_muted);
 	static void setMusicStopped(bool l_stopped);
 
+
 private:
+	// Init stuff.
 	void initDebugMode();
-	void updatePlayerBoxes();
-	void updateTextOutput();
-	void checkTileCollisions();
 	void initPlayer();
 	void initPlayerSpriteTextures();
-	void initExitDoor();
-	void initTextBox();	
+	void initTextBox();
 	void initLifts();
-	void moveLifts(float& dt);
 	void initAudio();
-	void checkMusicMuted();
-	void checkMusicStopped();
-	void checkExitDoorCollisions();
-	void checkLiftCollisions();
 	void initTransFadeRect();
 	void initBackground();
-	void fadeOutLevel();
-	void deathCheck();
-	void respawnPlayer();
-	void updateView(float& dt);
 	void initParallax();
-	void updateParallax(float& dt);
 	void initFireLamps();
 	void initKeys();
+	void initExitDoor();
+
+	// Check stuff.
+	void checkMusicMuted();
+	void checkMusicStopped();
+	void checkExitDoorCollisions(float& dt);
+	void checkLiftCollisions();
+	void checkTileCollisions();
+
+	// Update stuff.
+	void updatePlayerBoxes();
+	void updateTextOutput();
+	void updateView(float& dt);
+	void updateParallax(float& dt);
 	void updateKeys(float& dt);
 	void updateLamps(float& dt);
+	
+	// Misc.
+	void moveLifts(float& dt);	
+	void fadeOutLevel();
+	void deathCheck();
+	void respawnPlayer();	
 	void drawLamps();
 	void deleteLamps();
 
@@ -73,6 +89,10 @@ private:
 	// Keys.
 	Key key;
 	sf::Texture keyTexture;
+
+	// Exit door
+	ExitDoor exitDoor;
+	sf::Texture exitDoorTexture;
 	
 	// Firelamps.
 	std::vector<FireLamp*> lamps_1;
@@ -83,10 +103,6 @@ private:
 
 	// The mouse cursor position.
 	sf::Vector2f mousePos;
-
-	sf::RectangleShape exitDoor;
-	GameObject exitDoorColBox;
-	sf::Texture exitDoorTexture;
 
 	// For fading screens effects.
 	sf::RectangleShape transFade;
@@ -123,8 +139,7 @@ private:
 	sf::RectangleShape parallaxColumns;
 	sf::Texture parallaxColumnsTexture;
 	
-	// The 'camera' view.
-	sf::View view;
+	
 
 	float decr;
 	float scrollSpeed;
@@ -134,4 +149,6 @@ private:
 	bool viewMoving;
 	bool liftsOn;
 	bool paused;
+	bool gameOver;
+	bool escaped;
 };

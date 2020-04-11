@@ -18,7 +18,10 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	viewMoving = false;
 	liftsOn = true;
 	paused = false;
+	gameOver = false;
+	escaped = false;
 
+	initExitDoor();
 	initLifts();
 	initParallax();
 	initKeys();
@@ -26,7 +29,6 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	//initBackground();
 	initAudio();
 	initPlayerSpriteTextures();
-	//initExitDoor();
 	initTransFadeRect();
 	initPlayer();	
 }
@@ -72,6 +74,7 @@ void Level::initDebugMode()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// For debugging.
 void Level::initTextBox()
 {
 	if (!font.loadFromFile("font/arial.ttf"))
@@ -128,7 +131,7 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
-	// Keep updating the transparent panel to the current location of the view for when death occurs.
+	// Keep updating the transparent fade panel to the current location of the view for when death, game over or escape occurs.
 	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 
@@ -146,7 +149,7 @@ void Level::update(float dt)
 	updateKeys(dt);
 	checkTileCollisions();
 	checkLiftCollisions();
-	checkExitDoorCollisions();
+	checkExitDoorCollisions(dt);
 	deathCheck();
 
 	if (debugMode)
@@ -161,11 +164,6 @@ void Level::update(float dt)
 	{
 		key.setPosition(sf::Vector2f(300, 400));
 	}
-
-
-
-
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,6 +186,7 @@ void Level::render()
 	window->draw(lift_3);
 	window->draw(lift_4);
 	window->draw(key);
+	window->draw(exitDoor);
 	window->draw(player);
 	window->setView(view);
 
@@ -208,7 +207,17 @@ void Level::render()
 
 	if (paused)
 	{
+		//fadeOutLevel();
+		//view.reset(sf::FloatRect(0.0f, 0.0f, 960, 512));
 		setGameState(State::PAUSE);
+		paused = false;
+	}
+
+	if (escaped)
+	{
+		fadeOutLevel();						// Fade to black.
+		view.reset(sf::FloatRect(0.0f, 0.0f, 960, 512));
+		setGameState(State::YOU_ESCAPED);
 	}
 }
 
@@ -562,10 +571,29 @@ void Level::initKeys()
 	key.getKeyAnimation()->setLooping(true);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::updateKeys(float& dt)
 {
 	key.getKeyAnimation()->animate(dt);
 	key.setTextureRect(key.getKeyAnimation()->getCurrentFrame());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::initExitDoor()
+{
+	if (!exitDoorTexture.loadFromFile("gfx/level/exitDoor.png"))
+	{
+		std::cerr << "Sorry could not load the exit door image!\n";
+	}
+
+	exitDoor.setWindow(window);
+	exitDoor.setSize(sf::Vector2f(128, 128));
+	exitDoor.setPosition(sf::Vector2f(2703, 345));
+	exitDoor.setCollisionBox(32, 32, 64, 64);
+	exitDoor.setTexture(&exitDoorTexture);
+	exitDoor.setTextureRect(exitDoor.getExitDoorAnimation()->getCurrentFrame());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -696,35 +724,23 @@ void Level::initPlayer()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Level::initExitDoor()
+void Level::checkExitDoorCollisions(float& dt)
 {
-	if (!exitDoorTexture.loadFromFile("gfx/level/exit_door.png"))
+	if (Collision::checkBoundingBox(&exitDoor, &player))
 	{
-		std::cerr << "Sorry could not load the exit door image!\n";
-	}
+		exitDoor.getExitDoorAnimation()->setPlaying(true);
+		exitDoor.getExitDoorAnimation()->animate(dt);
+		exitDoor.setTextureRect(exitDoor.getExitDoorAnimation()->getCurrentFrame());
 
-	exitDoor.setSize(sf::Vector2f(102.4f, 102.4f));
-	exitDoor.setOrigin(sf::Vector2f(exitDoor.getSize().x / 2.0f, exitDoor.getSize().y / 2.0f));
-	exitDoor.setPosition(sf::Vector2f(400, window->getSize().y - (32 + exitDoor.getSize().y / 2.0f)));
-	//exitDoor.setPosition(sf::Vector2f(400, 100));
-	exitDoor.setTexture(&exitDoorTexture);
+		// If we get to frame 5 we've played the whole animation, so exit.
+		if (exitDoor.getExitDoorAnimation()->getCurrentFrameNumber() == 4)
+		{
+			gameOver = true;
+			escaped = true;
+		}
 
-	exitDoorColBox.setSize(sf::Vector2f(25, 25));
-	exitDoorColBox.setOrigin(exitDoorColBox.getSize().x / 2.0f, exitDoorColBox.getSize().y / 2.0f);
-	exitDoorColBox.setPosition(sf::Vector2f(exitDoor.getPosition().x, exitDoor.getPosition().y + 20));
-	exitDoorColBox.setFillColor(sf::Color::Transparent);
-	exitDoorColBox.setOutlineColor(sf::Color::Red);
-	exitDoorColBox.setOutlineThickness(1.0f);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Level::checkExitDoorCollisions()
-{
-	if (player.checkExitDoorCollisions(&exitDoorColBox))
-	{
-		audio->stopAllMusic();
-		setGameState(State::YOU_ESCAPED);
+		//audio->stopAllMusic();
+		
 	}
 }
 
@@ -849,6 +865,27 @@ void Level::respawnPlayer()
 {
 	fadedOut = false;
 	player.respawn();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Level::getGameOver()
+{
+	return gameOver;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::setGameOver(bool l_gameOver)
+{
+	gameOver = l_gameOver;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+sf::View Level::getView()
+{
+	return view;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
