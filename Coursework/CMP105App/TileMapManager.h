@@ -24,6 +24,8 @@ private:
 	void createColumnTiles();
 	void createSpikeTiles();
 	void createFlagTiles();
+	void createTinyPlatformTile();
+	void createSecretInvisibleTile();
 	void createMap();
 
 	TileMap tileMap;
@@ -33,6 +35,8 @@ private:
 	GameObject columnTile;
 	GameObject spikesTile;
 	GameObject flagTile;
+	GameObject tinyPlatformTile;
+	GameObject secretInvisbleTile;
 
 	std::vector<GameObject> tiles;
 	std::vector<GameObject>* world;

@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="ExitDoor.cpp" />
     <ClCompile Include="FireLamp.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Framework\TileMap.cpp" />
     <ClCompile Include="Framework\Vector.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="HitPoint.cpp" />
     <ClCompile Include="HowToPlay.cpp" />
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -189,6 +191,7 @@
     <Text Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="ExitDoor.h" />
     <ClInclude Include="FireLamp.h" />
     <ClInclude Include="Framework\Animation.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="Framework\TileMap.h" />
     <ClInclude Include="Framework\Vector.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="HitPoint.h" />
     <ClInclude Include="HowToPlay.h" />
     <ClInclude Include="Key.h" />
     <ClInclude Include="Level.h" />

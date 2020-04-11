@@ -13,6 +13,8 @@
 #include "FireLamp.h"
 #include "Key.h"
 #include "ExitDoor.h"
+#include "HitPoint.h"
+#include "Coin.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
@@ -51,6 +53,8 @@ private:
 	void initFireLamps();
 	void initKeys();
 	void initExitDoor();
+	void initHitPoints();
+	void initCoins();
 
 	// Check stuff.
 	void checkMusicMuted();
@@ -66,14 +70,24 @@ private:
 	void updateParallax(float& dt);
 	void updateKeys(float& dt);
 	void updateLamps(float& dt);
+	void updateHitPoints(float& dt);
+	void updateCoins(float& dt);
 	
+	// Draw stuff.
+	void drawLamps();
+	void drawHitPoints();
+	void drawCoins();
+
+	// Delete stuff.
+	void deleteLamps();
+	void deleteHitPoints();
+	void deleteCoins();
+
 	// Misc.
 	void moveLifts(float& dt);	
 	void fadeOutLevel();
 	void deathCheck();
-	void respawnPlayer();	
-	void drawLamps();
-	void deleteLamps();
+	void respawnPlayer();		
 
 	// Default functions for rendering to the screen.
 	void beginDraw();
@@ -93,6 +107,14 @@ private:
 	// Exit door
 	ExitDoor exitDoor;
 	sf::Texture exitDoorTexture;
+
+	// Hit point
+	std::vector<HitPoint*> hitPoints;
+	sf::Texture hpTexture;
+
+	// Coins
+	std::vector<Coin*> coins;
+	sf::Texture coinTexture;
 	
 	// Firelamps.
 	std::vector<FireLamp*> lamps_1;

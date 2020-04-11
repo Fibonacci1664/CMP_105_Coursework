@@ -29,6 +29,9 @@ void TileMapManager::createTileSet()
 	createColumnTiles();
 	createSpikeTiles();
 	createFlagTiles();
+	createTinyPlatformTile();
+	createSecretInvisibleTile();
+
 
 	// Transprent tile.
 	tiles[0].setTextureRect(sf::IntRect(576, 320, 64, 64));		// Num 0 tile, bottom right corner.			DONE
@@ -70,6 +73,12 @@ void TileMapManager::createTileSet()
 
 	// Flag tile
 	tiles[26].setTextureRect(sf::IntRect(384, 320, 64, 64));	// Num 26 tile, on my env num map = 51		DONE
+
+	// Tiny platform tile.
+	tiles[27].setTextureRect(sf::IntRect(320, 256, 64, 64));	// Num 27 tile, on my env num map = 41		DONE
+
+	// Secret invisible tile.
+	tiles[28].setTextureRect(sf::IntRect(512, 321, 64, 63));		// Num 28 tile, on my env num map = 0, Just after 53, before the corner.		DONE
 
 	tileMap.setTileSet(tiles);
 }
@@ -146,6 +155,24 @@ void TileMapManager::createFlagTiles()
 	tiles.push_back(flagTile);
 }
 
+void TileMapManager::createTinyPlatformTile()
+{
+	tinyPlatformTile.setSize(sf::Vector2f(64, 64));
+	tinyPlatformTile.setCollisionBox(10, 0, 44, 32);
+	tinyPlatformTile.setCollider(true);
+	tinyPlatformTile.setIndex(27);
+	tiles.push_back(tinyPlatformTile);
+}
+
+void TileMapManager::createSecretInvisibleTile()
+{
+	secretInvisbleTile.setSize(sf::Vector2f(64, 64));
+	secretInvisbleTile.setCollisionBox(12, 0, 12, 63);
+	secretInvisbleTile.setCollider(true);
+	secretInvisbleTile.setIndex(28);
+	tiles.push_back(secretInvisbleTile);
+}
+
 void TileMapManager::createMap()
 {
 	// Map dimensions.
@@ -159,7 +186,7 @@ void TileMapManager::createMap()
 	14,	15,	16,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	17,	18,	0,	9,	11,	0,	0,	0,	20,	0,	0,	23,
 	22, 0,	0,	0,	0,	0,	0,	0,	19,	0,	1,	3,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	2,	3,	0,	0,	0,	0,	0,	0,	0,	0,	0,	20,	0,	0,	23,
 	23, 0,	0,	0,	0,	0,	19,	0,	20,	0,	9,	11,	0,	17,	18,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	3,	0,	6,	7,	8,	0,	0,	0,	0,	0,	0,	0,	0,	0,	20,	0,	0,	23,
-	24, 0,	26,	0,	19,	0,	20,	0,	20,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	17,	18,	0,	9,	11,	0,	9,	10,	11,	0,	0,	0,	0,	0,	0,	0,	0,	0,	20,	0,	0,	24,
+	24, 0,	26,	0,	19,	0,	20,	0,	20,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	17,	18,	0,	9,	11,	0,	9,	10,	11,	0,	27,	0,	0,	0,	0,	0,	0,	28,	20,	0,	0,	24,
 	1,	2,	3,	25,	21,	25,	21,	25,	21,	25,	25,	25,	25,	25,	25, 1,	2,	2,	2,	2,	2,	3,	25,	25,	25,	25,	25, 25,	25,	25,	25,	25,	25, 25,	25,	25,	1,	3, 25,	25,	25,	21,	1,	2,	3,
 	};
 

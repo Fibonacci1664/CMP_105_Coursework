@@ -21,6 +21,8 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	gameOver = false;
 	escaped = false;
 
+	initCoins();
+	initHitPoints();
 	initExitDoor();
 	initLifts();
 	initParallax();
@@ -147,6 +149,8 @@ void Level::update(float dt)
 	updateParallax(dt);	
 	updateLamps(dt);
 	updateKeys(dt);
+	updateHitPoints(dt);
+	updateCoins(dt);
 	checkTileCollisions();
 	checkLiftCollisions();
 	checkExitDoorCollisions(dt);
@@ -186,7 +190,11 @@ void Level::render()
 	window->draw(lift_3);
 	window->draw(lift_4);
 	window->draw(key);
+	drawHitPoints();
+	drawCoins();
 	window->draw(exitDoor);
+
+	//window->draw(hp);
 	window->draw(player);
 	window->setView(view);
 
@@ -594,6 +602,95 @@ void Level::initExitDoor()
 	exitDoor.setCollisionBox(32, 32, 64, 64);
 	exitDoor.setTexture(&exitDoorTexture);
 	exitDoor.setTextureRect(exitDoor.getExitDoorAnimation()->getCurrentFrame());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::initHitPoints()
+{
+	if (!hpTexture.loadFromFile("gfx/level/hitPoint.png"))
+	{
+		std::cerr << "Sorry could not load hit point image!\n";
+	}
+
+	// Create 3 hit points.
+	for (int i = 0; i < 3; ++i)
+	{
+		HitPoint* hp = new HitPoint;
+		hitPoints.push_back(hp);
+
+		hitPoints[i]->setWindow(window);
+		hitPoints[i]->setSize(sf::Vector2f(32, 32));
+		hitPoints[i]->setCollisionBox(0, 0, 32, 32);
+		hitPoints[i]->setTexture(&hpTexture);
+		hitPoints[i]->setTextureRect(hp->getHitPointAnimation()->getCurrentFrame());
+	}
+
+	hitPoints[0]->setPosition(sf::Vector2f(82, 80));
+	hitPoints[1]->setPosition(sf::Vector2f(970, 64));
+	hitPoints[2]->setPosition(sf::Vector2f(2127, 320));
+}
+
+void Level::updateHitPoints(float& dt)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		hitPoints[i]->getHitPointAnimation()->animate(dt);
+		hitPoints[i]->setTextureRect(hitPoints[i]->getHitPointAnimation()->getCurrentFrame());
+	}
+}
+
+void Level::drawHitPoints()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		window->draw(*hitPoints[i]);
+	}
+}
+
+void Level::initCoins()
+{
+	if (!coinTexture.loadFromFile("gfx/level/coin.png"))
+	{
+		std::cerr << "Sorry could not load coin image!\n";
+	}
+
+	// Create 6 coins.
+	for (int i = 0; i < 6; ++i)
+	{
+		Coin* coin = new Coin;
+		coins.push_back(coin);
+
+		coins[i]->setWindow(window);
+		coins[i]->setSize(sf::Vector2f(32, 32));
+		coins[i]->setCollisionBox(0, 0, 32, 32);
+		coins[i]->setTexture(&coinTexture);
+		coins[i]->setTextureRect(coin->getCoinAnimation()->getCurrentFrame());
+	}
+
+	coins[0]->setPosition(sf::Vector2f(525, 128));
+	coins[1]->setPosition(sf::Vector2f(910, 64));
+	coins[2]->setPosition(sf::Vector2f(1030, 64));
+	coins[3]->setPosition(sf::Vector2f(1523, 192));
+	coins[4]->setPosition(sf::Vector2f(2163, 64));
+	coins[5]->setPosition(sf::Vector2f(2575, 320));
+}
+
+void Level::updateCoins(float& dt)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		coins[i]->getCoinAnimation()->animate(dt);
+		coins[i]->setTextureRect(coins[i]->getCoinAnimation()->getCurrentFrame());
+	}
+}
+
+void Level::drawCoins()
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		window->draw(*coins[i]);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
