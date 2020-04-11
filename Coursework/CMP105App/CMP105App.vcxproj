@@ -171,6 +171,7 @@
     <ClCompile Include="Framework\TileMap.cpp" />
     <ClCompile Include="Framework\Vector.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="Heart.cpp" />
     <ClCompile Include="HitPoint.cpp" />
     <ClCompile Include="HowToPlay.cpp" />
     <ClCompile Include="Key.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Splash.cpp" />
     <ClCompile Include="TileMapManager.cpp" />
+    <ClCompile Include="UIPanel.cpp" />
     <ClCompile Include="YouDied.cpp" />
     <ClCompile Include="YouEscaped.cpp" />
   </ItemGroup>
@@ -205,6 +207,7 @@
     <ClInclude Include="Framework\TileMap.h" />
     <ClInclude Include="Framework\Vector.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Heart.h" />
     <ClInclude Include="HitPoint.h" />
     <ClInclude Include="HowToPlay.h" />
     <ClInclude Include="Key.h" />
@@ -216,6 +219,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Splash.h" />
     <ClInclude Include="TileMapManager.h" />
+    <ClInclude Include="UIPanel.h" />
     <ClInclude Include="YouDied.h" />
     <ClInclude Include="YouEscaped.h" />
   </ItemGroup>

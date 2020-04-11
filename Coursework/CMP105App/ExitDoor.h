@@ -16,9 +16,9 @@ private:
 	// Everthing to do with exit door animations.
 	Animation exitDoor;
 
-	const int KEY_FRAME_WIDTH = 128;
-	const int KEY_FRAME_HEIGHT = 128;
-	const int key_frames = 5;
+	const int EXITDOOR_FRAME_WIDTH = 128;
+	const int EXITDOOR_FRAME_HEIGHT = 128;
+	const int exitDoor_frames = 5;
 
 	void addExitDoorAnimFrames();
 };

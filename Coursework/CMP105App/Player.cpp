@@ -22,11 +22,15 @@
 // CONSTRUCTORS & DESTRUCTOR.
 Player::Player()
 {
-	initAudio();
 	flashRedDelay = 0;
 	attackDelay = 0;
 	deathAnimDelay = 0;
 	hitPointReductionDelay = 0;
+	coinsCollected = 0;
+	keysCollected = 0;
+	lives = 3;
+	hitPoints = 3;
+
 	movingLeft = false;
 	movingRight = false;
 	idling = true;
@@ -37,9 +41,8 @@ Player::Player()
 	isDead = false;
 	respawned = false;
 	flashRed = false;
-	lives = 3;
-	hitPoints = 3;
-	setVelocity(sf::Vector2f(100, 0));				// This vel is used for movement.
+
+	initAudio();
 	addFrames();
 	setTextureRect(idle.getCurrentFrame());
 	idle.setPlaying(true);
@@ -47,6 +50,7 @@ Player::Player()
 
 	gravityScalar = 100;
 	gravitationalAccel = sf::Vector2f(0, 9.8f) * gravityScalar;
+	setVelocity(sf::Vector2f(100, 0));									// This vel is used for movement.
 }
 
 Player::~Player()
@@ -735,3 +739,33 @@ void Player::setHitPoints(int l_hitPoints)
 {
 	hitPoints = l_hitPoints;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int Player::getHitPointsRemaining()
+{
+	return hitPoints;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int Player::getCoinsCollected()
+{
+	return coinsCollected;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::setKeysCollected(int l_keysCollected)
+{
+	keysCollected = l_keysCollected;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int Player::getKeysCollected()
+{
+	return keysCollected;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

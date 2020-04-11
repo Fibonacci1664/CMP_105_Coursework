@@ -15,9 +15,11 @@
 #include "ExitDoor.h"
 #include "HitPoint.h"
 #include "Coin.h"
+#include "UIPanel.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
+
 // The 'camera' view.
 static sf::View view;
 
@@ -37,7 +39,6 @@ public:
 	static sf::View getView();
 	static void setMusicMuteAudio(bool l_muted);
 	static void setMusicStopped(bool l_stopped);
-
 
 private:
 	// Init stuff.
@@ -160,11 +161,16 @@ private:
 	sf::Texture parallaxDuctsTexture;
 	sf::RectangleShape parallaxColumns;
 	sf::Texture parallaxColumnsTexture;
-	
-	
+
+	UIPanel* uiPanel;
+
+	float originalViewXCoords;
+	float newViewXCoords;
+	float xTranslationOfView;
 
 	float decr;
 	float scrollSpeed;
+
 	bool fadedOut;
 	bool fadedIn;
 	bool debugMode;

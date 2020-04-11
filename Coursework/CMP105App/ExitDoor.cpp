@@ -17,9 +17,9 @@ void ExitDoor::update(float dt)
 
 void ExitDoor::addExitDoorAnimFrames()
 {
-	for (int i = 0; i < (key_frames * KEY_FRAME_WIDTH); i += KEY_FRAME_WIDTH)
+	for (int i = 0; i < (exitDoor_frames * EXITDOOR_FRAME_WIDTH); i += EXITDOOR_FRAME_WIDTH)
 	{
-		exitDoor.addFrame(sf::IntRect(i, 0, KEY_FRAME_WIDTH, KEY_FRAME_HEIGHT));
+		exitDoor.addFrame(sf::IntRect(i, 0, EXITDOOR_FRAME_WIDTH, EXITDOOR_FRAME_HEIGHT));
 	}
 
 	// Set how fast you want each of your animations to play, divide by a higher number for a faster animation.

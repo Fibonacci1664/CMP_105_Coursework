@@ -16,9 +16,9 @@ private:
 	// Everthing to do with exit door animations.
 	Animation coin;
 
-	const int KEY_FRAME_WIDTH = 32;
-	const int KEY_FRAME_HEIGHT = 32;
-	const int key_frames = 10;
+	const int COIN_FRAME_WIDTH = 32;
+	const int COIN_FRAME_HEIGHT = 32;
+	const int coin_frames = 10;
 
 	void addCoinAnimFrames();
 };

@@ -17,9 +17,9 @@ void Coin::update(float dt)
 
 void Coin::addCoinAnimFrames()
 {
-	for (int i = 0; i < (key_frames * KEY_FRAME_WIDTH); i += KEY_FRAME_WIDTH)
+	for (int i = 0; i < (coin_frames * COIN_FRAME_WIDTH); i += COIN_FRAME_WIDTH)
 	{
-		coin.addFrame(sf::IntRect(i, 0, KEY_FRAME_WIDTH, KEY_FRAME_HEIGHT));
+		coin.addFrame(sf::IntRect(i, 0, COIN_FRAME_WIDTH, COIN_FRAME_HEIGHT));
 	}
 
 	// Set how fast you want each of your animations to play, divide by a higher number for a faster animation.

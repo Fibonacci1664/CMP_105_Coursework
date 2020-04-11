@@ -34,6 +34,10 @@ public:
 	int getLives();
 	void setLives(int l_lives);
 	void setHitPoints(int l_hitPoints);
+	int getHitPointsRemaining();
+	int getCoinsCollected();
+	void setKeysCollected(int l_keysCollected);
+	int getKeysCollected();
 	void respawn();
 
 	// Might not need this but dont delete it yet! it could be handy for the player to be able to access gamestate.
@@ -66,6 +70,8 @@ private:
 
 	int lives;
 	int hitPoints;
+	int coinsCollected;
+	int keysCollected;
 
 	float gravityScalar;
 	sf::Vector2f gravitationalAccel;

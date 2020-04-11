@@ -10,6 +10,12 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	debugMode = false;
 	//initDebugMode();
 
+	originalViewXCoords = view.getCenter().x;
+	newViewXCoords = view.getCenter().x;
+	xTranslationOfView = 0;
+
+	uiPanel = new UIPanel(hwnd);
+
 	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
 	window->setView(view);
 	scrollSpeed = 300;
@@ -137,6 +143,9 @@ void Level::update(float dt)
 	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 
+	newViewXCoords = view.getCenter().x;
+	xTranslationOfView = newViewXCoords - originalViewXCoords;
+
 	if (liftsOn)
 	{
 		moveLifts(dt);
@@ -155,13 +164,13 @@ void Level::update(float dt)
 	checkLiftCollisions();
 	checkExitDoorCollisions(dt);
 	deathCheck();
+	uiPanel->update(dt, player.getHitPointsRemaining(), player.getLives(), player.getCoinsCollected(), player.getKeysCollected(), xTranslationOfView);
 
 	if (debugMode)
 	{
 		updatePlayerBoxes();
 		updateTextOutput();
 	}
-
 
 	// TEST CHECK FOR KEY AND CREATING A NEW GAME.
 	if (Collision::checkBoundingBox(&key, &player))
@@ -184,7 +193,7 @@ void Level::render()
 	window->draw(parallaxDucts);
 	window->draw(parallaxColumns);
 	drawLamps();
-	tmm.render(window);	
+	tmm.render(window);
 	window->draw(lift_1);
 	window->draw(lift_2);
 	window->draw(lift_3);
@@ -193,6 +202,8 @@ void Level::render()
 	drawHitPoints();
 	drawCoins();
 	window->draw(exitDoor);
+	uiPanel->render();
+
 
 	//window->draw(hp);
 	window->draw(player);
@@ -623,7 +634,7 @@ void Level::initHitPoints()
 		hitPoints[i]->setSize(sf::Vector2f(32, 32));
 		hitPoints[i]->setCollisionBox(0, 0, 32, 32);
 		hitPoints[i]->setTexture(&hpTexture);
-		hitPoints[i]->setTextureRect(hp->getHitPointAnimation()->getCurrentFrame());
+		hitPoints[i]->setTextureRect(hitPoints[i]->getHitPointAnimation()->getCurrentFrame());
 	}
 
 	hitPoints[0]->setPosition(sf::Vector2f(82, 80));
@@ -665,7 +676,7 @@ void Level::initCoins()
 		coins[i]->setSize(sf::Vector2f(32, 32));
 		coins[i]->setCollisionBox(0, 0, 32, 32);
 		coins[i]->setTexture(&coinTexture);
-		coins[i]->setTextureRect(coin->getCoinAnimation()->getCurrentFrame());
+		coins[i]->setTextureRect(coins[i]->getCoinAnimation()->getCurrentFrame());
 	}
 
 	coins[0]->setPosition(sf::Vector2f(525, 128));

@@ -17,9 +17,9 @@ void HitPoint::update(float dt)
 
 void HitPoint::addHitPointAnimFrames()
 {
-	for (int i = 0; i < (key_frames * KEY_FRAME_WIDTH); i += KEY_FRAME_WIDTH)
+	for (int i = 0; i < (hitPoint_frames * HITPOINT_FRAME_WIDTH); i += HITPOINT_FRAME_WIDTH)
 	{
-		hitPoint.addFrame(sf::IntRect(i, 0, KEY_FRAME_WIDTH, KEY_FRAME_HEIGHT));
+		hitPoint.addFrame(sf::IntRect(i, 0, HITPOINT_FRAME_WIDTH, HITPOINT_FRAME_HEIGHT));
 	}
 
 	// Set how fast you want each of your animations to play, divide by a higher number for a faster animation.
