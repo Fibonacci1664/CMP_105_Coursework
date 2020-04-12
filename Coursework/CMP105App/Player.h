@@ -34,6 +34,7 @@ public:
 	int getLives();
 	void setLives(int l_lives);
 	void setHitPoints(int l_hitPoints);
+	void incrementHitPoints();
 	int getHitPointsRemaining();
 	int getCoinsCollected();
 	void setKeysCollected(int l_keysCollected);

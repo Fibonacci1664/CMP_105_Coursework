@@ -16,6 +16,8 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 
 	uiPanel = new UIPanel(hwnd);
 
+	hitPointsInLevel = 3;
+
 	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
 	window->setView(view);
 	scrollSpeed = 300;
@@ -163,6 +165,7 @@ void Level::update(float dt)
 	checkTileCollisions();
 	checkLiftCollisions();
 	checkExitDoorCollisions(dt);
+	checkHitPointCollisions(dt);
 	deathCheck();
 	uiPanel->update(dt, player.getHitPointsRemaining(), player.getLives(), player.getCoinsCollected(), player.getKeysCollected(), xTranslationOfView);
 
@@ -633,12 +636,13 @@ void Level::initHitPoints()
 		hitPoints[i]->setWindow(window);
 		hitPoints[i]->setSize(sf::Vector2f(32, 32));
 		hitPoints[i]->setCollisionBox(0, 0, 32, 32);
+		hitPoints[i]->setAlive(true);
 		hitPoints[i]->setTexture(&hpTexture);
 		hitPoints[i]->setTextureRect(hitPoints[i]->getHitPointAnimation()->getCurrentFrame());
 	}
 
 	hitPoints[0]->setPosition(sf::Vector2f(82, 80));
-	hitPoints[1]->setPosition(sf::Vector2f(970, 64));
+	hitPoints[1]->setPosition(sf::Vector2f(970, 80));
 	hitPoints[2]->setPosition(sf::Vector2f(2127, 320));
 }
 
@@ -653,9 +657,12 @@ void Level::updateHitPoints(float& dt)
 
 void Level::drawHitPoints()
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < hitPoints.size(); ++i)
 	{
-		window->draw(*hitPoints[i]);
+		if (hitPoints[i]->isAlive())
+		{
+			window->draw(*hitPoints[i]);
+		}
 	}
 }
 
@@ -680,8 +687,8 @@ void Level::initCoins()
 	}
 
 	coins[0]->setPosition(sf::Vector2f(525, 128));
-	coins[1]->setPosition(sf::Vector2f(910, 64));
-	coins[2]->setPosition(sf::Vector2f(1030, 64));
+	coins[1]->setPosition(sf::Vector2f(910, 80));
+	coins[2]->setPosition(sf::Vector2f(1030, 80));
 	coins[3]->setPosition(sf::Vector2f(1523, 192));
 	coins[4]->setPosition(sf::Vector2f(2163, 64));
 	coins[5]->setPosition(sf::Vector2f(2575, 320));
@@ -848,13 +855,30 @@ void Level::checkExitDoorCollisions(float& dt)
 		}
 
 		//audio->stopAllMusic();
-		
+
 	}
 }
 
 void Level::checkTileCollisions()
 {
 	tmm.checkTileCollision(&player);
+}
+
+void Level::checkHitPointCollisions(float& dt)
+{
+	if (player.getHitPointsRemaining() < 3)
+	{
+		for (int i = 0; i < hitPoints.size(); ++i)
+		{
+			if (Collision::checkBoundingBox(hitPoints[i], &player))
+			{
+				hitPoints[i]->setAlive(false);
+				--hitPointsInLevel;
+				player.incrementHitPoints();
+				break;
+			}
+		}
+	}	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

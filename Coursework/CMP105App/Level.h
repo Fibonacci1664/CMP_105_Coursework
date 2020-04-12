@@ -63,6 +63,7 @@ private:
 	void checkExitDoorCollisions(float& dt);
 	void checkLiftCollisions();
 	void checkTileCollisions();
+	void checkHitPointCollisions(float& dt);
 
 	// Update stuff.
 	void updatePlayerBoxes();
@@ -81,8 +82,8 @@ private:
 
 	// Delete stuff.
 	void deleteLamps();
-	void deleteHitPoints();
-	void deleteCoins();
+	void deleteHitPoints();			// STILL NEED TO DO THIS!
+	void deleteCoins();				// STILL NEED TO DO THIS!
 
 	// Misc.
 	void moveLifts(float& dt);	
@@ -167,9 +168,10 @@ private:
 	float originalViewXCoords;
 	float newViewXCoords;
 	float xTranslationOfView;
-
 	float decr;
 	float scrollSpeed;
+
+	int hitPointsInLevel;
 
 	bool fadedOut;
 	bool fadedIn;

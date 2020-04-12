@@ -740,6 +740,15 @@ void Player::setHitPoints(int l_hitPoints)
 	hitPoints = l_hitPoints;
 }
 
+void Player::incrementHitPoints()
+{
+	// Max 3 hit points ONLY!
+	if (hitPoints < 3)
+	{
+		++hitPoints;
+	}	
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int Player::getHitPointsRemaining()
