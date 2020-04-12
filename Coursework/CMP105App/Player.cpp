@@ -17,8 +17,6 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 // CONSTRUCTORS & DESTRUCTOR.
 Player::Player()
 {
@@ -569,6 +567,7 @@ void Player::spikeCollision()
 		 */
 		if (hitPoints == 0)
 		{
+			--lives;
 			isDead = true;
 		}
 		else
@@ -581,6 +580,7 @@ void Player::spikeCollision()
 	{
 		if (hitPoints == 0)
 		{
+			--lives;
 			isDead = true;
 		}
 		else
@@ -627,7 +627,7 @@ void Player::respawn()
 	respawned = true;
 	isDead = false;
 	hitPoints = 3;
-	setPosition(sf::Vector2f(100, 100));
+	setPosition(70, 400);
 	stepVelocity = sf::Vector2f(0, 0);
 	setFillColor(sf::Color::White);
 }
@@ -742,11 +742,14 @@ void Player::setHitPoints(int l_hitPoints)
 
 void Player::incrementHitPoints()
 {
-	// Max 3 hit points ONLY!
-	if (hitPoints < 3)
-	{
-		++hitPoints;
-	}	
+	++hitPoints;
+
+
+	//// Max 3 hit points ONLY!
+	//if (hitPoints < 3)
+	//{
+	//	++hitPoints;
+	//}	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

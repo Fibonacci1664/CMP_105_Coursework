@@ -10,17 +10,16 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	debugMode = false;
 	//initDebugMode();
 
+	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
+	window->setView(view);
+	scrollSpeed = 300;
 	originalViewXCoords = view.getCenter().x;
-	newViewXCoords = view.getCenter().x;
 	xTranslationOfView = 0;
 
 	uiPanel = new UIPanel(hwnd);
 
 	hitPointsInLevel = 3;
-
-	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
-	window->setView(view);
-	scrollSpeed = 300;
+	
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedOut = false;
 	viewMoving = false;
@@ -221,9 +220,6 @@ void Level::render()
 		window->draw(textBox);
 		window->draw(text);
 	}
-
-	/*window->draw(exitDoor);
-	window->draw(exitDoorColBox);*/
 	
 	endDraw();
 
@@ -870,8 +866,9 @@ void Level::checkHitPointCollisions(float& dt)
 	{
 		for (int i = 0; i < hitPoints.size(); ++i)
 		{
-			if (Collision::checkBoundingBox(hitPoints[i], &player))
+			if (Collision::checkBoundingBox(hitPoints[i], &player) && hitPoints[i]->isAlive())
 			{
+				audio->playSoundbyName("hitPoint");
 				hitPoints[i]->setAlive(false);
 				--hitPointsInLevel;
 				player.incrementHitPoints();
@@ -889,6 +886,7 @@ void Level::initAudio()
 	audio->addMusic("sfx/level/castle_ambience.ogg", "castleAmbience");
 	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
 	audio->addSound("sfx/level/death.ogg", "death");
+	audio->addSound("sfx/level/collect_hitPoint.ogg", "hitPoint");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

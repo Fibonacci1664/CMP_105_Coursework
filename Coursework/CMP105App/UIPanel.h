@@ -25,14 +25,19 @@ private:
 	// Update stuff on the UI panel.
 	void updateHitpoints(float& dt, float& viewsXTranslation);
 	void updateIconBar(float& viewsXTranslation);
-	void updateIconBarTextElements(float& xviewsTranslation);
+	void updateIconBarTextElements(float& viewsXTranslation);
 
-	void updateLives(float& dt);
-	void updateCoins(float& dt);
+	void updateLives(float& dt, float& viewsXTranslation);
+	void updateCoins(float& dt, float& viewsXTranslation);
 	void updateKeyStatus(float& dt);
 
 	// Draw stuff.
-	void drawHitPoints();//sf::RenderWindow* window);
+	void drawUIIconBar();
+	void drawHitPoints();
+	void drawLives();
+
+	// Delete stuff.
+	// DELETE ALL THE WEHRE 'NEW' HAS BEEN USED.
 
 	sf::RectangleShape greyIconBar;
 	sf::Texture greyIconBarTexture;
@@ -47,8 +52,8 @@ private:
 	std::vector<HitPoint*> uiHitPoints;
 	sf::Texture hitPointsTexture;
 
-	/*std::vector<Heart> uiLives;
-	sf::Texture livesTexture;*/
+	std::vector<Heart*> uiLives;
+	sf::Texture livesTexture;
 
 	sf::RenderWindow* window;
 

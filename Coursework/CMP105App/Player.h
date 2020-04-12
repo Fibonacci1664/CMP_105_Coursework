@@ -20,7 +20,6 @@ public:
 	void collisionResponse(GameObject* collider);
 	void checkLiftCollisions(GameObject* col);
 
-
 	// Getters / Setters
 	bool getMovingRight();
 	bool getMovingLeft();
@@ -47,7 +46,6 @@ public:
 
 	static void setSFXMuteAudio(bool l_muted);
 
-
 protected:
 	Animation attack;
 	Animation idle;
@@ -57,6 +55,27 @@ protected:
 	Animation death;
 
 private:
+	// Init stuff.
+	void initAudio();
+
+	// Check stuff.
+	void checkMovingRight(float dt);
+	void checkMovingLeft(float dt);
+	void checkRunning(float dt);
+	void checkJumping(float dt);
+	void checkAttacking(float dt);
+	void checkTileCollisions(GameObject* col);
+
+	// Update stuff.
+	void updateCollisionBox();
+
+	// Misc.
+	void resetPlayerValues();
+	void addFrames();
+	void gravityFall(float dt);
+	void setAllAnimsFalse();
+	void spikeCollision();
+
 	// DATA MEMBERS.
 	const int attackFrames = 10;
 	const int idleFrames = 10;
@@ -100,19 +119,5 @@ private:
 	bool flashRed;
 	float flashRedDelay;
 
-	// MEMBER FUNCTIONS.
-	void resetPlayerValues();
-	void addFrames();
-	void gravityFall(float dt);
-	void setAllAnimsFalse();
-	void checkMovingRight(float dt);
-	void checkMovingLeft(float dt);
-	void checkRunning(float dt);
-	void checkJumping(float dt);
-	void checkAttacking(float dt);
-	void updateCollisionBox();
-	void checkTileCollisions(GameObject* col);
-	void initAudio();
-	void spikeCollision();
 };
 
