@@ -57,6 +57,7 @@ private:
 	void initHitPoints();
 	void initCoins();
 	void initKeys();
+	void initLever();
 
 	// Check stuff.
 	void checkMusicMuted();
@@ -67,6 +68,7 @@ private:
 	void checkHitPointCollisions();
 	void checkCoinCollisions();
 	void checkKeyCollisions();
+	void checkLeverCollisions();
 
 	// Update stuff.
 	void updatePlayerBoxes();
@@ -77,6 +79,7 @@ private:
 	void updateLamps(float& dt);
 	void updateHitPoints(float& dt);
 	void updateCoins(float& dt);
+	void updateLever(float& dt);
 	
 	// Draw stuff.
 	void drawLamps();
@@ -105,6 +108,9 @@ private:
 	GameObject lift_3;
 	GameObject lift_4;
 	sf::Texture liftTexture;
+
+	GameObject lever;
+	std::vector<sf::Texture*> leverTextures;
 
 	// Keys.
 	std::vector<Key*> keys;

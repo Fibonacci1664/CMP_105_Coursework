@@ -25,7 +25,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedOut = false;
 	viewMoving = false;
-	liftsOn = true;
+	liftsOn = false;
 	paused = false;
 	gameOver = false;
 	escaped = false;
@@ -36,6 +36,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	initLifts();
 	initParallax();
 	initKeys();
+	initLever();
 	initFireLamps();
 	//initBackground();
 	initAudio();
@@ -135,6 +136,8 @@ void Level::handleInput(float dt)
 		audio->playSoundbyName("scroll");
 		paused = true;
 	}
+
+	checkLeverCollisions();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,6 +205,7 @@ void Level::render()
 	drawCoins();
 	drawKeys();
 	window->draw(exitDoor);
+	window->draw(lever);
 	uiPanel->render();
 
 	window->draw(player);
@@ -624,6 +628,29 @@ void Level::initExitDoor()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Level::initLever()
+{
+	// Load in the two lever textures.
+	for (int i = 0; i < 2; ++i)
+	{
+		sf::Texture* leverTexture = new sf::Texture;
+		leverTextures.push_back(leverTexture);
+
+		if (!leverTextures[i]->loadFromFile("gfx/level/" + std::to_string(i) + "_lever.png"))
+		{
+			std::cerr << "Sorry could not load lever image number " << i << '\n';
+		}
+	}
+
+	lever.setSize(sf::Vector2f(64, 48));
+	lever.setPosition(sf::Vector2f(2352, 400));
+	lever.setCollisionBox(0, 0, 64, 64);
+	lever.setAlive(true);
+	lever.setTexture(leverTextures[0]);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::initHitPoints()
 {
 	if (!hpTexture.loadFromFile("gfx/level/hitPoint.png"))
@@ -652,6 +679,8 @@ void Level::initHitPoints()
 	hitPoints[2]->setPosition(sf::Vector2f(2127, 320));
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::updateHitPoints(float& dt)
 {
 	for (int i = 0; i < 3; ++i)
@@ -660,6 +689,8 @@ void Level::updateHitPoints(float& dt)
 		hitPoints[i]->setTextureRect(hitPoints[i]->getHitPointAnimation()->getCurrentFrame());
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::drawHitPoints()
 {
@@ -671,6 +702,8 @@ void Level::drawHitPoints()
 		}
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::initCoins()
 {
@@ -703,6 +736,8 @@ void Level::initCoins()
 	coins[5]->setPosition(sf::Vector2f(2575, 320));
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::updateCoins(float& dt)
 {
 	for (int i = 0; i < 6; ++i)
@@ -711,6 +746,8 @@ void Level::updateCoins(float& dt)
 		coins[i]->setTextureRect(coins[i]->getCoinAnimation()->getCurrentFrame());
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::drawCoins()
 {
@@ -951,6 +988,16 @@ void Level::checkKeyCollisions()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkLeverCollisions()
+{
+	if (Collision::checkBoundingBox(&lever, &player) && input->isMouseLDown() && lever.isAlive())
+	{
+		lever.setTexture(leverTextures[1]);
+		lever.setAlive(false);
+		liftsOn = true;
+	}
+}
 
 void Level::initAudio()
 {
