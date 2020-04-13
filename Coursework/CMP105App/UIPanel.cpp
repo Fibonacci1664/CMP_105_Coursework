@@ -1,5 +1,8 @@
 #include "UIPanel.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// CONSTRUCTORS / DESTRUCTOR.
 UIPanel::UIPanel()
 {
 
@@ -17,12 +20,15 @@ UIPanel::UIPanel(sf::RenderWindow* hwnd)
 	initGreyIconBarTextElements();
 	initHitPoints();	
 	initLives();
+	initCoin();
 }
 
 UIPanel::~UIPanel()
 {
 
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::update(float& dt, int l_hitPointsRemaining, int l_livesRemaining, int l_coinsCollected, int l_keysCollected, float& viewsXTranslation)
 {
@@ -32,17 +38,23 @@ void UIPanel::update(float& dt, int l_hitPointsRemaining, int l_livesRemaining, 
 	keysCollected = l_keysCollected;
 
 	updateIconBar(viewsXTranslation);
-	updateIconBarTextElements(viewsXTranslation);
+	updateIconBarTextElements(viewsXTranslation, l_coinsCollected);
 	updateHitpoints(dt, viewsXTranslation);	
 	updateLives(dt, viewsXTranslation);
+	updateCoin(dt, viewsXTranslation);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::render()//sf::RenderWindow* window)
 {
 	drawUIIconBar();
 	drawHitPoints();
 	drawLives();
+	drawCoin();
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::initGreyIconBar()
 {
@@ -56,6 +68,15 @@ void UIPanel::initGreyIconBar()
 	greyIconBar.setTexture(&greyIconBarTexture);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::updateIconBar(float& viewsXTranslation)
+{
+	greyIconBar.setPosition(sf::Vector2f(viewsXTranslation, 0));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void UIPanel::initGreyIconBarTextElements()
 {
 	if (!livesTextTexture.loadFromFile("gfx/level/level_UI/lives_text.png"))
@@ -68,6 +89,18 @@ void UIPanel::initGreyIconBarTextElements()
 		std::cerr << "Sorry could not load UI coins text image!\n";
 	}
 
+	// Load all the number textures for coins collected in to the vector.
+	for (int i = 0; i < 7; ++i)
+	{
+		sf::Texture* numTexture = new sf::Texture;
+		numOfCoinsCollectedTextures.push_back(numTexture);
+
+		if (!numOfCoinsCollectedTextures[i]->loadFromFile("gfx/level/level_UI/" + std::to_string(i) + "_text.png"))
+		{
+			std::cerr << "Sorry could not load numbers for coins collected for UI!\n";
+		}
+	}
+
 	if (!hpTextTexture.loadFromFile("gfx/level/level_UI/hp_text.png"))
 	{
 		std::cerr << "Sorry could not load UI hp text image!\n";
@@ -78,13 +111,43 @@ void UIPanel::initGreyIconBarTextElements()
 	livesText.setTexture(&livesTextTexture);
 
 	coinsText.setSize(sf::Vector2f(84, 31.8f));
-	coinsText.setPosition(sf::Vector2f(350, 20));
+	coinsText.setPosition(sf::Vector2f(300, 20));
 	coinsText.setTexture(&coinsTextTexture);
+
+	numOfCoinsCollected.setSize(sf::Vector2f(23.4f, 31.8f));
+	numOfCoinsCollected.setPosition(sf::Vector2f(450, 20));
+	numOfCoinsCollected.setTexture(numOfCoinsCollectedTextures[0]);
 
 	hpText.setSize(sf::Vector2f(52.2f, 31.8f));
 	hpText.setPosition(sf::Vector2f(window->getSize().x - 230, 20));
 	hpText.setTexture(&hpTextTexture);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::updateIconBarTextElements(float& viewsXTranslation, int& coinsCollected)
+{
+	livesText.setPosition(sf::Vector2f(20 + viewsXTranslation, 20));
+	coinsText.setPosition(sf::Vector2f(300 + viewsXTranslation, 20));
+
+	numOfCoinsCollected.setPosition(sf::Vector2f(450 + viewsXTranslation, 20));
+	numOfCoinsCollected.setTexture(numOfCoinsCollectedTextures[coinsCollected]);
+
+	hpText.setPosition(sf::Vector2f((window->getSize().x - 230) + viewsXTranslation, 20));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::drawUIIconBar()
+{
+	window->draw(greyIconBar);
+	window->draw(livesText);
+	window->draw(coinsText);
+	window->draw(numOfCoinsCollected);
+	window->draw(hpText);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::initHitPoints()
 {
@@ -111,6 +174,8 @@ void UIPanel::initHitPoints()
 	uiHitPoints[2]->setPosition(sf::Vector2f(window->getSize().x - 170, 20));
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void UIPanel::updateHitpoints(float& dt, float& viewsXTranslation)
 {
 	// Update all the hit points.
@@ -125,25 +190,7 @@ void UIPanel::updateHitpoints(float& dt, float& viewsXTranslation)
 	uiHitPoints[2]->setPosition(sf::Vector2f((window->getSize().x - 170) + viewsXTranslation, 20));	
 }
 
-void UIPanel::updateIconBar(float& viewsXTranslation)
-{
-	greyIconBar.setPosition(sf::Vector2f(viewsXTranslation, 0));
-}
-
-void UIPanel::updateIconBarTextElements(float& viewsXTranslation)
-{
-	livesText.setPosition(sf::Vector2f(20 + viewsXTranslation, 20));
-	coinsText.setPosition(sf::Vector2f(350 + viewsXTranslation, 20));
-	hpText.setPosition(sf::Vector2f((window->getSize().x - 230) + viewsXTranslation, 20));
-}
-
-void UIPanel::drawUIIconBar()
-{
-	window->draw(greyIconBar);
-	window->draw(livesText);
-	window->draw(coinsText);
-	window->draw(hpText);
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::drawHitPoints()
 {
@@ -154,14 +201,7 @@ void UIPanel::drawHitPoints()
 	}	
 }
 
-void UIPanel::drawLives()
-{
-	// Only draw the lives that are remaining.
-	for (int i = 0; i < livesRemaining; ++i)
-	{
-		window->draw(*uiLives[i]);
-	}
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::initLives()
 {
@@ -186,6 +226,8 @@ void UIPanel::initLives()
 	uiLives[2]->setPosition(sf::Vector2f(210, 20));
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void UIPanel::updateLives(float& dt, float& viewsXTranslation)
 {
 	// Update all the remaining hit points.
@@ -204,12 +246,104 @@ void UIPanel::updateLives(float& dt, float& viewsXTranslation)
 	uiLives[2]->setPosition(sf::Vector2f(210 + viewsXTranslation, 20));
 }
 
-void UIPanel::updateCoins(float& dt, float& viewsXTranslation)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::drawLives()
+{
+	// Only draw the lives that are remaining.
+	for (int i = 0; i < livesRemaining; ++i)
+	{
+		window->draw(*uiLives[i]);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::initCoin()
+{
+	if (!coinTexture.loadFromFile("gfx/level/coin.png"))
+	{
+		std::cerr << "Sorry could not load the coin image for UI!\n";
+	}
+
+	coin = new Coin;
+
+	coin->setWindow(window);
+	coin->setSize(sf::Vector2f(32, 32));
+	coin->setTexture(&coinTexture);
+	coin->setTextureRect(coin->getCoinAnimation()->getCurrentFrame());
+	coin->setPosition(sf::Vector2f(400, 20));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::updateCoin(float& dt, float& viewsXTranslation)
+{
+	coin->getCoinAnimation()->animate(dt);
+	coin->setTextureRect(coin->getCoinAnimation()->getCurrentFrame());
+	coin->setPosition(sf::Vector2f(400 + viewsXTranslation, 20));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::drawCoin()
+{
+	window->draw(*coin);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::initKeys()
 {
 
 }
 
-void UIPanel::updateKeyStatus(float& dt)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::updateKeys(float& dt)
 {
 
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::drawKeys()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::deleteHitPoints()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::deleteLives()
+{
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::deleteCoin()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel:: deleteKeys()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIPanel::deleteNumTextures()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

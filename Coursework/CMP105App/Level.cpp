@@ -19,6 +19,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	uiPanel = new UIPanel(hwnd);
 
 	hitPointsInLevel = 3;
+	coinsInLevel = 6;
 	
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedOut = false;
@@ -164,7 +165,8 @@ void Level::update(float dt)
 	checkTileCollisions();
 	checkLiftCollisions();
 	checkExitDoorCollisions(dt);
-	checkHitPointCollisions(dt);
+	checkHitPointCollisions();
+	checkCoinCollisions();
 	deathCheck();
 	uiPanel->update(dt, player.getHitPointsRemaining(), player.getLives(), player.getCoinsCollected(), player.getKeysCollected(), xTranslationOfView);
 
@@ -678,6 +680,7 @@ void Level::initCoins()
 		coins[i]->setWindow(window);
 		coins[i]->setSize(sf::Vector2f(32, 32));
 		coins[i]->setCollisionBox(0, 0, 32, 32);
+		coins[i]->setAlive(true);
 		coins[i]->setTexture(&coinTexture);
 		coins[i]->setTextureRect(coins[i]->getCoinAnimation()->getCurrentFrame());
 	}
@@ -701,9 +704,12 @@ void Level::updateCoins(float& dt)
 
 void Level::drawCoins()
 {
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < coins.size(); ++i)
 	{
-		window->draw(*coins[i]);
+		if (coins[i]->isAlive())
+		{
+			window->draw(*coins[i]);
+		}
 	}
 }
 
@@ -855,17 +861,23 @@ void Level::checkExitDoorCollisions(float& dt)
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::checkTileCollisions()
 {
 	tmm.checkTileCollision(&player);
 }
 
-void Level::checkHitPointCollisions(float& dt)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkHitPointCollisions()
 {
 	if (player.getHitPointsRemaining() < 3)
 	{
+		// Loop over all the hit points in the level and find the one we collided with.
 		for (int i = 0; i < hitPoints.size(); ++i)
 		{
+			// If the one we've collided with is still alive the collect it and kill it. Killing it prevents further collisions happing.
 			if (Collision::checkBoundingBox(hitPoints[i], &player) && hitPoints[i]->isAlive())
 			{
 				audio->playSoundbyName("hitPoint");
@@ -876,6 +888,25 @@ void Level::checkHitPointCollisions(float& dt)
 			}
 		}
 	}	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkCoinCollisions()
+{
+	// Loop over all the coins in the level and find the one we collided with.
+	for (int i = 0; i < coins.size(); ++i)
+	{
+		// If the one we've collided with is still alive the collect it and kill it. Killing it prevents further collisions happing.
+		if (Collision::checkBoundingBox(coins[i], &player) && coins[i]->isAlive())
+		{
+			audio->playSoundbyName("hitPoint");
+			coins[i]->setAlive(false);
+			--coinsInLevel;
+			player.incrementCoinsCollected();
+			break;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

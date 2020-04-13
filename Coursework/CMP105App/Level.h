@@ -63,7 +63,8 @@ private:
 	void checkExitDoorCollisions(float& dt);
 	void checkLiftCollisions();
 	void checkTileCollisions();
-	void checkHitPointCollisions(float& dt);
+	void checkHitPointCollisions();
+	void checkCoinCollisions();
 
 	// Update stuff.
 	void updatePlayerBoxes();
@@ -172,6 +173,7 @@ private:
 	float scrollSpeed;
 
 	int hitPointsInLevel;
+	int coinsInLevel;
 
 	bool fadedOut;
 	bool fadedIn;

@@ -36,6 +36,7 @@ public:
 	void incrementHitPoints();
 	int getHitPointsRemaining();
 	int getCoinsCollected();
+	void incrementCoinsCollected();
 	void setKeysCollected(int l_keysCollected);
 	int getKeysCollected();
 	void respawn();
