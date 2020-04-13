@@ -50,6 +50,7 @@ private:
 	bool continueClicked;
 	bool pressedLetterP;
 	bool unpaused;
+	bool resetView;
 
 	sf::RectangleShape pausedTextBox;
 	sf::Texture pausedTexture;

@@ -36,7 +36,8 @@ public:
 	bool getGameOver();
 	void setGameOver(bool l_gameOver);
 
-	static sf::View getView();
+	static sf::View* getView();
+	static void setView(sf::View newView);
 	static void setMusicMuteAudio(bool l_muted);
 	static void setMusicStopped(bool l_stopped);
 
@@ -52,10 +53,10 @@ private:
 	void initBackground();
 	void initParallax();
 	void initFireLamps();
-	void initKeys();
 	void initExitDoor();
 	void initHitPoints();
 	void initCoins();
+	void initKeys();
 
 	// Check stuff.
 	void checkMusicMuted();
@@ -65,6 +66,7 @@ private:
 	void checkTileCollisions();
 	void checkHitPointCollisions();
 	void checkCoinCollisions();
+	void checkKeyCollisions();
 
 	// Update stuff.
 	void updatePlayerBoxes();
@@ -80,6 +82,7 @@ private:
 	void drawLamps();
 	void drawHitPoints();
 	void drawCoins();
+	void drawKeys();
 
 	// Delete stuff.
 	void deleteLamps();
@@ -104,7 +107,7 @@ private:
 	sf::Texture liftTexture;
 
 	// Keys.
-	Key key;
+	std::vector<Key*> keys;
 	sf::Texture keyTexture;
 
 	// Exit door
@@ -174,6 +177,7 @@ private:
 
 	int hitPointsInLevel;
 	int coinsInLevel;
+	int keysInLevel;
 
 	bool fadedOut;
 	bool fadedIn;

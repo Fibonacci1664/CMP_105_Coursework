@@ -21,6 +21,7 @@ UIPanel::UIPanel(sf::RenderWindow* hwnd)
 	initHitPoints();	
 	initLives();
 	initCoin();
+	initKeys();
 }
 
 UIPanel::~UIPanel()
@@ -42,6 +43,7 @@ void UIPanel::update(float& dt, int l_hitPointsRemaining, int l_livesRemaining, 
 	updateHitpoints(dt, viewsXTranslation);	
 	updateLives(dt, viewsXTranslation);
 	updateCoin(dt, viewsXTranslation);
+	updateKeys(dt, viewsXTranslation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,6 +54,7 @@ void UIPanel::render()//sf::RenderWindow* window)
 	drawHitPoints();
 	drawLives();
 	drawCoin();
+	drawKeys();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +104,11 @@ void UIPanel::initGreyIconBarTextElements()
 		}
 	}
 
+	if (!keysTextTexture.loadFromFile("gfx/level/level_UI/keys_text.png"))
+	{
+		std::cerr << "Sorry could not load the keys text image for the UI!\n";
+	}
+
 	if (!hpTextTexture.loadFromFile("gfx/level/level_UI/hp_text.png"))
 	{
 		std::cerr << "Sorry could not load UI hp text image!\n";
@@ -111,12 +119,16 @@ void UIPanel::initGreyIconBarTextElements()
 	livesText.setTexture(&livesTextTexture);
 
 	coinsText.setSize(sf::Vector2f(84, 31.8f));
-	coinsText.setPosition(sf::Vector2f(300, 20));
+	coinsText.setPosition(sf::Vector2f(290, 20));
 	coinsText.setTexture(&coinsTextTexture);
 
 	numOfCoinsCollected.setSize(sf::Vector2f(23.4f, 31.8f));
-	numOfCoinsCollected.setPosition(sf::Vector2f(450, 20));
+	numOfCoinsCollected.setPosition(sf::Vector2f(440, 20));
 	numOfCoinsCollected.setTexture(numOfCoinsCollectedTextures[0]);
+
+	keysText.setSize(sf::Vector2f(75, 31.8f));
+	keysText.setPosition(sf::Vector2f(520, 20));
+	keysText.setTexture(&keysTextTexture);
 
 	hpText.setSize(sf::Vector2f(52.2f, 31.8f));
 	hpText.setPosition(sf::Vector2f(window->getSize().x - 230, 20));
@@ -128,11 +140,10 @@ void UIPanel::initGreyIconBarTextElements()
 void UIPanel::updateIconBarTextElements(float& viewsXTranslation, int& coinsCollected)
 {
 	livesText.setPosition(sf::Vector2f(20 + viewsXTranslation, 20));
-	coinsText.setPosition(sf::Vector2f(300 + viewsXTranslation, 20));
-
-	numOfCoinsCollected.setPosition(sf::Vector2f(450 + viewsXTranslation, 20));
+	coinsText.setPosition(sf::Vector2f(290 + viewsXTranslation, 20));
+	numOfCoinsCollected.setPosition(sf::Vector2f(440 + viewsXTranslation, 20));
 	numOfCoinsCollected.setTexture(numOfCoinsCollectedTextures[coinsCollected]);
-
+	keysText.setPosition(sf::Vector2f(520 + viewsXTranslation, 20));
 	hpText.setPosition(sf::Vector2f((window->getSize().x - 230) + viewsXTranslation, 20));
 }
 
@@ -144,6 +155,7 @@ void UIPanel::drawUIIconBar()
 	window->draw(livesText);
 	window->draw(coinsText);
 	window->draw(numOfCoinsCollected);
+	window->draw(keysText);
 	window->draw(hpText);
 }
 
@@ -167,6 +179,8 @@ void UIPanel::initHitPoints()
 		uiHitPoints[i]->setSize(sf::Vector2f(32, 32));
 		uiHitPoints[i]->setTexture(&hitPointsTexture);
 		uiHitPoints[i]->setTextureRect(uiHitPoints[i]->getHitPointAnimation()->getCurrentFrame());
+		uiHitPoints[i]->getHitPointAnimation()->setPlaying(true);
+		uiHitPoints[i]->getHitPointAnimation()->setLooping(true);
 	}
 
 	uiHitPoints[0]->setPosition(sf::Vector2f(window->getSize().x - 70, 20));
@@ -219,6 +233,8 @@ void UIPanel::initLives()
 		uiLives[i]->setSize(sf::Vector2f(32, 32));
 		uiLives[i]->setTexture(&livesTexture);
 		uiLives[i]->setTextureRect(uiLives[i]->getHeartAnimation()->getCurrentFrame());
+		uiLives[i]->getHeartAnimation()->setPlaying(true);
+		uiLives[i]->getHeartAnimation()->setLooping(true);
 	}
 
 	uiLives[0]->setPosition(sf::Vector2f(110, 20));
@@ -236,10 +252,6 @@ void UIPanel::updateLives(float& dt, float& viewsXTranslation)
 		uiLives[i]->getHeartAnimation()->animate(dt);
 		uiLives[i]->setTextureRect(uiLives[i]->getHeartAnimation()->getCurrentFrame());
 	}
-
-	/*uiLives[0]->setPosition(sf::Vector2f(110, 20));
-	uiLives[1]->setPosition(sf::Vector2f(160, 20));
-	uiLives[2]->setPosition(sf::Vector2f(210, 20));*/
 
 	uiLives[0]->setPosition(sf::Vector2f(110 + viewsXTranslation, 20));
 	uiLives[1]->setPosition(sf::Vector2f(160 + viewsXTranslation, 20));
@@ -272,7 +284,9 @@ void UIPanel::initCoin()
 	coin->setSize(sf::Vector2f(32, 32));
 	coin->setTexture(&coinTexture);
 	coin->setTextureRect(coin->getCoinAnimation()->getCurrentFrame());
-	coin->setPosition(sf::Vector2f(400, 20));
+	coin->setPosition(sf::Vector2f(390, 20));
+	coin->getCoinAnimation()->setPlaying(true);
+	coin->getCoinAnimation()->setLooping(true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,7 +295,7 @@ void UIPanel::updateCoin(float& dt, float& viewsXTranslation)
 {
 	coin->getCoinAnimation()->animate(dt);
 	coin->setTextureRect(coin->getCoinAnimation()->getCurrentFrame());
-	coin->setPosition(sf::Vector2f(400 + viewsXTranslation, 20));
+	coin->setPosition(sf::Vector2f(390 + viewsXTranslation, 20));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,21 +309,51 @@ void UIPanel::drawCoin()
 
 void UIPanel::initKeys()
 {
+	if (!keyTexture.loadFromFile("gfx/level/key.png"))
+	{
+		std::cerr << "Sorry could not load key image for UI!\n";
+	}
 
+	// Create 3 keys for the UI, although in this version, the player only needs to collect 1 key to escape.
+	for (int i = 0; i < 3; ++i)
+	{
+		Key* key = new Key;
+		keys.push_back(key);
+
+		keys[i]->setWindow(window);
+		keys[i]->setSize(sf::Vector2f(64, 64));
+		keys[i]->setTexture(&keyTexture);
+		keys[i]->setTextureRect(keys[i]->getKeyAnimation()->getCurrentFrame());
+		keys[i]->getKeyAnimation()->setPlaying(true);
+		keys[i]->getKeyAnimation()->setLooping(true);
+	}
+
+	keys[0]->setPosition(sf::Vector2f(585, 0));		// Only set the position of the first key, as the player is only collecting 1 in the demo.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UIPanel::updateKeys(float& dt)
+void UIPanel::updateKeys(float& dt, float& viewsXTranslation)
 {
+	// Update the animations for ALL the keys even though only 1 is used.
+	for (int i = 0; i < keys.size(); ++i)
+	{
+		keys[i]->getKeyAnimation()->animate(dt);
+		keys[i]->setTextureRect(keys[i]->getKeyAnimation()->getCurrentFrame());
+	}
 
+	keys[0]->setPosition(sf::Vector2f(585 + viewsXTranslation, 0));	// Update the only one that is set and drawn.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void UIPanel::drawKeys()
 {
-
+	// Only draw the keys that have been collected.
+	for (int i = 0; i < keysCollected; ++i)
+	{
+		window->draw(*keys[i]);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

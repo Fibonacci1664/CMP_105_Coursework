@@ -31,7 +31,7 @@ private:
 	void updateHitpoints(float& dt, float& viewsXTranslation);
 	void updateLives(float& dt, float& viewsXTranslation);
 	void updateCoin(float& dt, float& viewsXTranslation);
-	void updateKeys(float& dt);
+	void updateKeys(float& dt, float& viewsXTranslation);
 
 	// Draw stuff.
 	void drawUIIconBar();
@@ -53,24 +53,27 @@ private:
 
 	sf::RectangleShape livesText;
 	sf::Texture livesTextTexture;
+
 	std::vector<Heart*> uiLives;
 	sf::Texture livesTexture;
 
 	sf::RectangleShape coinsText;
 	sf::Texture coinsTextTexture;
+
 	sf::RectangleShape numOfCoinsCollected;
 	std::vector<sf::Texture*> numOfCoinsCollectedTextures;	
+
 	Coin* coin;
 	sf::Texture coinTexture;
 
 	sf::RectangleShape hpText;
 	sf::Texture hpTextTexture;
+
 	std::vector<HitPoint*> uiHitPoints;
 	sf::Texture hitPointsTexture;
 
-	
-
-	
+	sf::RectangleShape keysText;
+	sf::Texture keysTextTexture;
 
 	std::vector<Key*> keys;
 	sf::Texture keyTexture;

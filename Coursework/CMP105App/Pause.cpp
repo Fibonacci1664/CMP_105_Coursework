@@ -13,7 +13,9 @@ Pause::Pause(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	continueClicked = false;
 	pressedLetterP = false;
 	unpaused = false;
-	originalViewPos = Level::getView();
+	resetView = false;
+
+	originalViewPos = *Level::getView();
 	xTranslation = 0;
 
 	initAudio();
@@ -41,21 +43,22 @@ void Pause::handleInput(float dt)
 		audio->playSoundbyName("scroll");
 		unpaused = true;
 	}
+
+	checkMainMenuButtonCollisions();
+	checkContinueCollisions();
+	checkQuitButtonCollisions();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Pause::update(float dt)
 {
-	sf::View currentViewPos = Level::getView();
+	sf::View currentViewPos = *Level::getView();
 	xTranslation = currentViewPos.getCenter().x - originalViewPos.getCenter().x;
 
-	std::cout << "view has moved in the x axis by: " << xTranslation << '\n';
+	//std::cout << "view has moved in the x axis by: " << xTranslation << '\n';
 
-	mousePos = sf::Vector2f(input->getMouseX() + xTranslation, input->getMouseY());
-	checkMainMenuButtonCollisions();
-	checkContinueCollisions();
-	checkQuitButtonCollisions();
+	mousePos = sf::Vector2f(input->getMouseX() + xTranslation, input->getMouseY());	
 	updatePauseMenuPosition();
 }
 
@@ -70,6 +73,13 @@ void Pause::render()
 	window->draw(mainMenuButton);
 	window->draw(continueButton);
 	window->draw(quitButton);
+
+	if (resetView)
+	{
+		window->setView(originalViewPos);
+		resetView = false;
+	}
+	
 	endDraw();
 
 	if (unpaused)
@@ -83,12 +93,12 @@ void Pause::render()
 
 void Pause::updatePauseMenuPosition()
 {
-	transLayer.setPosition((Level::getView().getCenter().x - Level::getView().getSize().x / 2.0f), (Level::getView().getCenter().y - Level::getView().getSize().y / 2.0f));	
-	pausedTextBox.setPosition(sf::Vector2f(Level::getView().getCenter().x, Level::getView().getCenter().y - 150));
-	scrollBox.setPosition(sf::Vector2f(Level::getView().getCenter().x, Level::getView().getCenter().y + 50));
-	mainMenuButton.setPosition(sf::Vector2f(Level::getView().getCenter().x, Level::getView().getCenter().y));
-	continueButton.setPosition(sf::Vector2f(Level::getView().getCenter().x, Level::getView().getCenter().y + 50));
-	quitButton.setPosition(sf::Vector2f(Level::getView().getCenter().x, Level::getView().getCenter().y + 100));
+	transLayer.setPosition((Level::getView()->getCenter().x - Level::getView()->getSize().x / 2.0f), (Level::getView()->getCenter().y - Level::getView()->getSize().y / 2.0f));	
+	pausedTextBox.setPosition(sf::Vector2f(Level::getView()->getCenter().x, Level::getView()->getCenter().y - 150));
+	scrollBox.setPosition(sf::Vector2f(Level::getView()->getCenter().x, Level::getView()->getCenter().y + 50));
+	mainMenuButton.setPosition(sf::Vector2f(Level::getView()->getCenter().x, Level::getView()->getCenter().y));
+	continueButton.setPosition(sf::Vector2f(Level::getView()->getCenter().x, Level::getView()->getCenter().y + 50));
+	quitButton.setPosition(sf::Vector2f(Level::getView()->getCenter().x, Level::getView()->getCenter().y + 100));
 }
 
 void Pause::beginDraw()
@@ -119,7 +129,7 @@ void Pause::initPauseText()
 
 	pausedTextBox.setSize(sf::Vector2f(284.4f, 74.4f));
 	pausedTextBox.setOrigin(sf::Vector2f(pausedTextBox.getSize().x / 2.0f, pausedTextBox.getSize().y / 2.0f));
-	pausedTextBox.setPosition(sf::Vector2f(Level::getView().getCenter().x, Level::getView().getCenter().y - 200)); // window->getSize().y / 6.0f));
+	pausedTextBox.setPosition(sf::Vector2f(window->getSize().x / 2.0f, (window->getSize().y / 2.0f) - 150));
 	pausedTextBox.setTexture(&pausedTexture);
 }
 
@@ -132,7 +142,7 @@ void Pause::initScroll()
 
 	scrollBox.setSize(sf::Vector2f(230.4f, 376.8f));
 	scrollBox.setOrigin(sf::Vector2f(scrollBox.getSize().x / 2.0f, scrollBox.getSize().y / 2.0f));
-	scrollBox.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y - 195));
+	scrollBox.setPosition(sf::Vector2f(window->getSize().x / 2.0f, (window->getSize().y / 2.0f) + 50));
 	scrollBox.setTexture(&scrollTexture);
 }
 
@@ -183,7 +193,7 @@ void Pause::initContinueButton()
 
 	continueButton.setSize(sf::Vector2f(144, 31.8f));
 	continueButton.setOrigin(sf::Vector2f(continueButton.getSize().x / 2.0f, continueButton.getSize().y / 2.0f));
-	continueButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, 312));
+	continueButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, (window->getSize().y / 2.0f) + 50));
 	continueButton.setCollisionBox(0, 0, 144, 31.8f);
 	continueButton.setTexture(&continueButtonTexture);
 }
@@ -207,7 +217,7 @@ void Pause::initQuitButton()
 
 	quitButton.setSize(sf::Vector2f(78.6f, 31.8f));
 	quitButton.setOrigin(sf::Vector2f(quitButton.getSize().x / 2.0f, quitButton.getSize().y / 2.0f));
-	quitButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, 350));
+	quitButton.setPosition(sf::Vector2f(window->getSize().x / 2.0f, (window->getSize().y / 2.0f) + 100));
 	quitButton.setCollisionBox(0, 0, 78.6f, 31.8f);
 	quitButton.setTexture(&quitButtonTexture);
 }
@@ -246,6 +256,8 @@ void Pause::checkMainMenuButtonCollisions()
 	{
 		audio->playSoundbyName("scroll");
 		mainMenuClicked = false;
+		//Level::getView()->reset(sf::FloatRect(0.0f, 0.0f, 960, 512));
+		resetView = true;
 		setGameState(State::MENU);
 	}
 }

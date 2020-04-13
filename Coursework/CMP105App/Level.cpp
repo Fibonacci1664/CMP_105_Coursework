@@ -20,6 +20,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 
 	hitPointsInLevel = 3;
 	coinsInLevel = 6;
+	keysInLevel = 1;					// If expanding, change this to 3, the vector and collsions are already set up for 3.
 	
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 	fadedOut = false;
@@ -167,6 +168,7 @@ void Level::update(float dt)
 	checkExitDoorCollisions(dt);
 	checkHitPointCollisions();
 	checkCoinCollisions();
+	checkKeyCollisions();
 	deathCheck();
 	uiPanel->update(dt, player.getHitPointsRemaining(), player.getLives(), player.getCoinsCollected(), player.getKeysCollected(), xTranslationOfView);
 
@@ -174,12 +176,6 @@ void Level::update(float dt)
 	{
 		updatePlayerBoxes();
 		updateTextOutput();
-	}
-
-	// TEST CHECK FOR KEY AND CREATING A NEW GAME.
-	if (Collision::checkBoundingBox(&key, &player))
-	{
-		key.setPosition(sf::Vector2f(300, 400));
 	}
 }
 
@@ -202,14 +198,12 @@ void Level::render()
 	window->draw(lift_2);
 	window->draw(lift_3);
 	window->draw(lift_4);
-	window->draw(key);
 	drawHitPoints();
 	drawCoins();
+	drawKeys();
 	window->draw(exitDoor);
 	uiPanel->render();
 
-
-	//window->draw(hp);
 	window->draw(player);
 	window->setView(view);
 
@@ -581,22 +575,34 @@ void Level::initKeys()
 		std::cerr << "Sorry could not load key image!\n";
 	}
 
-	key.setWindow(window);
-	key.setSize(sf::Vector2f(64, 64));
-	key.setPosition(sf::Vector2f(64, 140));
-	key.setCollisionBox(32, 32, 20, 10);
-	key.setTexture(&keyTexture);
-	key.setTextureRect(key.getKeyAnimation()->getCurrentFrame());
-	key.getKeyAnimation()->setPlaying(true);
-	key.getKeyAnimation()->setLooping(true);
+	// Create 3 keys, although for this demo, only 1 key will be given a position, drawn, and need to be collected.
+	for (int i = 0; i < 3; ++i)
+	{
+		Key* key = new Key;
+		keys.push_back(key);
+
+		keys[i]->setWindow(window);
+		keys[i]->setSize(sf::Vector2f(64, 64));
+		keys[i]->setCollisionBox(0, 0, 64, 64);
+		keys[i]->setAlive(true);
+		keys[i]->setTexture(&keyTexture);
+		keys[i]->setTextureRect(keys[i]->getKeyAnimation()->getCurrentFrame());
+		keys[i]->getKeyAnimation()->setPlaying(true);
+		keys[i]->getKeyAnimation()->setLooping(true);
+	}
+
+	keys[0]->setPosition(sf::Vector2f(64, 128));			// Only giving the first key a position as we're only having 1 key in this demo level.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::updateKeys(float& dt)
 {
-	key.getKeyAnimation()->animate(dt);
-	key.setTextureRect(key.getKeyAnimation()->getCurrentFrame());
+	for (int i = 0; i < keys.size(); ++i)
+	{
+		keys[i]->getKeyAnimation()->animate(dt);
+		keys[i]->setTextureRect(keys[i]->getKeyAnimation()->getCurrentFrame());
+	}	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -637,6 +643,8 @@ void Level::initHitPoints()
 		hitPoints[i]->setAlive(true);
 		hitPoints[i]->setTexture(&hpTexture);
 		hitPoints[i]->setTextureRect(hitPoints[i]->getHitPointAnimation()->getCurrentFrame());
+		hitPoints[i]->getHitPointAnimation()->setPlaying(true);
+		hitPoints[i]->getHitPointAnimation()->setLooping(true);
 	}
 
 	hitPoints[0]->setPosition(sf::Vector2f(82, 80));
@@ -683,6 +691,8 @@ void Level::initCoins()
 		coins[i]->setAlive(true);
 		coins[i]->setTexture(&coinTexture);
 		coins[i]->setTextureRect(coins[i]->getCoinAnimation()->getCurrentFrame());
+		coins[i]->getCoinAnimation()->setPlaying(true);
+		coins[i]->getCoinAnimation()->setLooping(true);
 	}
 
 	coins[0]->setPosition(sf::Vector2f(525, 128));
@@ -709,6 +719,19 @@ void Level::drawCoins()
 		if (coins[i]->isAlive())
 		{
 			window->draw(*coins[i]);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::drawKeys()
+{
+	for (int i = 0; i < keysInLevel; ++i)
+	{
+		if (keys[i]->isAlive())
+		{
+			window->draw(*keys[i]);
 		}
 	}
 }
@@ -843,7 +866,7 @@ void Level::initPlayer()
 
 void Level::checkExitDoorCollisions(float& dt)
 {
-	if (Collision::checkBoundingBox(&exitDoor, &player))
+	if (Collision::checkBoundingBox(&exitDoor, &player) && keysInLevel == 0)
 	{
 		exitDoor.getExitDoorAnimation()->setPlaying(true);
 		exitDoor.getExitDoorAnimation()->animate(dt);
@@ -857,7 +880,6 @@ void Level::checkExitDoorCollisions(float& dt)
 		}
 
 		//audio->stopAllMusic();
-
 	}
 }
 
@@ -877,7 +899,7 @@ void Level::checkHitPointCollisions()
 		// Loop over all the hit points in the level and find the one we collided with.
 		for (int i = 0; i < hitPoints.size(); ++i)
 		{
-			// If the one we've collided with is still alive the collect it and kill it. Killing it prevents further collisions happing.
+			// If the one we've collided with is still alive then collect it and kill it. Killing it prevents further collisions happening.
 			if (Collision::checkBoundingBox(hitPoints[i], &player) && hitPoints[i]->isAlive())
 			{
 				audio->playSoundbyName("hitPoint");
@@ -897,13 +919,32 @@ void Level::checkCoinCollisions()
 	// Loop over all the coins in the level and find the one we collided with.
 	for (int i = 0; i < coins.size(); ++i)
 	{
-		// If the one we've collided with is still alive the collect it and kill it. Killing it prevents further collisions happing.
+		// If the one we've collided with is still alive then collect it and kill it. Killing it prevents further collisions happening.
 		if (Collision::checkBoundingBox(coins[i], &player) && coins[i]->isAlive())
 		{
 			audio->playSoundbyName("hitPoint");
 			coins[i]->setAlive(false);
 			--coinsInLevel;
 			player.incrementCoinsCollected();
+			break;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkKeyCollisions()
+{
+	// Loop over all the keys in the vector and find the one we collided with. Although only one key for the demo, this is built this way to allow for if more keys are drawn.
+	for (int i = 0; i < keys.size(); ++i)
+	{
+		// If the one we've collided with is still alive then collect it and kill it. Killing it prevents further collisions happening.
+		if (Collision::checkBoundingBox(keys[i], &player) && keys[i]->isAlive())
+		{
+			audio->playSoundbyName("hitPoint");
+			keys[i]->setAlive(false);
+			--keysInLevel;
+			player.incrementKeysCollected();
 			break;
 		}
 	}
@@ -1044,9 +1085,14 @@ void Level::setGameOver(bool l_gameOver)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-sf::View Level::getView()
+sf::View* Level::getView()
 {
-	return view;
+	return &view;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::setView(sf::View newView)
+{
+	view = newView;
+}
