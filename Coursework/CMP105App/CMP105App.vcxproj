@@ -160,6 +160,7 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="ExitDoor.cpp" />
     <ClCompile Include="FireLamp.cpp" />
+    <ClCompile Include="FireTrap.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\AudioManager.cpp" />
     <ClCompile Include="Framework\Collision.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="ExitDoor.h" />
     <ClInclude Include="FireLamp.h" />
+    <ClInclude Include="FireTrap.h" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\AudioManager.h" />
     <ClInclude Include="Framework\Collision.h" />

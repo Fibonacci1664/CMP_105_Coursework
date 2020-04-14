@@ -17,6 +17,7 @@
 #include "Coin.h"
 #include "UIPanel.h"
 #include "GroundSpike.h"
+#include "FireTrap.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
@@ -60,6 +61,7 @@ private:
 	void initKeys();
 	void initLever();
 	void initGroundSpikes();
+	void initFireTraps();
 
 	// Check stuff.
 	void checkMusicMuted();
@@ -72,6 +74,7 @@ private:
 	void checkKeyCollisions();
 	void checkLeverCollisions();
 	void checkGroundSpikeCollisions();
+	void checkFireTrapCollisions();
 
 	// Update stuff.
 	void updatePlayerBoxes();
@@ -83,6 +86,7 @@ private:
 	void updateHitPoints(float& dt);
 	void updateCoins(float& dt);
 	void updateGroundSpikes(float& dt);
+	void updateFireTraps(float& dt);
 	
 	// Draw stuff.
 	void drawLamps();
@@ -90,6 +94,7 @@ private:
 	void drawCoins();
 	void drawKeys();
 	void drawGroundSpikes();
+	void drawFireTraps();
 
 	// Delete stuff.
 	void deleteLamps();
@@ -98,6 +103,7 @@ private:
 	void deleteKeys();				// STILL NEED TO DO THIS!
 	void deleteTextures();			// STILL NEED TO DO THIS!
 	void deleteGroundSpikes();		// STILL NEED TO DO THIS!
+	void deleteFireTraps();			// STILL NEED TO DO THIS!
 
 	// Misc.
 	void moveLifts(float& dt);	
@@ -119,6 +125,10 @@ private:
 	// Ground spike trap.
 	std::vector<GroundSpike*> groundSpikes;
 	sf::Texture groundSpikeTexture;
+
+	// Fire traps.
+	std::vector<FireTrap*> fireTraps;
+	sf::Texture fireTrapTexture;
 
 	// Lever for escape.
 	GameObject lever;
@@ -161,7 +171,8 @@ private:
 	sf::Texture player_texture;
 
 	// Debug stuff.
-	sf::RectangleShape spikeColBox;
+	sf::RectangleShape spikeTrapColBox;
+	sf::RectangleShape fireTrapColBox;
 	sf::RectangleShape playerColBox;
 	sf::RectangleShape OriginBox;
 	sf::RectangleShape playerPosBox;

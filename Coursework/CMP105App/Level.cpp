@@ -7,8 +7,8 @@
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
 	decr = 192;
-	debugMode = false;
-	//initDebugMode();
+	debugMode = true;
+	initDebugMode();
 
 	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
 	window->setView(view);
@@ -39,6 +39,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	initKeys();
 	initLever();
 	initGroundSpikes();
+	initFireTraps();
 	initFireLamps();
 	//initBackground();
 	initAudio();
@@ -85,9 +86,13 @@ void Level::initDebugMode()
 	lift_1ColBox.setOutlineColor(sf::Color::Magenta);
 	lift_1ColBox.setOutlineThickness(1.0f);
 
-	spikeColBox.setFillColor(sf::Color::Transparent);
-	spikeColBox.setOutlineColor(sf::Color::Red);
-	spikeColBox.setOutlineThickness(1.0f);
+	spikeTrapColBox.setFillColor(sf::Color::Transparent);
+	spikeTrapColBox.setOutlineColor(sf::Color::Red);
+	spikeTrapColBox.setOutlineThickness(1.0f);
+
+	fireTrapColBox.setFillColor(sf::Color::Transparent);
+	fireTrapColBox.setOutlineColor(sf::Color::Red);
+	fireTrapColBox.setOutlineThickness(1.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,6 +180,7 @@ void Level::update(float dt)
 	updateHitPoints(dt);
 	updateCoins(dt);
 	updateGroundSpikes(dt);
+	updateFireTraps(dt);
 	checkTileCollisions();
 	checkLiftCollisions();
 	checkExitDoorCollisions(dt);
@@ -215,6 +221,7 @@ void Level::render()
 	drawCoins();
 	drawKeys();
 	drawGroundSpikes();
+	drawFireTraps();
 	window->draw(exitDoor);
 	window->draw(lever);
 	uiPanel->render();
@@ -230,7 +237,7 @@ void Level::render()
 		window->draw(lift_1ColBox);
 		window->draw(textBox);
 		window->draw(text);
-		window->draw(spikeColBox);
+		window->draw(spikeTrapColBox);
 	}
 	
 	endDraw();
@@ -670,7 +677,7 @@ void Level::initGroundSpikes()
 		std::cerr << "Sorry could not load ground spike image!\n";
 	}
 
-	// Create 3 hit points.
+	// Create 2 ground spike traps.
 	for (int i = 0; i < 2; ++i)
 	{
 		GroundSpike* groundSpike = new GroundSpike;
@@ -688,6 +695,39 @@ void Level::initGroundSpikes()
 
 	groundSpikes[0]->setPosition(sf::Vector2f(1024, 352));
 	groundSpikes[1]->setPosition(sf::Vector2f(1830, 160));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::initFireTraps()
+{
+	if (!fireTrapTexture.loadFromFile("gfx/level/traps/fire_trap.png"))
+	{
+		std::cerr << "Sorry could not load fire trap image!\n";
+	}
+
+	// Create 2 fire traps with default values.
+	for (int i = 0; i < 2; ++i)
+	{
+		FireTrap* fireTrap = new FireTrap;
+		fireTraps.push_back(fireTrap);
+
+		fireTraps[i]->setWindow(window);
+		fireTraps[i]->setSize(sf::Vector2f(128, 128));
+		//fireTraps[i]->setCollisionBox(0, 0, 128, 128);
+		fireTraps[i]->setAlive(true);
+		fireTraps[i]->setTexture(&fireTrapTexture);
+		fireTraps[i]->setTextureRect(fireTraps[i]->getFireTrapAnimation()->getCurrentFrame());
+
+		fireTraps[i]->getFireTrapAnimation()->setPlaying(true);
+		fireTraps[i]->getFireTrapAnimation()->setLooping(true);
+	}
+
+	fireTraps[0]->setPosition(sf::Vector2f(1080, 164));
+	fireTraps[0]->setRotation(90);
+	fireTraps[0]->getFireTrapAnimation()->setFrameSpeed(1.0f / 10.0f);
+	fireTraps[0]->setSize(sf::Vector2f(64, 64));
+	fireTraps[1]->setPosition(sf::Vector2f(2033, 270));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -792,6 +832,7 @@ void Level::updateGroundSpikes(float& dt)
 {
 	int frameNum = 0;
 
+	// This loop takes care of adjusting the collision box around the spike dependent on how much the spike are showing.
 	for (int i = 0; i < groundSpikes.size(); ++i)
 	{
 		frameNum = groundSpikes[i]->getGroundSpikeAnimation()->getCurrentFrameNumber();
@@ -802,46 +843,146 @@ void Level::updateGroundSpikes(float& dt)
 				groundSpikes[i]->setCollisionBox(0, 0, 0, 0);			// NO COLLISION BOX IF THE SPIKES ARE FULLY RETRACTED.
 				if (debugMode)
 				{
-					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
-					spikeColBox.setSize(sf::Vector2f(0, 0));
+					spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeTrapColBox.setSize(sf::Vector2f(0, 0));
 				}			
 				break;
 			case 1:
 				groundSpikes[i]->setCollisionBox(60, 80, 10, 15);		// One solitary spike in the centre of the trap, only just protruding.
 				if (debugMode)
 				{
-					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
-					spikeColBox.setSize(sf::Vector2f(10, 15));
+					spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeTrapColBox.setSize(sf::Vector2f(10, 15));
 				}			
 				break;
 			case 2:
 				groundSpikes[i]->setCollisionBox(42, 64, 45, 30);		// All but the outer most spike now show but not all the way out.
 				if (debugMode)
 				{
-					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
-					spikeColBox.setSize(sf::Vector2f(45, 30));
+					spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeTrapColBox.setSize(sf::Vector2f(45, 30));
 				}			
 				break;
 			case 3:
 				groundSpikes[i]->setCollisionBox(32, 42, 64, 54);		// All spike now showing but not all the way out.
 				if (debugMode)
 				{
-					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
-					spikeColBox.setSize(sf::Vector2f(64, 54));
+					spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeTrapColBox.setSize(sf::Vector2f(64, 54));
 				}			
 				break;
 			case 4:
 				groundSpikes[i]->setCollisionBox(22, 32, 84, 64);		// All spikes showing and all the way out.
 				if (debugMode)
 				{
-					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
-					spikeColBox.setSize(sf::Vector2f(84, 64));
+					spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeTrapColBox.setSize(sf::Vector2f(84, 64));
 				}			
 				break;
 		}
 
 		groundSpikes[i]->getGroundSpikeAnimation()->animate(dt);
 		groundSpikes[i]->setTextureRect(groundSpikes[i]->getGroundSpikeAnimation()->getCurrentFrame());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::updateFireTraps(float& dt)
+{
+	int frameNum = 0;
+
+	// This loop takes care of adjusting the collision box around the spike dependent on how much the spike are showing.
+	for (int i = 0; i < fireTraps.size(); ++i)
+	{
+		frameNum = fireTraps[i]->getFireTrapAnimation()->getCurrentFrameNumber();
+
+		switch (frameNum)
+		{
+		case 0:
+			fireTraps[i]->setCollisionBox(0, 0, 0, 0);			// NO COLLISION BOX IF THERE IS NO FIRE.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(0, 0));
+			}
+			break;
+		case 1:
+			fireTraps[i]->setCollisionBox(60, 80, 10, 15);		// Baby flame.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(10, 15));
+			}
+			break;
+		case 2:
+			fireTraps[i]->setCollisionBox(42, 64, 45, 30);		// Little flame.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(45, 30));
+			}
+			break;
+		case 3:
+			fireTraps[i]->setCollisionBox(32, 42, 64, 54);		// Med flame.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(64, 54));
+			}
+			break;
+		case 4:
+			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Large flame.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+			}
+			break;
+		case 5:
+			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Huge flame.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+			}
+			break;
+		case 6:
+			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Bigger flame, but starting to go out.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+			}
+			break;
+		case 7:
+			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Even bigger flame, but going out more.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+			}
+			break;
+		case 8:
+			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Bigger still flame, but almost out.
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+			}
+			break;
+		case 9:
+			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Biggest flame, pretty much gone. Thank you for your attention!
+			if (debugMode)
+			{
+				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
+				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+			}
+			break;
+		}
+
+		fireTraps[i]->getFireTrapAnimation()->animate(dt);
+		fireTraps[i]->setTextureRect(fireTraps[i]->getFireTrapAnimation()->getCurrentFrame());
 	}
 }
 
@@ -871,11 +1012,23 @@ void Level::drawKeys()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::drawGroundSpikes()
 {
 	for (int i = 0; i < groundSpikes.size(); ++i)
 	{
 		window->draw(*groundSpikes[i]);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::drawFireTraps()
+{
+	for (int i = 0; i < fireTraps.size(); ++i)
+	{
+		window->draw(*fireTraps[i]);
 	}
 }
 
