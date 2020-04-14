@@ -29,6 +29,8 @@ Animation::Animation()
 	isLooping = true;
 	animationSpeed = 0.0f;
 	flipped = false;
+	playForward = true;
+	playBackwards = false;
 }
 
 Animation::~Animation()
@@ -53,22 +55,45 @@ void Animation::animate(float dt)
 {
 	if (isPlaying)
 	{
+		// Increment the delay.
 		elapsedTime += dt;
 
-		if (elapsedTime >= animationSpeed)
+		// If the delay gets passed the threshold and the anim is playing forwards.
+		if ((elapsedTime >= animationSpeed) && playForward)
 		{
-			currentFrame++;
+			// Move to the next frame.
+			++currentFrame;
 
+			// If we get to the end.
 			if (currentFrame >= (int)frames.size())
 			{
+				// If we're looping go back to the first frame.
 				if (isLooping)
 				{
 					currentFrame = 0;
 				}
-				else
+				else	// Otherwise set up for playing the animation backwards.
 				{
-					currentFrame--;
+					--currentFrame;
+					playBackwards = true;
+					playForward = false;
 				}
+			}
+
+			// Reset the delay.
+			elapsedTime = 0;
+		}
+
+		// Same as above but in reverse.
+		if ((elapsedTime >= animationSpeed) && playBackwards)
+		{
+			--currentFrame;
+
+			if (currentFrame < 0)
+			{
+				++currentFrame;
+				playForward = true;
+				playBackwards = false;
 			}
 
 			elapsedTime = 0;

@@ -16,6 +16,7 @@
 #include "HitPoint.h"
 #include "Coin.h"
 #include "UIPanel.h"
+#include "GroundSpike.h"
 
 static bool musicMuted = false;
 static bool musicStopped = false;
@@ -58,6 +59,7 @@ private:
 	void initCoins();
 	void initKeys();
 	void initLever();
+	void initGroundSpikes();
 
 	// Check stuff.
 	void checkMusicMuted();
@@ -69,6 +71,7 @@ private:
 	void checkCoinCollisions();
 	void checkKeyCollisions();
 	void checkLeverCollisions();
+	void checkGroundSpikeCollisions();
 
 	// Update stuff.
 	void updatePlayerBoxes();
@@ -79,18 +82,22 @@ private:
 	void updateLamps(float& dt);
 	void updateHitPoints(float& dt);
 	void updateCoins(float& dt);
-	void updateLever(float& dt);
+	void updateGroundSpikes(float& dt);
 	
 	// Draw stuff.
 	void drawLamps();
 	void drawHitPoints();
 	void drawCoins();
 	void drawKeys();
+	void drawGroundSpikes();
 
 	// Delete stuff.
 	void deleteLamps();
 	void deleteHitPoints();			// STILL NEED TO DO THIS!
 	void deleteCoins();				// STILL NEED TO DO THIS!
+	void deleteKeys();				// STILL NEED TO DO THIS!
+	void deleteTextures();			// STILL NEED TO DO THIS!
+	void deleteGroundSpikes();		// STILL NEED TO DO THIS!
 
 	// Misc.
 	void moveLifts(float& dt);	
@@ -109,6 +116,11 @@ private:
 	GameObject lift_4;
 	sf::Texture liftTexture;
 
+	// Ground spike trap.
+	std::vector<GroundSpike*> groundSpikes;
+	sf::Texture groundSpikeTexture;
+
+	// Lever for escape.
 	GameObject lever;
 	std::vector<sf::Texture*> leverTextures;
 
@@ -149,6 +161,7 @@ private:
 	sf::Texture player_texture;
 
 	// Debug stuff.
+	sf::RectangleShape spikeColBox;
 	sf::RectangleShape playerColBox;
 	sf::RectangleShape OriginBox;
 	sf::RectangleShape playerPosBox;
@@ -157,7 +170,7 @@ private:
 	sf::Text text;
 	sf::Font font;
 
-	// Stand alone background composite of all 5 images.
+	// Stand alone background composite of all 5 images, could be used instead of parallax.
 	sf::RectangleShape background;
 	sf::Texture bgTexture;
 
@@ -180,6 +193,7 @@ private:
 	float xTranslationOfView;
 	float decr;
 	float scrollSpeed;
+	float hitPointReductionDelay;
 
 	int hitPointsInLevel;
 	int coinsInLevel;

@@ -171,6 +171,7 @@
     <ClCompile Include="Framework\TileMap.cpp" />
     <ClCompile Include="Framework\Vector.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GroundSpike.cpp" />
     <ClCompile Include="Heart.cpp" />
     <ClCompile Include="HitPoint.cpp" />
     <ClCompile Include="HowToPlay.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Framework\TileMap.h" />
     <ClInclude Include="Framework\Vector.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="GroundSpike.h" />
     <ClInclude Include="Heart.h" />
     <ClInclude Include="HitPoint.h" />
     <ClInclude Include="HowToPlay.h" />

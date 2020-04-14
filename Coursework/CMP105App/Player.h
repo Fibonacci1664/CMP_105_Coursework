@@ -19,6 +19,8 @@ public:
 
 	void collisionResponse(GameObject* collider);
 	void checkLiftCollisions(GameObject* col);
+	void playSoundByName(std::string soundName);
+	void injuryBounce();
 
 	// Getters / Setters
 	bool getMovingRight();
@@ -32,8 +34,10 @@ public:
 	void setRespawned(bool l_respawned);
 	int getLives();
 	void setLives(int l_lives);
+	void decrementLives();
 	void setHitPoints(int l_hitPoints);
 	void incrementHitPoints();
+	void decrementHitPoints();
 	int getHitPointsRemaining();
 	int getCoinsCollected();
 	void incrementCoinsCollected();
@@ -106,7 +110,7 @@ private:
 	float deathAnimDelay;
 	float hitPointReductionDelay;
 
-	State currentState;
+	State currentState;					// These were a remnant of when i thought the player might have needed to know about the state, left them just in case.
 	GameState* currentGameState;
 
 	bool movingLeft;

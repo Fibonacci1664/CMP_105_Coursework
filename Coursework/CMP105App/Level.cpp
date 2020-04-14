@@ -18,6 +18,7 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 
 	uiPanel = new UIPanel(hwnd);
 
+	hitPointReductionDelay = 0;
 	hitPointsInLevel = 3;
 	coinsInLevel = 6;
 	keysInLevel = 1;					// If expanding, change this to 3, the vector and collsions are already set up for 3.
@@ -37,12 +38,13 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 	initParallax();
 	initKeys();
 	initLever();
+	initGroundSpikes();
 	initFireLamps();
 	//initBackground();
 	initAudio();
 	initPlayerSpriteTextures();
 	initTransFadeRect();
-	initPlayer();	
+	initPlayer();
 }
 
 Level::~Level()
@@ -82,6 +84,10 @@ void Level::initDebugMode()
 	lift_1ColBox.setFillColor(sf::Color::Transparent);
 	lift_1ColBox.setOutlineColor(sf::Color::Magenta);
 	lift_1ColBox.setOutlineThickness(1.0f);
+
+	spikeColBox.setFillColor(sf::Color::Transparent);
+	spikeColBox.setOutlineColor(sf::Color::Red);
+	spikeColBox.setOutlineThickness(1.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,6 +151,8 @@ void Level::handleInput(float dt)
 // Update game objects
 void Level::update(float dt)
 {
+	hitPointReductionDelay += dt;
+
 	// Keep updating the transparent fade panel to the current location of the view for when death, game over or escape occurs.
 	transFade.setPosition(sf::Vector2f((view.getCenter().x - view.getSize().x / 2.0f), (view.getCenter().y - view.getSize().y / 2.0f)));
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
@@ -166,12 +174,14 @@ void Level::update(float dt)
 	updateKeys(dt);
 	updateHitPoints(dt);
 	updateCoins(dt);
+	updateGroundSpikes(dt);
 	checkTileCollisions();
 	checkLiftCollisions();
 	checkExitDoorCollisions(dt);
 	checkHitPointCollisions();
 	checkCoinCollisions();
 	checkKeyCollisions();
+	checkGroundSpikeCollisions();
 	deathCheck();
 	uiPanel->update(dt, player.getHitPointsRemaining(), player.getLives(), player.getCoinsCollected(), player.getKeysCollected(), xTranslationOfView);
 
@@ -192,11 +202,11 @@ void Level::render()
 	//window->draw(background);
 	window->draw(parallaxSky);
 	window->draw(parallaxTrees);
-	window->draw(parallaxWindows);
-	window->draw(parallaxDucts);
+	window->draw(parallaxWindows);	
 	window->draw(parallaxColumns);
 	drawLamps();
 	tmm.render(window);
+	window->draw(parallaxDucts);
 	window->draw(lift_1);
 	window->draw(lift_2);
 	window->draw(lift_3);
@@ -204,6 +214,7 @@ void Level::render()
 	drawHitPoints();
 	drawCoins();
 	drawKeys();
+	drawGroundSpikes();
 	window->draw(exitDoor);
 	window->draw(lever);
 	uiPanel->render();
@@ -219,6 +230,7 @@ void Level::render()
 		window->draw(lift_1ColBox);
 		window->draw(textBox);
 		window->draw(text);
+		window->draw(spikeColBox);
 	}
 	
 	endDraw();
@@ -432,8 +444,8 @@ void Level::initParallax()
 		std::cerr << "Sorry could not load bg ducts image!\n";
 	}
 
-	parallaxDucts.setPosition(sf::Vector2f(-1000, 0));
-	parallaxDucts.setSize(sf::Vector2f(5760, 512));
+	parallaxDucts.setPosition(sf::Vector2f(-1000, 265));
+	parallaxDucts.setSize(sf::Vector2f(5760, 256));
 	parallaxDucts.setTexture(&parallaxDuctsTexture);
 
 	// Columns image.
@@ -455,19 +467,19 @@ void Level::updateParallax(float& dt)
 	// We're moving to the right, so scroll the parallax effect to the left.
 	if (player.getMovingRight() && !player.getIdling() && viewMoving)
 	{
-		parallaxSky.setPosition(sf::Vector2f(parallaxSky.getPosition().x - (30 * dt), parallaxSky.getPosition().y));
-		parallaxTrees.setPosition(sf::Vector2f(parallaxTrees.getPosition().x - (50 * dt), parallaxTrees.getPosition().y));
-		/*parallaxWindows.setPosition(sf::Vector2f(parallaxWindows.getPosition().x - (20 * dt), parallaxWindows.getPosition().y));
-		parallaxDucts.setPosition(sf::Vector2f(parallaxDucts.getPosition().x - (25 * dt), parallaxDucts.getPosition().y));*/
+		parallaxSky.setPosition(sf::Vector2f(parallaxSky.getPosition().x - (10 * dt), parallaxSky.getPosition().y));
+		parallaxTrees.setPosition(sf::Vector2f(parallaxTrees.getPosition().x - (20 * dt), parallaxTrees.getPosition().y));
+		//parallaxWindows.setPosition(sf::Vector2f(parallaxWindows.getPosition().x - (20 * dt), parallaxWindows.getPosition().y));
+		parallaxDucts.setPosition(sf::Vector2f(parallaxDucts.getPosition().x - (30 * dt), parallaxDucts.getPosition().y));
 	}
 
 	// We're moving to the left, so scroll the parallax effect to the right.
 	if (player.getMovingLeft() && !player.getIdling() && viewMoving)
 	{
-		parallaxSky.setPosition(sf::Vector2f(parallaxSky.getPosition().x + (30 * dt), parallaxSky.getPosition().y));
-		parallaxTrees.setPosition(sf::Vector2f(parallaxTrees.getPosition().x + (50 * dt), parallaxTrees.getPosition().y));
-		/*parallaxWindows.setPosition(sf::Vector2f(parallaxWindows.getPosition().x + (20 * dt), parallaxWindows.getPosition().y));
-		parallaxDucts.setPosition(sf::Vector2f(parallaxDucts.getPosition().x + (25 * dt), parallaxDucts.getPosition().y));*/
+		parallaxSky.setPosition(sf::Vector2f(parallaxSky.getPosition().x + (10 * dt), parallaxSky.getPosition().y));
+		parallaxTrees.setPosition(sf::Vector2f(parallaxTrees.getPosition().x + (20 * dt), parallaxTrees.getPosition().y));
+		//parallaxWindows.setPosition(sf::Vector2f(parallaxWindows.getPosition().x + (20 * dt), parallaxWindows.getPosition().y));
+		parallaxDucts.setPosition(sf::Vector2f(parallaxDucts.getPosition().x + (30 * dt), parallaxDucts.getPosition().y));
 	}
 
 	// If the player stops, stop the effect.
@@ -475,8 +487,8 @@ void Level::updateParallax(float& dt)
 	{
 		parallaxSky.setPosition(sf::Vector2f(parallaxSky.getPosition().x, parallaxSky.getPosition().y));
 		parallaxTrees.setPosition(sf::Vector2f(parallaxTrees.getPosition().x, parallaxTrees.getPosition().y));
-		/*parallaxWindows.setPosition(sf::Vector2f(parallaxWindows.getPosition().x, parallaxWindows.getPosition().y));
-		parallaxDucts.setPosition(sf::Vector2f(parallaxDucts.getPosition().x, parallaxDucts.getPosition().y));*/
+		//parallaxWindows.setPosition(sf::Vector2f(parallaxWindows.getPosition().x, parallaxWindows.getPosition().y));
+		parallaxDucts.setPosition(sf::Vector2f(parallaxDucts.getPosition().x, parallaxDucts.getPosition().y));
 	}
 }
 
@@ -651,6 +663,35 @@ void Level::initLever()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Level::initGroundSpikes()
+{
+	if (!groundSpikeTexture.loadFromFile("gfx/level/traps/ground_spike.png"))
+	{
+		std::cerr << "Sorry could not load ground spike image!\n";
+	}
+
+	// Create 3 hit points.
+	for (int i = 0; i < 2; ++i)
+	{
+		GroundSpike* groundSpike = new GroundSpike;
+		groundSpikes.push_back(groundSpike);
+
+		groundSpikes[i]->setWindow(window);
+		groundSpikes[i]->setSize(sf::Vector2f(128, 128));
+		//groundSpikes[i]->setCollisionBox(0, 0, 128, 128);
+		groundSpikes[i]->setAlive(true);
+		groundSpikes[i]->setTexture(&groundSpikeTexture);
+		groundSpikes[i]->setTextureRect(groundSpikes[i]->getGroundSpikeAnimation()->getCurrentFrame());
+		groundSpikes[i]->getGroundSpikeAnimation()->setPlaying(true);
+		groundSpikes[i]->getGroundSpikeAnimation()->setLooping(false);
+	}
+
+	groundSpikes[0]->setPosition(sf::Vector2f(1024, 352));
+	groundSpikes[1]->setPosition(sf::Vector2f(1830, 160));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Level::initHitPoints()
 {
 	if (!hpTexture.loadFromFile("gfx/level/hitPoint.png"))
@@ -740,10 +781,67 @@ void Level::initCoins()
 
 void Level::updateCoins(float& dt)
 {
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < coins.size(); ++i)
 	{
 		coins[i]->getCoinAnimation()->animate(dt);
 		coins[i]->setTextureRect(coins[i]->getCoinAnimation()->getCurrentFrame());
+	}
+}
+
+void Level::updateGroundSpikes(float& dt)
+{
+	int frameNum = 0;
+
+	for (int i = 0; i < groundSpikes.size(); ++i)
+	{
+		frameNum = groundSpikes[i]->getGroundSpikeAnimation()->getCurrentFrameNumber();
+
+		switch (frameNum)
+		{
+			case 0:
+				groundSpikes[i]->setCollisionBox(0, 0, 0, 0);			// NO COLLISION BOX IF THE SPIKES ARE FULLY RETRACTED.
+				if (debugMode)
+				{
+					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeColBox.setSize(sf::Vector2f(0, 0));
+				}			
+				break;
+			case 1:
+				groundSpikes[i]->setCollisionBox(60, 80, 10, 15);		// One solitary spike in the centre of the trap, only just protruding.
+				if (debugMode)
+				{
+					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeColBox.setSize(sf::Vector2f(10, 15));
+				}			
+				break;
+			case 2:
+				groundSpikes[i]->setCollisionBox(42, 64, 45, 30);		// All but the outer most spike now show but not all the way out.
+				if (debugMode)
+				{
+					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeColBox.setSize(sf::Vector2f(45, 30));
+				}			
+				break;
+			case 3:
+				groundSpikes[i]->setCollisionBox(32, 42, 64, 54);		// All spike now showing but not all the way out.
+				if (debugMode)
+				{
+					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeColBox.setSize(sf::Vector2f(64, 54));
+				}			
+				break;
+			case 4:
+				groundSpikes[i]->setCollisionBox(22, 32, 84, 64);		// All spikes showing and all the way out.
+				if (debugMode)
+				{
+					spikeColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
+					spikeColBox.setSize(sf::Vector2f(84, 64));
+				}			
+				break;
+		}
+
+		groundSpikes[i]->getGroundSpikeAnimation()->animate(dt);
+		groundSpikes[i]->setTextureRect(groundSpikes[i]->getGroundSpikeAnimation()->getCurrentFrame());
 	}
 }
 
@@ -770,6 +868,14 @@ void Level::drawKeys()
 		{
 			window->draw(*keys[i]);
 		}
+	}
+}
+
+void Level::drawGroundSpikes()
+{
+	for (int i = 0; i < groundSpikes.size(); ++i)
+	{
+		window->draw(*groundSpikes[i]);
 	}
 }
 
@@ -998,6 +1104,59 @@ void Level::checkLeverCollisions()
 		liftsOn = true;
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::checkGroundSpikeCollisions()
+{
+	// Loop over all the ground spikes in the vector and find the one we collided with.
+	for (int i = 0; i < groundSpikes.size(); ++i)
+	{
+		if (Collision::checkBoundingBox(groundSpikes[i], &player) && hitPointReductionDelay > 1.0f)
+		{
+			std::cout << "Collided with spikes!\n";
+
+			player.decrementHitPoints();
+			player.playSoundByName("umph");
+			hitPointReductionDelay = 0;
+
+			// If moving right, bounce left.
+			if (player.getMovingRight())
+			{
+				/*
+				 * Check if the last spike collision caused our hit points to reach zero, this prevents the stepvelocity
+				 * being applied on the collision that causes death and prevent the player respawning with the applied step velocity.
+				 */
+				if (player.getHitPointsRemaining() == 0)
+				{
+					player.decrementLives();
+					player.setIsDead(true);
+				}
+				else
+				{
+					player.injuryBounce();
+				}
+			}
+			else if (player.getMovingLeft())		// If moving left, bounce right.
+			{
+				if (player.getHitPointsRemaining() == 0)
+				{
+					player.decrementLives();
+					player.setIsDead(true);
+				}
+				else
+				{
+					player.injuryBounce();
+				}
+			}
+
+			// If we've found the spike we collided with, we dont need to check the others, so stop looping.
+			break;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Level::initAudio()
 {

@@ -43,5 +43,7 @@ protected:
 	bool flipped;
 	bool isLooping;
 	bool isPlaying;
+	bool playForward;
+	bool playBackwards;
 	float elapsedTime;
 };

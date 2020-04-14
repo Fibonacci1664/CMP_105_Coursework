@@ -551,6 +551,7 @@ void Player::checkTileCollisions(GameObject* col)
 	}
 }
 
+// These spike collisons are done here, because they are a tile and so it was easiest to do here. The animated spikes are cheked in level because they are a part of the level.
 void Player::spikeCollision()
 {
 	std::cout << "Collided with spikes!\n";
@@ -572,8 +573,7 @@ void Player::spikeCollision()
 		}
 		else
 		{
-			flashRed = true;
-			stepVelocity = sf::Vector2f(-100, -300);
+			injuryBounce();
 		}
 	}
 	else if (movingLeft)
@@ -585,10 +585,15 @@ void Player::spikeCollision()
 		}
 		else
 		{
-			flashRed = true;
-			stepVelocity = sf::Vector2f(100, -300);
+			injuryBounce();
 		}
 	}
+}
+
+void Player::injuryBounce()
+{
+	flashRed = true;
+	stepVelocity = sf::Vector2f(-100, -300);
 }
 
 void Player::checkLiftCollisions(GameObject* col)
@@ -620,6 +625,11 @@ void Player::initAudio()
 	audioMan.addSound("sfx/player/jump.ogg", "jump");
 	audioMan.addSound("sfx/player/sword_attack.ogg", "attack");
 	audioMan.addSound("sfx/player/umph.ogg", "umph");
+}
+
+void Player::playSoundByName(std::string soundName)
+{
+	audioMan.playSoundbyName(soundName);
 }
 
 void Player::respawn()
@@ -735,14 +745,30 @@ void Player::setLives(int l_lives)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Player::decrementLives()
+{
+	--lives;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Player::setHitPoints(int l_hitPoints)
 {
 	hitPoints = l_hitPoints;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Player::incrementHitPoints()
 {
 	++hitPoints;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::decrementHitPoints()
+{
+	--hitPoints;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
