@@ -188,6 +188,7 @@ void Level::update(float dt)
 	checkCoinCollisions();
 	checkKeyCollisions();
 	checkGroundSpikeCollisions();
+	checkFireTrapCollisions();
 	deathCheck();
 	uiPanel->update(dt, player.getHitPointsRemaining(), player.getLives(), player.getCoinsCollected(), player.getKeysCollected(), xTranslationOfView);
 
@@ -238,6 +239,7 @@ void Level::render()
 		window->draw(textBox);
 		window->draw(text);
 		window->draw(spikeTrapColBox);
+		window->draw(fireTrapColBox);
 	}
 	
 	endDraw();
@@ -685,7 +687,6 @@ void Level::initGroundSpikes()
 
 		groundSpikes[i]->setWindow(window);
 		groundSpikes[i]->setSize(sf::Vector2f(128, 128));
-		//groundSpikes[i]->setCollisionBox(0, 0, 128, 128);
 		groundSpikes[i]->setAlive(true);
 		groundSpikes[i]->setTexture(&groundSpikeTexture);
 		groundSpikes[i]->setTextureRect(groundSpikes[i]->getGroundSpikeAnimation()->getCurrentFrame());
@@ -714,7 +715,6 @@ void Level::initFireTraps()
 
 		fireTraps[i]->setWindow(window);
 		fireTraps[i]->setSize(sf::Vector2f(128, 128));
-		//fireTraps[i]->setCollisionBox(0, 0, 128, 128);
 		fireTraps[i]->setAlive(true);
 		fireTraps[i]->setTexture(&fireTrapTexture);
 		fireTraps[i]->setTextureRect(fireTraps[i]->getFireTrapAnimation()->getCurrentFrame());
@@ -723,10 +723,8 @@ void Level::initFireTraps()
 		fireTraps[i]->getFireTrapAnimation()->setLooping(true);
 	}
 
-	fireTraps[0]->setPosition(sf::Vector2f(1080, 164));
-	fireTraps[0]->setRotation(90);
+	fireTraps[0]->setPosition(sf::Vector2f(753, 228));
 	fireTraps[0]->getFireTrapAnimation()->setFrameSpeed(1.0f / 10.0f);
-	fireTraps[0]->setSize(sf::Vector2f(64, 64));
 	fireTraps[1]->setPosition(sf::Vector2f(2033, 270));
 }
 
@@ -839,8 +837,8 @@ void Level::updateGroundSpikes(float& dt)
 
 		switch (frameNum)
 		{
-			case 0:
-				groundSpikes[i]->setCollisionBox(0, 0, 0, 0);			// NO COLLISION BOX IF THE SPIKES ARE FULLY RETRACTED.
+			case 0: // A COLLISION BOX OF 0, 0, WHICH BELIEVE IT OR NOT STILL REGISTERS A HIT, SO I COULDN'T USE (0,0,0,0) BUT INSTEAD PUT IT IN THE MIDDLE OF THE SPRITE AND 'INSIDE' THE GROUND SO IT'S IMPOSSIBLE TO HIT.
+				groundSpikes[i]->setCollisionBox(64, -10, 0, 0);
 				if (debugMode)
 				{
 					spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
@@ -899,8 +897,8 @@ void Level::updateFireTraps(float& dt)
 
 		switch (frameNum)
 		{
-		case 0:
-			fireTraps[i]->setCollisionBox(0, 0, 0, 0);			// NO COLLISION BOX IF THERE IS NO FIRE.
+		case 0: // A COLLISION BOX OF 0, 0, WHICH BELIEVE IT OR NOT STILL REGISTERS A HIT, SO I COULDN'T USE (0,0,0,0) BUT INSTEAD PUT IT IN THE MIDDLE OF THE SPRITE AND 'INSIDE' THE WALL IT'S ATTACHED TO SO IT'S IMPOSSIBLE TO HIT.
+			fireTraps[i]->setCollisionBox(-10, 64, 0, 0);
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
@@ -908,75 +906,75 @@ void Level::updateFireTraps(float& dt)
 			}
 			break;
 		case 1:
-			fireTraps[i]->setCollisionBox(60, 80, 10, 15);		// Baby flame.
+			fireTraps[i]->setCollisionBox(0, 50, 30, 30);		// Baby flame.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(10, 15));
+				fireTrapColBox.setSize(sf::Vector2f(30, 30));
 			}
 			break;
 		case 2:
-			fireTraps[i]->setCollisionBox(42, 64, 45, 30);		// Little flame.
+			fireTraps[i]->setCollisionBox(0, 50, 40, 30);		// Little flame.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(45, 30));
+				fireTrapColBox.setSize(sf::Vector2f(40, 30));
 			}
 			break;
 		case 3:
-			fireTraps[i]->setCollisionBox(32, 42, 64, 54);		// Med flame.
+			fireTraps[i]->setCollisionBox(0, 50, 60, 30);		// Med flame.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(64, 54));
+				fireTrapColBox.setSize(sf::Vector2f(60, 30));
 			}
 			break;
 		case 4:
-			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Large flame.
+			fireTraps[i]->setCollisionBox(0, 50, 80, 30);		// Large flame.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+				fireTrapColBox.setSize(sf::Vector2f(80, 30));
 			}
 			break;
 		case 5:
-			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Huge flame.
+			fireTraps[i]->setCollisionBox(0, 50, 100, 30);		// Huge flame.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+				fireTrapColBox.setSize(sf::Vector2f(100, 30));
 			}
 			break;
 		case 6:
-			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Bigger flame, but starting to go out.
+			fireTraps[i]->setCollisionBox(0, 50, 110, 30);		// Bigger flame, but starting to go out.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+				fireTrapColBox.setSize(sf::Vector2f(110, 30));
 			}
 			break;
 		case 7:
-			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Even bigger flame, but going out more.
+			fireTraps[i]->setCollisionBox(0, 50, 120, 30);		// Even bigger flame, but going out more.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+				fireTrapColBox.setSize(sf::Vector2f(120, 30));
 			}
 			break;
 		case 8:
-			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Bigger still flame, but almost out.
+			fireTraps[i]->setCollisionBox(0, 50, 125, 30);		// Bigger still flame, but almost out.
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+				fireTrapColBox.setSize(sf::Vector2f(125, 30));
 			}
 			break;
 		case 9:
-			fireTraps[i]->setCollisionBox(22, 32, 84, 64);		// Biggest flame, pretty much gone. Thank you for your attention!
+			fireTraps[i]->setCollisionBox(0, 50, 128, 30);		// Biggest flame, pretty much gone. Thank you for your attention!
 			if (debugMode)
 			{
 				fireTrapColBox.setPosition(sf::Vector2f(fireTraps[i]->getCollisionBox().left, fireTraps[i]->getCollisionBox().top));
-				fireTrapColBox.setSize(sf::Vector2f(84, 64));
+				fireTrapColBox.setSize(sf::Vector2f(128, 30));
 			}
 			break;
 		}
@@ -1268,6 +1266,55 @@ void Level::checkGroundSpikeCollisions()
 		if (Collision::checkBoundingBox(groundSpikes[i], &player) && hitPointReductionDelay > 1.0f)
 		{
 			std::cout << "Collided with spikes!\n";
+
+			player.decrementHitPoints();
+			player.playSoundByName("umph");
+			hitPointReductionDelay = 0;
+
+			// If moving right, bounce left.
+			if (player.getMovingRight())
+			{
+				/*
+				 * Check if the last spike collision caused our hit points to reach zero, this prevents the stepvelocity
+				 * being applied on the collision that causes death and prevent the player respawning with the applied step velocity.
+				 */
+				if (player.getHitPointsRemaining() == 0)
+				{
+					player.decrementLives();
+					player.setIsDead(true);
+				}
+				else
+				{
+					player.injuryBounce();
+				}
+			}
+			else if (player.getMovingLeft())		// If moving left, bounce right.
+			{
+				if (player.getHitPointsRemaining() == 0)
+				{
+					player.decrementLives();
+					player.setIsDead(true);
+				}
+				else
+				{
+					player.injuryBounce();
+				}
+			}
+
+			// If we've found the spike we collided with, we dont need to check the others, so stop looping.
+			break;
+		}
+	}
+}
+
+void Level::checkFireTrapCollisions()
+{
+	// Loop over all the ground spikes in the vector and find the one we collided with.
+	for (int i = 0; i < fireTraps.size(); ++i)
+	{
+		if (Collision::checkBoundingBox(fireTraps[i], &player) && hitPointReductionDelay > 1.0f)
+		{
+			std::cout << "Collided with fire trap!\n";
 
 			player.decrementHitPoints();
 			player.playSoundByName("umph");
