@@ -49,10 +49,7 @@ void YouEscaped::update(float dt)
 		playedMusic = true;
 	}
 
-	/*
-	 * If the lovely 'you died' graphic has faded out then switch state back to level for a respawn.
-	 * CAREFUL YOU STILL HAVE 2 RENDER CALLS FROM HERE THOUGH BEFORE YOU'RE BACK TO LEVEL!
-	 */
+	// Fade out back to menu.
 	if (fadedOut)
 	{
 		setGameState(State::MENU);
@@ -63,7 +60,7 @@ void YouEscaped::update(float dt)
 		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 		{
 			audio->getMusic()->setLoop(true);
-			audio->playMusicbyName("splash");
+			audio->playMusicbyName("ambience");
 		}
 	}
 }

@@ -21,6 +21,7 @@
 
 static bool musicMuted = false;
 static bool musicStopped = false;
+static bool levelSfxMuted = false;
 
 // The 'camera' view.
 static sf::View view;
@@ -42,6 +43,7 @@ public:
 	static void setView(sf::View newView);
 	static void setMusicMuteAudio(bool l_muted);
 	static void setMusicStopped(bool l_stopped);
+	static void setSFXMuteAudio(bool l_muted);
 
 private:
 	// Init stuff.

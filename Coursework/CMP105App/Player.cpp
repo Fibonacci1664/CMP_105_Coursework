@@ -27,6 +27,7 @@ Player::Player()
 	coinsCollected = 0;
 	keysCollected = 0;
 	lives = 3;
+
 	hitPoints = 3;
 
 	movingLeft = false;
@@ -174,6 +175,10 @@ void Player::handleInput(float dt)
 
 void Player::update(float dt)
 {
+	if (godMode)
+	{
+		hitPoints = 3;
+	}
 
 	// If were falling OR jumping then apply gravity.
 	if (isFalling || isJumping)
@@ -320,10 +325,9 @@ void Player::checkMovingRight(float dt)
 		if (movingLeft)
 		{
 			velocity.x = -velocity.x;
+			movingLeft = false;
 		}
 
-		movingRight = true;
-		movingLeft = false;
 		idling = false;
 		walk.setPlaying(true);
 		walk.setFlipped(false);
@@ -345,10 +349,9 @@ void Player::checkMovingLeft(float dt)
 		if (movingRight)
 		{
 			velocity.x = -velocity.x;
+			movingRight = false;
 		}
 
-		movingRight = false;
-		movingLeft = true;
 		idling = false;
 		walk.setPlaying(true);
 		walk.setFlipped(true);
@@ -365,6 +368,7 @@ void Player::checkRunning(float dt)
 {
 	if (!isAttacking)
 	{
+		// Run right.
 		if (input->isKeyDown(sf::Keyboard::D) && !input->isKeyDown(sf::Keyboard::A))
 		{
 			movingRight = true;
@@ -376,6 +380,7 @@ void Player::checkRunning(float dt)
 			setTextureRect(run.getCurrentFrame());
 		}
 
+		// Run left.
 		if (input->isKeyDown(sf::Keyboard::A) && !input->isKeyDown(sf::Keyboard::D))
 		{
 			movingRight = false;
@@ -387,6 +392,7 @@ void Player::checkRunning(float dt)
 			setTextureRect(run.getCurrentFrame());
 		}
 
+		// This is to check if we're jumping while runnning, you won't always necessarily be in the air because you're jumping.
 		if (!onGround && isJumping)
 		{
 			if (movingLeft)
@@ -422,7 +428,7 @@ void Player::checkJumping(float dt)
 		jump.setFlipped(false);
 	}
 
-	if (!sfxMuted)
+	if (!playerSfxMuted)
 	{
 		audioMan.playSoundbyName("jump");
 	}
@@ -452,7 +458,7 @@ void Player::checkAttacking(float dt)
 
 	if (attackDelay > 1.0f)
 	{
-		if (!sfxMuted)
+		if (!playerSfxMuted)
 		{
 			audioMan.playSoundbyName("attack");
 		}
@@ -541,7 +547,7 @@ void Player::checkTileCollisions(GameObject* col)
 			{
 				// THIS IS GOOD DO NOT CHANGE!
 				//std::cout << "Top\n";
-				stepVelocity.y = 0;
+				stepVelocity = sf::Vector2f(0, 0);	// Both the x and y are zeroed in order to cancel any injury bounce effects that may have occurred.
 				setPosition(sf::Vector2f(getPosition().x, col->getCollisionBox().top - getSize().y));
 				onGround = true;
 				isJumping = false;
@@ -557,7 +563,12 @@ void Player::spikeCollision()
 	std::cout << "Collided with spikes!\n";
 
 	--hitPoints;
-	audioMan.playSoundbyName("umph");
+
+	if (!playerSfxMuted)
+	{
+		audioMan.playSoundbyName("umph");
+	}
+
 	hitPointReductionDelay = 0;
 
 	if (movingRight)
@@ -688,7 +699,7 @@ bool Player::getIsOnGround()
 
 void Player::setSFXMuteAudio(bool l_muted)
 {
-	sfxMuted = l_muted;
+	playerSfxMuted = l_muted;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -755,6 +766,13 @@ void Player::decrementLives()
 void Player::setHitPoints(int l_hitPoints)
 {
 	hitPoints = l_hitPoints;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Player::setGodMode(bool l_godMode)
+{
+	godMode = l_godMode;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -7,8 +7,8 @@
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
 	decr = 192;
-	debugMode = true;
-	initDebugMode();
+	debugMode = false;
+	//initDebugMode();
 
 	view = sf::View(sf::FloatRect(0.0f, 0.0f, 960, 512));
 	window->setView(view);
@@ -642,7 +642,7 @@ void Level::initExitDoor()
 	exitDoor.setWindow(window);
 	exitDoor.setSize(sf::Vector2f(128, 128));
 	exitDoor.setPosition(sf::Vector2f(2703, 345));
-	exitDoor.setCollisionBox(32, 32, 64, 64);
+	exitDoor.setCollisionBox(32, 102, 64, 28);
 	exitDoor.setTexture(&exitDoorTexture);
 	exitDoor.setTextureRect(exitDoor.getExitDoorAnimation()->getCurrentFrame());
 }
@@ -1173,7 +1173,12 @@ void Level::checkExitDoorCollisions(float& dt)
 			escaped = true;
 		}
 
-		//audio->stopAllMusic();
+		audio->stopAllMusic();
+	}
+	else if (Collision::checkBoundingBox(&exitDoor, &player) && keysInLevel == 1)
+	{
+		player.decrementLives();
+		player.setIsDead(true);
 	}
 }
 
@@ -1196,7 +1201,11 @@ void Level::checkHitPointCollisions()
 			// If the one we've collided with is still alive then collect it and kill it. Killing it prevents further collisions happening.
 			if (Collision::checkBoundingBox(hitPoints[i], &player) && hitPoints[i]->isAlive())
 			{
-				audio->playSoundbyName("hitPoint");
+				if (!levelSfxMuted)
+				{
+					audio->playSoundbyName("hitPoint");
+				}
+
 				hitPoints[i]->setAlive(false);
 				--hitPointsInLevel;
 				player.incrementHitPoints();
@@ -1216,7 +1225,11 @@ void Level::checkCoinCollisions()
 		// If the one we've collided with is still alive then collect it and kill it. Killing it prevents further collisions happening.
 		if (Collision::checkBoundingBox(coins[i], &player) && coins[i]->isAlive())
 		{
-			audio->playSoundbyName("hitPoint");
+			if (!levelSfxMuted)
+			{
+				audio->playSoundbyName("coin");
+			}
+
 			coins[i]->setAlive(false);
 			--coinsInLevel;
 			player.incrementCoinsCollected();
@@ -1235,7 +1248,11 @@ void Level::checkKeyCollisions()
 		// If the one we've collided with is still alive then collect it and kill it. Killing it prevents further collisions happening.
 		if (Collision::checkBoundingBox(keys[i], &player) && keys[i]->isAlive())
 		{
-			audio->playSoundbyName("hitPoint");
+			if (!levelSfxMuted)
+			{
+				audio->playSoundbyName("key");
+			}
+
 			keys[i]->setAlive(false);
 			--keysInLevel;
 			player.incrementKeysCollected();
@@ -1268,7 +1285,12 @@ void Level::checkGroundSpikeCollisions()
 			std::cout << "Collided with spikes!\n";
 
 			player.decrementHitPoints();
-			player.playSoundByName("umph");
+
+			if (!levelSfxMuted)
+			{
+				player.playSoundByName("umph");
+			}
+
 			hitPointReductionDelay = 0;
 
 			// If moving right, bounce left.
@@ -1317,7 +1339,12 @@ void Level::checkFireTrapCollisions()
 			std::cout << "Collided with fire trap!\n";
 
 			player.decrementHitPoints();
-			player.playSoundByName("umph");
+
+			if (!levelSfxMuted)
+			{
+				player.playSoundByName("umph");
+			}
+		
 			hitPointReductionDelay = 0;
 
 			// If moving right, bounce left.
@@ -1362,9 +1389,10 @@ void Level::initAudio()
 {
 	audio->addMusic("sfx/level/castle_music.ogg", "castleMusic");
 	audio->addMusic("sfx/level/castle_ambience.ogg", "castleAmbience");
-	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
 	audio->addSound("sfx/level/death.ogg", "death");
 	audio->addSound("sfx/level/collect_hitPoint.ogg", "hitPoint");
+	audio->addSound("sfx/level/collect_coin.ogg", "coin");
+	audio->addSound("sfx/level/collect_key.ogg", "key");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1391,6 +1419,7 @@ void Level::checkMusicMuted()
 		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 		{
 			audio->playMusicbyName("castleMusic");
+			audio->getMusic()->setVolume(25);
 			audio->getMusic()->setLoop(true);
 		}
 	}
@@ -1454,7 +1483,12 @@ void Level::deathCheck()
 	if (player.getIsDead() && !fadedOut)
 	{
 		audio->stopAllMusic();
-		audio->playSoundbyName("death");
+
+		if (!levelSfxMuted)
+		{
+			audio->playSoundbyName("death");
+		}
+
 		fadeOutLevel();						// Fade to black.
 
 		if (player.getLives() > 0)
@@ -1502,3 +1536,12 @@ void Level::setView(sf::View newView)
 {
 	view = newView;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::setSFXMuteAudio(bool l_muted)
+{
+	levelSfxMuted = l_muted;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

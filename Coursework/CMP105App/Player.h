@@ -6,7 +6,8 @@
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
 
-static bool sfxMuted = false;
+static bool playerSfxMuted = false;
+static bool godMode = false;
 
 class Player : public GameObject
 {
@@ -21,6 +22,8 @@ public:
 	void checkLiftCollisions(GameObject* col);
 	void playSoundByName(std::string soundName);
 	void injuryBounce();
+
+	static void setGodMode(bool godMode);
 
 	// Getters / Setters
 	bool getMovingRight();

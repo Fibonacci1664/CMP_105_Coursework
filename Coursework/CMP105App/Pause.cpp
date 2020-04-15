@@ -117,7 +117,7 @@ void Pause::endDraw()
 
 void Pause::initAudio()
 {
-	//audio->addSound("sfx/pause/unroll_scroll_2.ogg", "scroll");
+	audio->addSound("sfx/pause/unroll_scroll.ogg", "scroll");
 }
 
 void Pause::initPauseText()

@@ -19,6 +19,22 @@ public:
 	void render() override;
 
 private:
+	void initAudio();
+	void initMenuBackground();
+	void initHowToPlayButton();
+	void initNewGameButton();
+	void initOptionsButton();
+	void initQuitButton();
+	void initTransFadeRect();
+	void checkHowToPlayButtonCollisions();
+	void checkOptionsButtonCollisions();
+	void checkNewGameButtonCollisions();
+	void checkQuitButtonCollisions();
+
+	// Default functions for rendering to the screen.
+	void beginDraw();
+	void endDraw();
+
 	sf::Vector2f mousePos;
 	sf::RectangleShape transFade;
 
@@ -50,20 +66,4 @@ private:
 	sf::Texture quitButtonTexture;
 	sf::Texture quitButtonHoverTexture;
 	sf::Texture quitButtonClickedTexture;
-
-	void initAudio();
-	void initMenuBackground();
-	void initHowToPlayButton();
-	void initNewGameButton();
-	void initOptionsButton();
-	void initQuitButton();
-	void initTransFadeRect();
-	void checkHowToPlayButtonCollisions();
-	void checkOptionsButtonCollisions();
-	void checkNewGameButtonCollisions();
-	void checkQuitButtonCollisions();
-
-	// Default functions for rendering to the screen.
-	void beginDraw();
-	void endDraw();
 };

@@ -19,6 +19,15 @@ public:
 	void render() override;
 
 private:
+	void initAudio();
+	void initHowToPlayBg();
+	void initBackButton();
+	void checkBackButtonCollisions();
+
+	// Default functions for rendering to the screen.
+	void beginDraw();
+	void endDraw();
+
 	bool backButtonClicked;
 
 	sf::Vector2f mousePos;
@@ -29,14 +38,5 @@ private:
 	sf::RectangleShape backButton;
 	sf::Texture backButtonTexture;
 	sf::Texture backButtonHoverTexture;
-	sf::Texture backButtonClickedTexture;
-
-	void initAudio();
-	void initHowToPlayBg();
-	void initBackButton();
-	void checkBackButtonCollisions();
-
-	// Default functions for rendering to the screen.
-	void beginDraw();
-	void endDraw();
+	sf::Texture backButtonClickedTexture;	
 };

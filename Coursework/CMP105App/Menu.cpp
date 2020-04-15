@@ -118,8 +118,8 @@ void Menu::endDraw()
 
 void Menu::initAudio()
 {
-	audio->addSound("sfx/menu/sword.ogg", "sword");
-	audio->getSound("sword")->setVolume(40);
+	audio->addSound("sfx/menu/sword.ogg", "swoosh");
+	audio->getSound("swoosh")->setVolume(40);
 	audio->addMusic("sfx/menu/menu_ambience.ogg", "ambience");
 	audio->getMusic()->setVolume(50);
 }
@@ -157,7 +157,7 @@ void Menu::initHowToPlayButton()
 	}
 
 	howToPlayButton.setSize(sf::Vector2f(175.2, 31.8f));
-	howToPlayButton.setPosition(sf::Vector2f(65, 170));
+	howToPlayButton.setPosition(sf::Vector2f(80, 210));
 	howToPlayButton.setTexture(&howToPlayButtonTexture);
 }
 
@@ -165,23 +165,23 @@ void Menu::initHowToPlayButton()
 
 void Menu::initNewGameButton()
 {
-	if (!newGameButtonTexture.loadFromFile("gfx/buttons/normal/new_game_button.png"))
+	if (!newGameButtonTexture.loadFromFile("gfx/buttons/normal/ng_continue_button.png"))
 	{
 		std::cerr << "Sorry could not load new game button image!\n";
 	}
 
-	if (!newGameButtonHoverTexture.loadFromFile("gfx/buttons/hover/ng_hover.png"))
+	if (!newGameButtonHoverTexture.loadFromFile("gfx/buttons/hover/ng_continue_hover.png"))
 	{
 		std::cerr << "Sorry could not load new game button hover image!\n";
 	}
 
-	if (!newGameButtonClickedTexture.loadFromFile("gfx/buttons/clicked/ng_clicked.png"))
+	if (!newGameButtonClickedTexture.loadFromFile("gfx/buttons/clicked/ng_continue_clicked.png"))
 	{
 		std::cerr << "Sorry could not load new game button clicked image!\n";
 	}
 
-	newGameButton.setSize(sf::Vector2f(144, 31.8f));
-	newGameButton.setPosition(sf::Vector2f(80, 210));
+	newGameButton.setSize(sf::Vector2f(260.4, 31.8f));
+	newGameButton.setPosition(sf::Vector2f(65, 170));
 	newGameButton.setTexture(&newGameButtonTexture);
 }
 
@@ -266,7 +266,7 @@ void Menu::checkHowToPlayButtonCollisions()
 	// If weve clicked the button and released the left mouse button the switch states.
 	if (howToPlayClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("swoosh");
 		howToPlayClicked = false;
 		setGameState(State::HOW_TO_PLAY);
 	}
@@ -295,7 +295,7 @@ void Menu::checkOptionsButtonCollisions()
 
 	if (optionsClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("swoosh");
 		optionsClicked = false;
 		setGameState(State::OPTIONS);
 	}
@@ -325,7 +325,7 @@ void Menu::checkNewGameButtonCollisions()
 
 	if (newGameClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("swoosh");
 		audio->stopAllMusic();
 		newGameClicked = false;
 		setGameState(State::LEVEL);
@@ -356,7 +356,7 @@ void Menu::checkQuitButtonCollisions()
 
 	if (quitClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("swoosh");
 		quitClicked = false;
 		setGameState(State::CREDITS);
 	}

@@ -63,7 +63,7 @@ void HowToPlay::endDraw()
 
 void HowToPlay::initAudio()
 {
-	audio->addSound("sfx/menu/sword.ogg", "sword");
+	//audio->addSound("sfx/menu/sword.ogg", "sword");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ void HowToPlay::checkBackButtonCollisions()
 
 	if (backButtonClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("swoosh");
 		backButtonClicked = false;
 		setGameState(State::MENU);
 	}

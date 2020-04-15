@@ -76,7 +76,7 @@ void Options::endDraw()
 
 void Options::initAudio()
 {
-	audio->addSound("sfx/menu/sword.ogg", "sword");
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +185,7 @@ void Options::checkBackButtonCollisions()
 
 	if (backButtonClicked && !input->isMouseLDown())
 	{
-		audio->playSoundbyName("sword");
+		audio->playSoundbyName("swoosh");
 		backButtonClicked = false;
 		setGameState(State::MENU);
 	}
@@ -224,6 +224,7 @@ void Options::checkMuteSFXBoxCollisions()
 		std::cout << "Clicked on the mute SFX checkbox!\n";
 		muteSFXCheckBox.setTexture(&crossedCheckBoxTexture);
 		sfxChecked = true;
+		Level::setSFXMuteAudio(true);
 		Player::setSFXMuteAudio(true);
 	}
 
@@ -233,6 +234,7 @@ void Options::checkMuteSFXBoxCollisions()
 		std::cout << "Clicked on the mute SFX checkbox!\n";
 		muteSFXCheckBox.setTexture(&blankCheckBoxTexture);
 		sfxChecked = false;
+		Level::setSFXMuteAudio(false);
 		Player::setSFXMuteAudio(false);
 	}
 }
@@ -247,6 +249,7 @@ void Options::checkGodModeBoxCollisions()
 		std::cout << "Clicked on the god mode checkbox!\n";
 		godModeCheckBox.setTexture(&crossedCheckBoxTexture);
 		godModeChecked = true;
+		Player::setGodMode(true);
 	}
 
 	if (checkMouseCollisions(&godModeCheckBox, mousePos) && input->isMouseLDown() && godModeChecked)
@@ -255,6 +258,7 @@ void Options::checkGodModeBoxCollisions()
 		std::cout << "Clicked on the god mode checkbox!\n";
 		godModeCheckBox.setTexture(&blankCheckBoxTexture);
 		godModeChecked = false;
+		Player::setGodMode(false);
 	}
 }
 
