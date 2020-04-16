@@ -72,7 +72,7 @@ void HowToPlay::initHowToPlayBg()
 {
 	if (!howToPlayBgTexture.loadFromFile("gfx/screens/how_to_play_birds.png"))
 	{
-		std::cerr << "Sorry could not how to play background image!\n";
+		std::cerr << "Sorry could not load how to play background image!\n";
 	}
 
 	howToPlayBg.setSize(sf::Vector2f(960, 540));
