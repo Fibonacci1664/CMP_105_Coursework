@@ -51,6 +51,12 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud
 Level::~Level()
 {
 	deleteLamps();
+	deleteHitPoints();
+	deleteCoins();
+	deleteKeys();
+	deleteTextures();
+	deleteGroundSpikes();
+	deleteFireTraps();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1104,14 +1110,14 @@ void Level::initFireLamps()
 
 void Level::deleteLamps()
 {
-	// Delete all the allocated lamps of type 3.
+	// Delete all the allocated lamps of type 1.
 	for (int i = 0; i < 18; ++i)
 	{
 		delete lamps_1[i];
 		lamps_1[i] = nullptr;
 	}
 
-	// Delete all the allocated lamps of type 3.
+	// Delete all the allocated lamps of type 2.
 	for (int i = 0; i < 9; ++i)
 	{
 		delete lamps_2[i];
@@ -1125,11 +1131,83 @@ void Level::deleteLamps()
 		lamps_3[i] = nullptr;
 	}
 
-	// Delete all the allocated lamps of type 3.
+	// Delete all the allocated lamps of type 4.
 	for (int i = 0; i < 9; ++i)
 	{
 		delete lamps_4[i];
 		lamps_4[i] = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deleteHitPoints()
+{
+	// Delete all the hit points.
+	for (int i = 0; i < hitPoints.size(); ++i)
+	{
+		delete hitPoints[i];
+		hitPoints[i] = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deleteCoins()
+{
+	// Delete all the hit points.
+	for (int i = 0; i < hitPoints.size(); ++i)
+	{
+		delete hitPoints[i];
+		hitPoints[i] = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deleteKeys()
+{
+	// Delete all the keys.
+	for (int i = 0; i < keys.size(); ++i)
+	{
+		delete keys[i];
+		keys[i] = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deleteTextures()
+{
+	// Delete all the lever textures.
+	for (int i = 0; i < leverTextures.size(); ++i)
+	{
+		delete leverTextures[i];
+		leverTextures[i] = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deleteGroundSpikes()
+{
+	// Delete all the ground spikes.
+	for (int i = 0; i < groundSpikes.size(); ++i)
+	{
+		delete groundSpikes[i];
+		groundSpikes[i] = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Level::deleteFireTraps()
+{
+	// Delete all the fire traps.
+	for (int i = 0; i < fireTraps.size(); ++i)
+	{
+		delete fireTraps[i];
+		fireTraps[i] = nullptr;
 	}
 }
 

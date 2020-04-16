@@ -100,12 +100,12 @@ private:
 
 	// Delete stuff.
 	void deleteLamps();
-	void deleteHitPoints();			// STILL NEED TO DO THIS!
-	void deleteCoins();				// STILL NEED TO DO THIS!
-	void deleteKeys();				// STILL NEED TO DO THIS!
-	void deleteTextures();			// STILL NEED TO DO THIS!
-	void deleteGroundSpikes();		// STILL NEED TO DO THIS!
-	void deleteFireTraps();			// STILL NEED TO DO THIS!
+	void deleteHitPoints();
+	void deleteCoins();
+	void deleteKeys();
+	void deleteTextures();
+	void deleteGroundSpikes();
+	void deleteFireTraps();
 
 	// Misc.
 	void moveLifts(float& dt);	

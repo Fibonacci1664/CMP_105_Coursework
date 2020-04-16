@@ -41,7 +41,7 @@ private:
 	void drawKeys();
 
 	// Delete stuff.
-	// DELETE ALL THE WEHRE 'NEW' HAS BEEN USED.
+	// DELETE ALL THE WHERE 'NEW' HAS BEEN USED.
 	void deleteHitPoints();
 	void deleteLives();
 	void deleteCoin();
