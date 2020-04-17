@@ -1,5 +1,18 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating a bg image for the How To Play screen.
+ *		- Checking button collisions.
+ *		- Changing textures when button collisions detected.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ // INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -7,6 +20,8 @@
 #include <string>
 #include <iostream>
 #include "Screen.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class HowToPlay : public Screen
 {

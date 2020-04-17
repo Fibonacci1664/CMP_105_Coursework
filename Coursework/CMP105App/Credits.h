@@ -1,5 +1,17 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating a bg image for the credits screen.
+ *		- Rolling credits.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -7,6 +19,8 @@
 #include <string>
 #include <iostream>
 #include "Screen.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Credits : public Screen
 {
@@ -19,8 +33,11 @@ public:
 	void render() override;
 
 private:
+	// Init stuff.
 	void initAudio();
 	void initCreditsBg();
+
+	// Misc.
 	void rollCredits(float& dt);
 
 	// Default functions for rendering to the screen.

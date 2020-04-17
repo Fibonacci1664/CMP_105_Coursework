@@ -1,3 +1,17 @@
+/*
+ * This class controls
+ *		- Creating a bg image for the Menu screen.
+ *		- Checking button collisions.
+ *		- Changing textures when button collisions detected.
+ *		- Fading in/out to/from menu.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // INCLUDES.
 #include "Menu.h"
 #include <Windows.h>
@@ -136,9 +150,10 @@ void Menu::initMenuBackground()
 	menuBg.setSize(sf::Vector2f(960, 540));
 	menuBg.setTexture(&menuBgTexture);
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+// Load in the textures for the how to play button, normal, hover, clicked.
 void Menu::initHowToPlayButton()
 {
 	if (!howToPlayButtonTexture.loadFromFile("gfx/buttons/normal/how_to_play_button.png"))
@@ -163,6 +178,7 @@ void Menu::initHowToPlayButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Load in the textures for the new game button, normal, hover, clicked.
 void Menu::initNewGameButton()
 {
 	if (!newGameButtonTexture.loadFromFile("gfx/buttons/normal/ng_continue_button.png"))
@@ -187,6 +203,7 @@ void Menu::initNewGameButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Load in the textures for the options button, normal, hover, clicked.
 void Menu::initOptionsButton()
 {
 	if (!optinosButtonTexture.loadFromFile("gfx/buttons/normal/options_button.png"))
@@ -211,6 +228,7 @@ void Menu::initOptionsButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Load in the textures for the quit button, normal, hover, clicked.
 void Menu::initQuitButton()
 {
 	if (!quitButtonTexture.loadFromFile("gfx/buttons/normal/quit_button.png"))
@@ -235,6 +253,7 @@ void Menu::initQuitButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Create a transparent panel, used for fading effects.
 void Menu::initTransFadeRect()
 {
 	transFade.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
@@ -278,12 +297,12 @@ void Menu::checkOptionsButtonCollisions()
 {
 	if (checkMouseCollisions(&optionsButton, mousePos))
 	{
-		std::cout << "Hover collision detected with the how to play button!\n";
+		//std::cout << "Hover collision detected with the how to play button!\n";
 		optionsButton.setTexture(&optionsButtonHoverTexture);
 
 		if (checkMouseCollisions(&optionsButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the how to play button!\n";
+			//std::cout << "Clicked on the how to play button!\n";
 			optionsButton.setTexture(&optionsButtonClickedTexture);
 			optionsClicked = true;
 		}
@@ -307,13 +326,13 @@ void Menu::checkNewGameButtonCollisions()
 {
 	if (checkMouseCollisions(&newGameButton, mousePos))
 	{
-		std::cout << "Collision detected with the new game button!\n";
+		//std::cout << "Collision detected with the new game button!\n";
 
 		newGameButton.setTexture(&newGameButtonHoverTexture);
 
 		if (checkMouseCollisions(&newGameButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the new game button!\n";
+			//std::cout << "Clicked on the new game button!\n";
 			newGameButton.setTexture(&newGameButtonClickedTexture);
 			newGameClicked = true;	
 		}
@@ -338,13 +357,13 @@ void Menu::checkQuitButtonCollisions()
 {
 	if (checkMouseCollisions(&quitButton, mousePos))
 	{
-		std::cout << "Collision detected with the quit button!\n";
+		//std::cout << "Collision detected with the quit button!\n";
 
 		quitButton.setTexture(&quitButtonHoverTexture);
 
 		if (checkMouseCollisions(&quitButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the quit button!\n";
+			//std::cout << "Clicked on the quit button!\n";
 			quitButton.setTexture(&quitButtonClickedTexture);
 			quitClicked = true;
 		}

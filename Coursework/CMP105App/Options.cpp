@@ -1,3 +1,17 @@
+/*
+ * This class controls
+ *		- Creating a bg image for the Options screen.
+ *		- Checking button collisions.
+ *		- Checking for check box collisions.
+ *		- Changing textures when collisions detected.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // INCLUDES.
 #include "Options.h"
 #include "Level.h"
@@ -40,7 +54,7 @@ void Options::handleInput(float dt)
 
 void Options::update(float dt)
 {
-	std::cout << "Options update being called!\n";
+	//std::cout << "Options update being called!\n";
 
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
 }
@@ -94,6 +108,7 @@ void Options::initOptionsBg()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Load in back button textures, normal, hover, clicked.
 void Options::initBackButton()
 {
 	if (!backButtonTexture.loadFromFile("gfx/buttons/normal/back_button.png"))
@@ -119,6 +134,7 @@ void Options::initBackButton()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Load in check box textures, unchecked, checked.
 void Options::initCheckBoxTextures()
 {
 	if (!blankCheckBoxTexture.loadFromFile("gfx/buttons/misc/checkBox.png"))
@@ -168,12 +184,12 @@ void Options::checkBackButtonCollisions()
 {
 	if (checkMouseCollisions(&backButton, mousePos))
 	{
-		std::cout << "Hover collision detected with the how to play button!\n";
+		//std::cout << "Hover collision detected with the how to play button!\n";
 		backButton.setTexture(&backButtonHoverTexture);
 
 		if (checkMouseCollisions(&backButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the how to play button!\n";
+			//std::cout << "Clicked on the how to play button!\n";
 			backButton.setTexture(&backButtonClickedTexture);
 			backButtonClicked = true;
 		}
@@ -198,19 +214,19 @@ void Options::checkMuteMusicBoxCollisions()
 	if (checkMouseCollisions(&muteMusicCheckBox, mousePos) && input->isMouseLDown() && !musicChecked)
 	{
 		input->setMouseLDown(false);
-		std::cout << "Clicked on the mute music checkbox!\n";
+		//std::cout << "Clicked on the mute music checkbox!\n";
 		muteMusicCheckBox.setTexture(&crossedCheckBoxTexture);
 		musicChecked = true;
-		Level::setMusicMuteAudio(true);
+		Level::setMusicMuteAudio(true);			// Mute the game music.
 	}
 
 	if (checkMouseCollisions(&muteMusicCheckBox, mousePos) && input->isMouseLDown() && musicChecked)
 	{
 		input->setMouseLDown(false);
-		std::cout << "Clicked on the mute music checkbox!\n";
+		//std::cout << "Clicked on the mute music checkbox!\n";
 		muteMusicCheckBox.setTexture(&blankCheckBoxTexture);
 		musicChecked = false;
-		Level::setMusicMuteAudio(false);
+		Level::setMusicMuteAudio(false);		// Unmute the game music.
 	}
 }
 
@@ -221,21 +237,21 @@ void Options::checkMuteSFXBoxCollisions()
 	if (checkMouseCollisions(&muteSFXCheckBox, mousePos) && input->isMouseLDown() && !sfxChecked)
 	{
 		input->setMouseLDown(false);
-		std::cout << "Clicked on the mute SFX checkbox!\n";
+		//std::cout << "Clicked on the mute SFX checkbox!\n";
 		muteSFXCheckBox.setTexture(&crossedCheckBoxTexture);
 		sfxChecked = true;
-		Level::setSFXMuteAudio(true);
-		Player::setSFXMuteAudio(true);
+		Level::setSFXMuteAudio(true);			// Mute the level sfx.
+		Player::setSFXMuteAudio(true);			// Mute the player sfx.
 	}
 
 	if (checkMouseCollisions(&muteSFXCheckBox, mousePos) && input->isMouseLDown() && sfxChecked)
 	{
 		input->setMouseLDown(false);
-		std::cout << "Clicked on the mute SFX checkbox!\n";
+		//std::cout << "Clicked on the mute SFX checkbox!\n";
 		muteSFXCheckBox.setTexture(&blankCheckBoxTexture);
 		sfxChecked = false;
-		Level::setSFXMuteAudio(false);
-		Player::setSFXMuteAudio(false);
+		Level::setSFXMuteAudio(false);			// Unmute the level sfx.
+		Player::setSFXMuteAudio(false);			// Unmute the player sfx.
 	}
 }
 
@@ -246,7 +262,7 @@ void Options::checkGodModeBoxCollisions()
 	if (checkMouseCollisions(&godModeCheckBox, mousePos) && input->isMouseLDown() && !godModeChecked)
 	{
 		input->setMouseLDown(false);
-		std::cout << "Clicked on the god mode checkbox!\n";
+		//std::cout << "Clicked on the god mode checkbox!\n";
 		godModeCheckBox.setTexture(&crossedCheckBoxTexture);
 		godModeChecked = true;
 		Player::setGodMode(true);
@@ -255,7 +271,7 @@ void Options::checkGodModeBoxCollisions()
 	if (checkMouseCollisions(&godModeCheckBox, mousePos) && input->isMouseLDown() && godModeChecked)
 	{
 		input->setMouseLDown(false);
-		std::cout << "Clicked on the god mode checkbox!\n";
+		//std::cout << "Clicked on the god mode checkbox!\n";
 		godModeCheckBox.setTexture(&blankCheckBoxTexture);
 		godModeChecked = false;
 		Player::setGodMode(false);

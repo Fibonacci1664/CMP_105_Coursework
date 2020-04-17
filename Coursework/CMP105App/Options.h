@@ -1,5 +1,19 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating a bg image for the Options screen.
+ *		- Checking button collisions.
+ *		- Checking for check box collisions.
+ *		- Changing textures when collisions detected.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -19,7 +33,24 @@ public:
 	void render() override;
 
 private:
-	bool backButtonClicked;
+	// Init stuff.
+	void initAudio();
+	void initOptionsBg();
+	void initBackButton();
+	void initMuteMusicCheckBox();
+	void initMuteSFXCheckBox();
+	void initGodModeCheckBox();
+	void initCheckBoxTextures();
+
+	// Check stuff.
+	void checkBackButtonCollisions();
+	void checkMuteMusicBoxCollisions();
+	void checkMuteSFXBoxCollisions();
+	void checkGodModeBoxCollisions();
+
+	// Default functions for rendering to the screen.
+	void beginDraw();
+	void endDraw();
 
 	sf::Vector2f mousePos;
 
@@ -41,20 +72,5 @@ private:
 	bool musicChecked;
 	bool sfxChecked;
 	bool godModeChecked;
-
-	void initAudio();
-	void initOptionsBg();
-	void initBackButton();
-	void initMuteMusicCheckBox();
-	void initMuteSFXCheckBox();
-	void initGodModeCheckBox();
-	void initCheckBoxTextures();
-	void checkBackButtonCollisions();
-	void checkMuteMusicBoxCollisions();
-	void checkMuteSFXBoxCollisions();
-	void checkGodModeBoxCollisions();
-
-	// Default functions for rendering to the screen.
-	void beginDraw();
-	void endDraw();
+	bool backButtonClicked;
 };

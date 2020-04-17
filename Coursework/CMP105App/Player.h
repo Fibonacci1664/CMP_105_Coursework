@@ -1,11 +1,29 @@
-#pragma once
+/*
+ * This class controls all aspects of the player including:
+ *		- Animations
+ *		- Item Collection
+ *		- Health
+ *		- Collisions with environment, tile or otherwise.
+ *		- Audio.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <iostream>
 #include "Framework/GameObject.h"
 #include "Framework/Animation.h"
 #include "Framework/AudioManager.h"
 #include "Framework/GameState.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// STATICS.
 static bool playerSfxMuted = false;
 static bool godMode = false;
 

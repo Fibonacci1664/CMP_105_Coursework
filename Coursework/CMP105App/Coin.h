@@ -1,6 +1,21 @@
+/*
+ * This class controls
+ *		- Setting up the coin animation.
+ *		- Returning the animation.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
 #pragma once
 #include"Framework/GameObject.h"
 #include"Framework/Animation.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Coin : public GameObject
 {
@@ -13,7 +28,7 @@ public:
 	Animation* getCoinAnimation();
 
 private:
-	// Everthing to do with exit door animations.
+	// Everthing to do coin animations.
 	Animation coin;
 
 	const int COIN_FRAME_WIDTH = 32;
@@ -22,4 +37,3 @@ private:
 
 	void addCoinAnimFrames();
 };
-

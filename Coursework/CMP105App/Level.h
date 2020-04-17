@@ -1,5 +1,24 @@
-#pragma once
+/*
+ * This class controls all things related to the Level, including
+ *		- Handling level debug information.
+ *		- Creating a player.
+ *		- Creating the environment.
+ *		- Creating the UI.
+ *		- Creating the level objects.
+ *		- Checking collisions between the player and the level objects.
+ *		- Contorlling level music/SFX.
+ *		- Checking player death.
+ *		- Respawing player.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -19,12 +38,17 @@
 #include "GroundSpike.h"
 #include "FireTrap.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// STATICS
 static bool musicMuted = false;
 static bool musicStopped = false;
 static bool levelSfxMuted = false;
 
 // The 'camera' view.
 static sf::View view;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Level : public Screen
 {
@@ -39,6 +63,7 @@ public:
 	bool getGameOver();
 	void setGameOver(bool l_gameOver);
 
+	// Static functions.
 	static sf::View* getView();
 	static void setView(sf::View newView);
 	static void setMusicMuteAudio(bool l_muted);
@@ -48,13 +73,12 @@ public:
 private:
 	// Init stuff.
 	void initDebugMode();
-	void initPlayer();
-	void initPlayerSpriteTextures();
 	void initTextBox();
+	void initPlayer();
+	void initBackground();
 	void initLifts();
 	void initAudio();
 	void initTransFadeRect();
-	void initBackground();
 	void initParallax();
 	void initFireLamps();
 	void initExitDoor();
@@ -116,6 +140,10 @@ private:
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// DATA MEMBERS.
 
 	// Lifts.
 	GameObject lift_1;
@@ -204,7 +232,6 @@ private:
 	float originalViewXCoords;
 	float newViewXCoords;
 	float xTranslationOfView;
-	float decr;
 	float scrollSpeed;
 	float hitPointReductionDelay;
 

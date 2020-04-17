@@ -1,3 +1,14 @@
+/*
+ * This class controls
+ *		- Creating a bg image for the How To Play screen.
+ *		- Checking button collisions.
+ *		- Changing textures when button collisions detected.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
 // INCLUDES.
 #include "HowToPlay.h"
 
@@ -30,7 +41,7 @@ void HowToPlay::handleInput(float dt)
 
 void HowToPlay::update(float dt)
 {
-	std::cout << "Menu update being called!\n";
+	//std::cout << "Menu update being called!\n";
 
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());	
 }
@@ -108,14 +119,16 @@ void HowToPlay::initBackButton()
 
 void HowToPlay::checkBackButtonCollisions()
 {
+	// Check for hover collison.
 	if (checkMouseCollisions(&backButton, mousePos))
 	{
-		std::cout << "Hover collision detected with the how to play button!\n";
+		//std::cout << "Hover collision detected with the how to play button!\n";
 		backButton.setTexture(&backButtonHoverTexture);
 
+		// Check for click collision.
 		if (checkMouseCollisions(&backButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the how to play button!\n";
+			//std::cout << "Clicked on the how to play button!\n";
 			backButton.setTexture(&backButtonClickedTexture);
 			backButtonClicked = true;
 		}
@@ -125,6 +138,7 @@ void HowToPlay::checkBackButtonCollisions()
 		backButton.setTexture(&backButtonTexture);
 	}
 
+	// If we found a click collison AND have since let go on the L mouse button, then and only then switch states.
 	if (backButtonClicked && !input->isMouseLDown())
 	{
 		audio->playSoundbyName("swoosh");

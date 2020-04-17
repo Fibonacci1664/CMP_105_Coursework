@@ -1,3 +1,16 @@
+/*
+ * This class controls
+ *		- Creating an image for when the player escapes.
+ *		- Fading in/out.
+ *		- Playing audio for escaping.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // INCLUDES.
 #include "YouEscaped.h"
 

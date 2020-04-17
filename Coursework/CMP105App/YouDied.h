@@ -1,5 +1,18 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating an image for showing when the player dies.
+ *		- Fading in/out.
+ *		- Playing audio for death.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -7,6 +20,8 @@
 #include <string>
 #include <iostream>
 #include "Screen.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class YouDied : public Screen
 {
@@ -19,6 +34,19 @@ public:
 	void render() override;
 
 private:
+	// Init stuff.
+	void initYouDiedRect();
+	void initTransFadeRect();
+	void initAudio();
+
+	// Misc.
+	void fadeIn();
+	void fadeOut();
+
+	// Default functions for rendering to the screen.
+	void beginDraw();
+	void endDraw();
+
 	sf::RectangleShape youDiedRect;
 	sf::RectangleShape transFade;
 	sf::Texture youDiedTexture;
@@ -27,15 +55,5 @@ private:
 	bool fadedOut;
 	bool switchedStates;
 
-	int hasDiedCount;
-
-	void initYouDiedRect();
-	void initTransFadeRect();
-	void initAudio();
-	void fadeIn();
-	void fadeOut();
-
-	// Default functions for rendering to the screen.
-	void beginDraw();
-	void endDraw();
+	int hasDiedCount;	
 };

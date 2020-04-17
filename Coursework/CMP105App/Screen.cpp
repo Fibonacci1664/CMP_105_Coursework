@@ -1,3 +1,11 @@
+/*
+ * This is the parent class of all other 'screens'.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
 // INCLUDES.
 #include "Screen.h"
 

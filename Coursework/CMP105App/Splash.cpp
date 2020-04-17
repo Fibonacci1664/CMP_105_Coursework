@@ -1,3 +1,16 @@
+/*
+ * This class controls
+ *		- Creating an image for the splash screen.
+ *		- Fading in/out.
+ *		- Playing audio for the spalsh.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // INCLUDES.
 #include "Splash.h"
 
@@ -36,6 +49,7 @@ void Splash::handleInput(float dt)
 
 void Splash::update(float dt)
 {
+	// If there's no music playing, play some. But only once.
 	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 	{
 		audio->playMusicbyName("splash");
@@ -60,7 +74,7 @@ void Splash::render()
 
 	fadeIn();
 
-	// If we've faded in, it's time to fade out to black.
+	// If we've faded in, it's time to fade out.
 	if (fadedIn && !switchedStates)
 	{
 		fadeOut();

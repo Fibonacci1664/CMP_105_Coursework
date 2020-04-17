@@ -1,3 +1,14 @@
+/*
+ * This class controls
+ *		- Creating a bg image for the Game Over screen.
+ *		- Fading in and out of the Game Over image.
+ *		- Playing audio on game over.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
 // INCLUDES.
 #include "GameOver.h"
 
@@ -51,11 +62,6 @@ void GameOver::update(float dt)
 		switchedStates = true;
 		fadedIn = false;
 		audio->stopAllMusic();
-
-		if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
-		{
-			audio->playMusicbyName("splash");
-		}
 	}
 }
 
@@ -188,7 +194,11 @@ bool GameOver::getGameOver()
 	return gameOver;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void GameOver::setGameOver(bool l_gameOver)
 {
 	gameOver = l_gameOver;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,3 +1,17 @@
+/*
+ * This class controls
+ *		- Creating the entire UI Panel and its contents, namely the UI bar across the top of the screen.
+ *		- Updating the status of the UI bar.
+ *		- Animating the contents of the UI bar.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
 #pragma once
 #include <vector>
 #include "Screen.h"
@@ -5,6 +19,8 @@
 #include "Heart.h"
 #include "Coin.h"
 #include "Key.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class UIPanel : public GameObject
 {
@@ -85,4 +101,3 @@ private:
 	int coinsCollected;
 	int keysCollected;
 };
-

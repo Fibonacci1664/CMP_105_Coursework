@@ -1,6 +1,21 @@
+/*
+ * This class controls
+ *		- Setting up the key animation.
+ *		- Returning the animation.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
 #pragma once
 #include"Framework/GameObject.h"
 #include"Framework/Animation.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Key : public GameObject
 {
@@ -13,7 +28,7 @@ public:
 	Animation* getKeyAnimation();
 
 private:
-	// Everthing to do with lamp animations.
+	// Everthing to do with key animations.
 	Animation key;
 
 	const int KEY_FRAME_WIDTH = 64;
@@ -22,4 +37,3 @@ private:
 
 	void addKeyAnimFrames();
 };
-

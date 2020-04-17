@@ -1,5 +1,18 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating an image for when the player escapes.
+ *		- Fading in/out.
+ *		- Playing audio for escaping.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INcLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -7,6 +20,8 @@
 #include <string>
 #include <iostream>
 #include "Screen.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class YouEscaped : public Screen
 {
@@ -19,6 +34,19 @@ public:
 	void render() override;
 
 private:
+	// Init stuff.
+	void initYouEscapedRect();
+	void initTransFadeRect();
+	void initAudio();
+
+	// Misc.
+	void fadeIn();
+	void fadeOut();
+
+	// Default functions for rendering to the screen.
+	void beginDraw();
+	void endDraw();
+
 	sf::RectangleShape youEscapedRect;
 	sf::RectangleShape transFade;
 	sf::Texture youEscapedTexture;
@@ -28,15 +56,5 @@ private:
 	bool switchedStates;
 	bool playedMusic;
 
-	float showEscapedScreenTime;
-
-	void initYouEscapedRect();
-	void initTransFadeRect();
-	void initAudio();
-	void fadeIn();
-	void fadeOut();
-
-	// Default functions for rendering to the screen.
-	void beginDraw();
-	void endDraw();
+	float showEscapedScreenTime;	
 };

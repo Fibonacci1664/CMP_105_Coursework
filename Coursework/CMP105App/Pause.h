@@ -1,5 +1,18 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating an image for the pause menu.
+ *		- Checking button collisions.
+ *		- Changing textures when collisions detected.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -8,6 +21,8 @@
 #include <string>
 #include <iostream>
 #include "Screen.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Pause : public Screen
 {
@@ -38,7 +53,6 @@ private:
 	void updatePauseMenuPosition();
 
 	// Misc.
-
 
 	// Default functions for rendering to the screen.
 	void beginDraw();

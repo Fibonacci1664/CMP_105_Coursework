@@ -1,3 +1,14 @@
+/*
+ * This class controls
+ *		- Creating an image for the pause menu.
+ *		- Checking button collisions.
+ *		- Changing textures when collisions detected.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
 // INCLUDES.
 #include "Pause.h"
 #include "Level.h"
@@ -82,6 +93,7 @@ void Pause::render()
 	
 	endDraw();
 
+	// Change state here, so there are no more draw calls.
 	if (unpaused)
 	{
 		setGameState(State::LEVEL);
@@ -91,6 +103,7 @@ void Pause::render()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Update the entire pause menu according to the amount the view has moved.
 void Pause::updatePauseMenuPosition()
 {
 	transLayer.setPosition((Level::getView()->getCenter().x - Level::getView()->getSize().x / 2.0f), (Level::getView()->getCenter().y - Level::getView()->getSize().y / 2.0f));	
@@ -236,13 +249,13 @@ void Pause::checkMainMenuButtonCollisions()
 {
 	if (checkMouseCollisions(&mainMenuButton, mousePos))
 	{
-		std::cout << "Collision detected with the main menu button!\n";
+		//std::cout << "Collision detected with the main menu button!\n";
 
 		mainMenuButton.setTexture(&mainMenuButtonHoverTexture);
 
 		if (checkMouseCollisions(&mainMenuButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the main menu button!\n";
+			//std::cout << "Clicked on the main menu button!\n";
 			mainMenuButton.setTexture(&mainMenuButtonClickedTexture);
 			mainMenuClicked = true;
 		}
@@ -284,7 +297,7 @@ void Pause::checkContinueCollisions()
 		continueButton.setTexture(&continueButtonTexture);
 	}
 
-	// If we've clicked the continue button AND released the mouse left button.
+	// If we've clicked the continue button AND released the mouse left button, unpause the game.
 	if (continueClicked && !input->isMouseLDown())
 	{
 		audio->playSoundbyName("scroll");
@@ -299,13 +312,13 @@ void Pause::checkQuitButtonCollisions()
 {
 	if (checkMouseCollisions(&quitButton, mousePos))
 	{
-		std::cout << "Collision detected with the quit button!\n";
+		//std::cout << "Collision detected with the quit button!\n";
 
 		quitButton.setTexture(&quitButtonHoverTexture);
 
 		if (checkMouseCollisions(&quitButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the quit button!\n";
+			//std::cout << "Clicked on the quit button!\n";
 			quitButton.setTexture(&quitButtonClickedTexture);
 			quitClicked = true;
 		}

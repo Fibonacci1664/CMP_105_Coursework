@@ -1,3 +1,16 @@
+/*
+ * This class controls
+ *		- Creating an image for showing when the player dies.
+ *		- Fading in/out.
+ *		- Playing audio for death.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // INCLUDES.
 #include "YouDied.h"
 

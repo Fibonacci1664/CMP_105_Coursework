@@ -3,13 +3,16 @@
  *		- Animations
  *		- Item Collection
  *		- Health
+ *		- Collisions with environment, tile or otherwise.
  *
  * Original @author D. Green.
  *
  * © D. Green. 2020.
  */
 
- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// THERE IS A BUG IN HERE SOMEWHRE WHICH EVERY SO OFTEN CAUSE THE PLAYER TO WALK BACKWARDS, RIGHT IS LEFT, LEFT IS RIGHT, THINK IT'S THE RUNNING CHECKS BUT NOT SURE.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
  // INCLUDES.
 #include "Player.h"
@@ -392,7 +395,7 @@ void Player::checkRunning(float dt)
 			setTextureRect(run.getCurrentFrame());
 		}
 
-		// This is to check if we're jumping while runnning, you won't always necessarily be in the air because you're jumping.
+		// This is to check if we're jumping while runnning, you won't always necessarily be in the air because you're jumping. You may be falling from height.
 		if (!onGround && isJumping)
 		{
 			if (movingLeft)
@@ -469,19 +472,9 @@ void Player::checkAttacking(float dt)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Reponse function, what the sprite does based on collision
-// Colliding object is passed in for information
-// e.g. compare sprite positions to determine new velocity direction.
-// e.g. checking sprite type (world, enemy, bullet etc) so response is based on that.
 void Player::collisionResponse(GameObject* col)
 {
 	checkTileCollisions(col);
-
-
-	// Couldnt do this, what is below, as for every collision repsonse we'd recall every function, NO USE!
-	// Check object collisions
-	// Check enemy collisions
-	// Etc etc.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -491,8 +484,8 @@ void Player::checkTileCollisions(GameObject* col)
 	//std::cout << "Player collided with tile!\n";
 
 	sf::Vector2f tileCentre = sf::Vector2f((col->getPosition().x + (col->getSize().x / 2.0f)), (col->getPosition().y + (col->getSize().y / 2.0f)));
-	float xColBoxCentre = getCollisionBox().left + getCollisionBox().width / 2;
-	float yColBoxCentre = getCollisionBox().top + getCollisionBox().height / 2;
+	float xColBoxCentre = getCollisionBox().left + getCollisionBox().width / 2;		// Players col box centre x.
+	float yColBoxCentre = getCollisionBox().top + getCollisionBox().height / 2;		// Players col box centre y.
 	float xDiff = tileCentre.x - xColBoxCentre;
 	float yDiff = tileCentre.y - yColBoxCentre;			// Top will give me the y value.
 
@@ -511,14 +504,12 @@ void Player::checkTileCollisions(GameObject* col)
 		// Right hand side of tile collission.
 		if (xDiff < 0)
 		{
-			// THIS IS PERFECT NEVER CHANGE IT!
 			//std::cout << "Right\n";
 			stepVelocity.x = 0;
 			setPosition(sf::Vector2f((col->getCollisionBox().left + col->getCollisionBox().width + 1) - leftXDiff, getPosition().y));		// new version
 		}
 		else			// Left hand side of tile collision.
 		{
-			// THIS IS PERFECT DO NOT CHANGE!
 			//std::cout << "Left\n";
 			stepVelocity.x = 0;
 			setPosition(sf::Vector2f((col->getCollisionBox().left - getSize().x) + (rightXDiff - 1), getPosition().y));		// new version.
@@ -531,7 +522,6 @@ void Player::checkTileCollisions(GameObject* col)
 		// Bottom of tile collision.
 		if (yDiff < 0)
 		{
-			// THIS IS GOOD DO NOT CHANGE!
 			//std::cout << "Bottom\n";
 			stepVelocity.y = 0;
 			setPosition(sf::Vector2f(getPosition().x, (col->getPosition().y + col->getSize().y)));
@@ -545,7 +535,6 @@ void Player::checkTileCollisions(GameObject* col)
 			}
 			else	// /If it's not a spike tile then it must be a normal ground tile.
 			{
-				// THIS IS GOOD DO NOT CHANGE!
 				//std::cout << "Top\n";
 				stepVelocity = sf::Vector2f(0, 0);	// Both the x and y are zeroed in order to cancel any injury bounce effects that may have occurred.
 				setPosition(sf::Vector2f(getPosition().x, col->getCollisionBox().top - getSize().y));
@@ -557,10 +546,12 @@ void Player::checkTileCollisions(GameObject* col)
 	}
 }
 
-// These spike collisons are done here, because they are a tile and so it was easiest to do here. The animated spikes are cheked in level because they are a part of the level.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// These spike collison checks are done here, because they are a tile and so it was easiest to do here. The animated spikes are cheked in level because they are a part of the level.
 void Player::spikeCollision()
 {
-	std::cout << "Collided with spikes!\n";
+	//std::cout << "Collided with spikes!\n";
 
 	--hitPoints;
 
@@ -601,11 +592,15 @@ void Player::spikeCollision()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Player::injuryBounce()
 {
 	flashRed = true;
 	stepVelocity = sf::Vector2f(-100, -300);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Player::checkLiftCollisions(GameObject* col)
 {
@@ -617,6 +612,7 @@ void Player::checkLiftCollisions(GameObject* col)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// This relates back to what was mentioned in the debugging part of level and how the players collision box changes when the frame is flipped. SEE  Level::updatePlayerBoxes() for full expalnation.
 void Player::updateCollisionBox()
 {
 	if (movingLeft)
@@ -830,3 +826,5 @@ void Player::incrementKeysCollected()
 {
 	++keysCollected;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

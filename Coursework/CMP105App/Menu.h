@@ -1,5 +1,19 @@
-#pragma once
+/*
+ * This class controls
+ *		- Creating a bg image for the Menu screen.
+ *		- Checking button collisions.
+ *		- Changing textures when button collisions detected.
+ *		- Fading in/out to/from menu.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
 
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Framework/Input.h"
 #include "Framework/AudioManager.h"
@@ -7,6 +21,8 @@
 #include <string>
 #include <iostream>
 #include "Screen.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Menu : public Screen
 {
@@ -19,6 +35,7 @@ public:
 	void render() override;
 
 private:
+	// Init stuff.
 	void initAudio();
 	void initMenuBackground();
 	void initHowToPlayButton();
@@ -26,6 +43,8 @@ private:
 	void initOptionsButton();
 	void initQuitButton();
 	void initTransFadeRect();
+
+	// Check stuff.
 	void checkHowToPlayButtonCollisions();
 	void checkOptionsButtonCollisions();
 	void checkNewGameButtonCollisions();

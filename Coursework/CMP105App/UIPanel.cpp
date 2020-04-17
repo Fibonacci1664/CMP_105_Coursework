@@ -1,3 +1,17 @@
+/*
+ * This class controls
+ *		- Creating the entire UI Panel and its contents, namely the UI bar across the top of the screen.
+ *		- Updating the status of the UI bar.
+ *		- Animating the contents of the UI bar.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
 #include "UIPanel.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +49,7 @@ UIPanel::~UIPanel()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Here we have information that has been retrieved from player and also the amount the view has moved from level.
 void UIPanel::update(float& dt, int l_hitPointsRemaining, int l_livesRemaining, int l_coinsCollected, int l_keysCollected, float& viewsXTranslation)
 {
 	hitPointsRemaining = l_hitPointsRemaining;
@@ -42,6 +57,7 @@ void UIPanel::update(float& dt, int l_hitPointsRemaining, int l_livesRemaining, 
 	coinsCollected = l_coinsCollected;
 	keysCollected = l_keysCollected;
 
+	// Update all the elements in the UI bar.
 	updateIconBar(viewsXTranslation);
 	updateIconBarTextElements(viewsXTranslation, l_coinsCollected);
 	updateHitpoints(dt, viewsXTranslation);	
@@ -63,6 +79,7 @@ void UIPanel::render()//sf::RenderWindow* window)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Create a grey bar for the UI icons to sit on top of so they are not lost into the game/level environment.
 void UIPanel::initGreyIconBar()
 {
 	if (!greyIconBarTexture.loadFromFile("gfx/level/level_UI/greyIconBar.png"))
@@ -77,6 +94,7 @@ void UIPanel::initGreyIconBar()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Update the icon bars position based on how much the view has moved.
 void UIPanel::updateIconBar(float& viewsXTranslation)
 {
 	greyIconBar.setPosition(sf::Vector2f(viewsXTranslation, 0));
@@ -96,7 +114,7 @@ void UIPanel::initGreyIconBarTextElements()
 		std::cerr << "Sorry could not load UI coins text image!\n";
 	}
 
-	// Load all the number textures for coins collected in to the vector.
+	// Load all the number textures for the amount of coins the player may collect.
 	for (int i = 0; i < 7; ++i)
 	{
 		sf::Texture* numTexture = new sf::Texture;
@@ -141,6 +159,7 @@ void UIPanel::initGreyIconBarTextElements()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Update all the UI text elements based on how much the viewhas moved.
 void UIPanel::updateIconBarTextElements(float& viewsXTranslation, int& coinsCollected)
 {
 	livesText.setPosition(sf::Vector2f(20 + viewsXTranslation, 20));
@@ -194,6 +213,8 @@ void UIPanel::initHitPoints()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// Update all the hit points based on how much the view has moved.
 void UIPanel::updateHitpoints(float& dt, float& viewsXTranslation)
 {
 	// Update all the hit points.
@@ -248,6 +269,7 @@ void UIPanel::initLives()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Update all the UI lives based on how much the view has moved.
 void UIPanel::updateLives(float& dt, float& viewsXTranslation)
 {
 	// Update all the remaining hit points.
@@ -295,6 +317,7 @@ void UIPanel::initCoin()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Update the singular UI coin based on how much the view ahs moved.
 void UIPanel::updateCoin(float& dt, float& viewsXTranslation)
 {
 	coin->getCoinAnimation()->animate(dt);
@@ -337,6 +360,7 @@ void UIPanel::initKeys()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Update the key/s based on how much the view has moved.
 void UIPanel::updateKeys(float& dt, float& viewsXTranslation)
 {
 	// Update the animations for ALL the keys even though only 1 is used.

@@ -1,6 +1,21 @@
+/*
+ * This class controls
+ *		- Setting up the fire trap animation.
+ *		- Returning the animation.
+ *
+ * Original @author D. Green.
+ *
+ * © D. Green. 2020.
+ */
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// INCLUDES.
 #pragma once
 #include"Framework/GameObject.h"
 #include"Framework/Animation.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class FireTrap : public GameObject
 {
@@ -13,7 +28,7 @@ public:
 	Animation* getFireTrapAnimation();
 
 private:
-	// Everthing to do with exit door animations.
+	// Everthing to do with fire trap animations.
 	Animation fireTrap;
 
 	const int FIRE_TRAP_FRAME_WIDTH = 128;
@@ -22,4 +37,3 @@ private:
 
 	void addFireTrapAnimFrames();
 };
-
