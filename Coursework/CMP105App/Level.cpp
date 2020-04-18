@@ -1218,7 +1218,7 @@ void Level::updateGroundSpikes(float& dt)
 		switch (frameNum)
 		{
 		case 0: // A COLLISION BOX OF 0, 0, WHICH BELIEVE IT OR NOT STILL REGISTERS A HIT, SO I COULDN'T USE (0,0,0,0) BUT INSTEAD PUT IT IN THE MIDDLE OF THE SPRITE AND 'INSIDE' THE GROUND SO IT'S IMPOSSIBLE TO HIT.
-			groundSpikes[i]->setCollisionBox(64, -10, 0, 0);
+			groundSpikes[i]->setCollisionBox(64, 138, 0, 0);
 			if (debugMode)
 			{
 				spikeTrapColBox.setPosition(sf::Vector2f(groundSpikes[i]->getCollisionBox().left, groundSpikes[i]->getCollisionBox().top));
