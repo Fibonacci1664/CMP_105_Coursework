@@ -19,7 +19,7 @@ Screen::Screen(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* a
 	gameState = gs;
 	audio = aud;
 
-	initCursor();
+	//initCursor();
 }
 
 Screen::~Screen()

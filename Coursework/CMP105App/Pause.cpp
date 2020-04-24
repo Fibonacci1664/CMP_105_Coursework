@@ -289,7 +289,7 @@ void Pause::checkContinueCollisions()
 
 		if (checkMouseCollisions(&continueButton, mousePos) && input->isMouseLDown())
 		{
-			std::cout << "Clicked on the continue button!\n";
+			//std::cout << "Clicked on the continue button!\n";
 			continueButton.setTexture(&continueButtonClickedTexture);
 			continueClicked = true;
 		}

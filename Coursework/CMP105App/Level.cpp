@@ -23,7 +23,7 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
-	window->setMouseCursorVisible(false);
+	//window->setMouseCursorVisible(false);
 
 	debugMode = false;
 	//initDebugMode();
