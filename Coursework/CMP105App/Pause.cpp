@@ -69,7 +69,8 @@ void Pause::update(float dt)
 
 	//std::cout << "view has moved in the x axis by: " << xTranslation << '\n';
 
-	mousePos = sf::Vector2f(input->getMouseX() + xTranslation, input->getMouseY());	
+	mousePos = sf::Vector2f(input->getMouseX() + xTranslation, input->getMouseY());
+	customCursor.setPosition(sf::Vector2f(input->getMouseX(), input->getMouseY()));
 	updatePauseMenuPosition();
 }
 
@@ -84,6 +85,7 @@ void Pause::render()
 	window->draw(mainMenuButton);
 	window->draw(continueButton);
 	window->draw(quitButton);
+	window->draw(customCursor);
 
 	if (resetView)
 	{
@@ -281,7 +283,7 @@ void Pause::checkContinueCollisions()
 {
 	if (checkMouseCollisions(&continueButton, mousePos))
 	{
-		std::cout << "Collision detected with the continue button!\n";
+		//std::cout << "Collision detected with the continue button!\n";
 
 		continueButton.setTexture(&continueButtonHoverTexture);
 

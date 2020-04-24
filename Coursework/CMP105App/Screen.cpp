@@ -19,14 +19,12 @@ Screen::Screen(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* a
 	gameState = gs;
 	audio = aud;
 
-	//setGameState(State::LEVEL);				// THIS WORKS FINE FROM SCREEN.
-
-	// initialise game objects
+	initCursor();
 }
 
 Screen::~Screen()
 {
-	std::cout << "Screen object destroyed!\n";
+	//std::cout << "Screen object destroyed!\n";
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +63,23 @@ void Screen::beginDraw()
 void Screen::endDraw()
 {
 	window->display();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Create a custom cursor.
+void Screen::initCursor()
+{
+	if (!cursorTexture.loadFromFile("gfx/level/cursor.png"))
+	{
+		std::cerr << "Sorry could not load cursor icon!\n";
+	}
+
+	customCursor.setInput(input);
+	customCursor.setWindow(window);
+	customCursor.setTexture(&cursorTexture);
+	customCursor.setSize(sf::Vector2f(25.6f, 25.6f));
+	customCursor.setOrigin(sf::Vector2f(customCursor.getSize().x, 0));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

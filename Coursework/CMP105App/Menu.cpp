@@ -58,6 +58,7 @@ void Menu::handleInput(float dt)
 void Menu::update(float dt)
 {
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+	customCursor.setPosition(sf::Vector2f(input->getMouseX(), input->getMouseY()));
 
 	if (audio->getMusic()->getStatus() == sf::SoundSource::Stopped)
 	{
@@ -109,6 +110,7 @@ void Menu::render()
 	window->draw(optionsButton);
 	window->draw(newGameButton);
 	window->draw(quitButton);
+	window->draw(customCursor);
 
 	endDraw();
 	//Sleep(500);

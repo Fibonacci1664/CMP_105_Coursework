@@ -57,6 +57,7 @@ void Options::update(float dt)
 	//std::cout << "Options update being called!\n";
 
 	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+	customCursor.setPosition(sf::Vector2f(input->getMouseX(), input->getMouseY()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,6 +70,7 @@ void Options::render()
 	window->draw(muteMusicCheckBox);
 	window->draw(muteSFXCheckBox);
 	window->draw(godModeCheckBox);
+	window->draw(customCursor);
 	endDraw();
 }
 

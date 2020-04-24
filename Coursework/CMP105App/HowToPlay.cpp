@@ -43,7 +43,8 @@ void HowToPlay::update(float dt)
 {
 	//std::cout << "Menu update being called!\n";
 
-	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());	
+	mousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+	customCursor.setPosition(sf::Vector2f(input->getMouseX(), input->getMouseY()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +54,7 @@ void HowToPlay::render()
 	beginDraw();
 	window->draw(howToPlayBg);
 	window->draw(backButton);
+	window->draw(customCursor);
 	endDraw();
 }
 

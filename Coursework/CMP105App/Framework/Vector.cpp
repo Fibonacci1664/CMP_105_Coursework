@@ -15,7 +15,3 @@ float Vector::magnitude(sf::Vector2f vec)
 {
 	return (float)sqrt((vec.x*vec.x) + (vec.y*vec.y));
 }
-
-
-
-

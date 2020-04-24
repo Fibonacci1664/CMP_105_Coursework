@@ -35,7 +35,7 @@ Animation::Animation()
 
 Animation::~Animation()
 {
-	std::cout << "Animation object destroyed!\n";
+	//std::cout << "Animation object destroyed!\n";
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

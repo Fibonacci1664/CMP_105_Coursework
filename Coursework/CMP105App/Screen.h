@@ -14,6 +14,7 @@
 #include "Framework/Input.h"
 #include "Framework/GameState.h"
 #include "Framework/AudioManager.h"
+#include "Framework/GameObject.h"
 #include <iostream>
 #include <SFML\Graphics\RectangleShape.hpp>
 
@@ -28,6 +29,7 @@ public:
 	virtual void handleInput(float dt);
 	virtual void update(float dt);
 	virtual void render();
+
 	virtual State getGameState();
 	virtual void setGameState(State s);	
 
@@ -38,11 +40,17 @@ protected:
 	GameState* gameState;
 	AudioManager* audio;
 
+	// Custom cursor.
+	GameObject customCursor;
+	sf::Texture cursorTexture;
+
 	bool checkMouseCollisions(sf::RectangleShape* s1, sf::Vector2f s2);
 
 private:
 	// Default functions for rendering to the screen.
 	void beginDraw();
 	void endDraw();
+
+	void initCursor();
 };
 

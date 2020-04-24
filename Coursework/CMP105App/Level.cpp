@@ -23,6 +23,8 @@
 // CONSTRUCTOR/S & DESTRUCTOR.
 Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
+	window->setMouseCursorVisible(false);
+
 	debugMode = false;
 	//initDebugMode();
 
@@ -120,6 +122,8 @@ void Level::update(float dt)
 	newViewXCoords = view.getCenter().x;
 	xTranslationOfView = newViewXCoords - originalViewXCoords;
 
+	customCursor.setPosition(sf::Vector2f(input->getMouseX() + xTranslationOfView, input->getMouseY()));
+
 	if (liftsOn)
 	{
 		moveLifts(dt);
@@ -183,6 +187,7 @@ void Level::render()
 	uiPanel->render();
 
 	window->draw(player);
+	window->draw(customCursor);
 	window->setView(view);
 
 	// Draw all the debug stuff.
@@ -1281,7 +1286,7 @@ void Level::updateFireTraps(float& dt)
 
 		switch (frameNum)
 		{
-		case 0: // A COLLISION BOX OF 0, 0, WHICH BELIEVE IT OR NOT STILL REGISTERS A HIT, SO I COULDN'T USE (0,0,0,0) BUT INSTEAD PUT IT IN THE MIDDLE OF THE SPRITE AND 'INSIDE' THE WALL IT'S ATTACHED TO SO IT'S IMPOSSIBLE TO HIT.
+		case 0: // A COLLISION BOX OF 0, 0, WHICH BELIEVE IT OR NOT STILL REGISTERS A HIT (point collision!), SO I COULDN'T USE (0,0,0,0) BUT INSTEAD PUT IT IN THE MIDDLE OF THE SPRITE AND 'INSIDE' THE WALL IT'S ATTACHED TO SO IT'S IMPOSSIBLE TO HIT.
 			fireTraps[i]->setCollisionBox(-10, 64, 0, 0);
 			if (debugMode)
 			{

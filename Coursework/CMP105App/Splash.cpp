@@ -71,7 +71,6 @@ void Splash::update(float dt)
 void Splash::render()
 {
 	beginDraw();
-
 	fadeIn();
 
 	// If we've faded in, it's time to fade out.
