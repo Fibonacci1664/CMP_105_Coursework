@@ -10,6 +10,7 @@
 
 // INCLUDES.
 #include "Credits.h"
+#include "Level.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -17,6 +18,12 @@
 Credits::Credits(sf::RenderWindow* hwnd, Input* in, GameState* gs, AudioManager* aud) : Screen(hwnd, in, gs, aud)
 {
 	initCreditsBg();
+
+	// Set where the view is originally.
+	originalViewPos = *Level::getView();
+	xTranslation = 0;
+
+	creditsRolled = false;
 }
 
 Credits::~Credits()
@@ -36,6 +43,20 @@ void Credits::handleInput(float dt)
 
 void Credits::update(float dt)
 {
+	if (!creditsRolled)
+	{
+		// Update the view to its most recent location.
+		sf::View currentViewPos = *Level::getView();
+
+		// Figure out how much it's moved by in the x-range.
+		xTranslation = currentViewPos.getCenter().x - originalViewPos.getCenter().x;
+
+		// Scroll credits up, ensuring that any offset of how much the view has moved is added so the credits are still centred on screen.
+		creditsBg.setPosition(sf::Vector2f(creditsBg.getPosition().x + xTranslation, creditsBg.getPosition().y - (100 * dt)));
+
+		creditsBg.setVelocity(sf::Vector2f(0, -100));
+	}
+
 	bottomOfCreditsPos = creditsBg.getPosition().y + creditsBg.getSize().y;
 	rollCredits(dt);
 }
@@ -93,8 +114,9 @@ void Credits::initCreditsBg()
 // Roll the credtis up the screen.
 void Credits::rollCredits(float & dt)
 {
-	// Scroll credits up.
-	creditsBg.setPosition(sf::Vector2f(creditsBg.getPosition().x, creditsBg.getPosition().y - (100 * dt)));
+	creditsRolled = true;
+
+	creditsBg.setPosition(sf::Vector2f(creditsBg.getPosition().x, creditsBg.getPosition().y + (creditsBg.getVelocity().y * dt)));
 
 	if (bottomOfCreditsPos < 0)
 	{

@@ -69,6 +69,7 @@ void Pause::update(float dt)
 
 	//std::cout << "view has moved in the x axis by: " << xTranslation << '\n';
 
+	// Offset the mouse position by the amount the view has move so eveything still lines up for clicking buttons.
 	mousePos = sf::Vector2f(input->getMouseX() + xTranslation, input->getMouseY());
 	customCursor.setPosition(sf::Vector2f(input->getMouseX(), input->getMouseY()));
 	updatePauseMenuPosition();

@@ -44,8 +44,13 @@ private:
 	void beginDraw();
 	void endDraw();
 
-	sf::RectangleShape creditsBg;
+	GameObject creditsBg;
 	sf::Texture creditsBgTexture;
 
 	float bottomOfCreditsPos;
+
+	sf::View originalViewPos;
+	float xTranslation;
+
+	bool creditsRolled;
 };
